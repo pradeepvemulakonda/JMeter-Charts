@@ -1,0 +1,89 @@
+0 info it worked if it ends with ok
+1 verbose cli [ 'node', '/usr/local/bin/npm', 'install' ]
+2 info using npm@1.3.24
+3 info using node@v0.10.25
+4 verbose readDependencies using package.json deps
+5 verbose install where, deps [ '/Users/pradeepv/personal/git/JMeter-Charts',
+5 verbose install   [ 'express',
+5 verbose install     'jade',
+5 verbose install     'mongodb',
+5 verbose install     'angular',
+5 verbose install     'd3-chart',
+5 verbose install     'body-parser',
+5 verbose install     'method-overide' ] ]
+6 info preinstall Test@0.0.1
+7 verbose readDependencies using package.json deps
+8 verbose already installed skipping express@~4.0 /Users/pradeepv/personal/git/JMeter-Charts
+9 verbose already installed skipping jade@* /Users/pradeepv/personal/git/JMeter-Charts
+10 verbose already installed skipping mongodb@~2.0 /Users/pradeepv/personal/git/JMeter-Charts
+11 verbose already installed skipping angular@* /Users/pradeepv/personal/git/JMeter-Charts
+12 verbose already installed skipping d3-chart@* /Users/pradeepv/personal/git/JMeter-Charts
+13 verbose already installed skipping body-parser@* /Users/pradeepv/personal/git/JMeter-Charts
+14 verbose cache add [ 'method-overide@*', null ]
+15 verbose cache add name=undefined spec="method-overide@*" args=["method-overide@*",null]
+16 verbose parsed url { protocol: null,
+16 verbose parsed url   slashes: null,
+16 verbose parsed url   auth: null,
+16 verbose parsed url   host: null,
+16 verbose parsed url   port: null,
+16 verbose parsed url   hostname: null,
+16 verbose parsed url   hash: null,
+16 verbose parsed url   search: null,
+16 verbose parsed url   query: null,
+16 verbose parsed url   pathname: 'method-overide@*',
+16 verbose parsed url   path: 'method-overide@*',
+16 verbose parsed url   href: 'method-overide@*' }
+17 verbose cache add name="method-overide" spec="*" args=["method-overide","*"]
+18 verbose parsed url { protocol: null,
+18 verbose parsed url   slashes: null,
+18 verbose parsed url   auth: null,
+18 verbose parsed url   host: null,
+18 verbose parsed url   port: null,
+18 verbose parsed url   hostname: null,
+18 verbose parsed url   hash: null,
+18 verbose parsed url   search: null,
+18 verbose parsed url   query: null,
+18 verbose parsed url   pathname: '*',
+18 verbose parsed url   path: '*',
+18 verbose parsed url   href: '*' }
+19 verbose addNamed [ 'method-overide', '*' ]
+20 verbose addNamed [ null, '*' ]
+21 silly lockFile c692606f-method-overide method-overide@*
+22 verbose lock method-overide@* /Users/pradeepv/.npm/c692606f-method-overide.lock
+23 silly addNameRange { name: 'method-overide', range: '*', hasData: false }
+24 verbose url raw method-overide
+25 verbose url resolving [ 'https://registry.npmjs.org/', './method-overide' ]
+26 verbose url resolved https://registry.npmjs.org/method-overide
+27 info trying registry request attempt 1 at 11:25:40
+28 http GET https://registry.npmjs.org/method-overide
+29 http 404 https://registry.npmjs.org/method-overide
+30 silly registry.get cb [ 404,
+30 silly registry.get   { date: 'Thu, 11 Dec 2014 00:25:27 GMT',
+30 silly registry.get     server: 'CouchDB/1.5.0 (Erlang OTP/R14B04)',
+30 silly registry.get     'content-type': 'application/json',
+30 silly registry.get     'cache-control': 'max-age=0',
+30 silly registry.get     'content-length': '52',
+30 silly registry.get     'accept-ranges': 'bytes',
+30 silly registry.get     via: '1.1 varnish',
+30 silly registry.get     age: '0',
+30 silly registry.get     'x-served-by': 'cache-syd1621-SYD',
+30 silly registry.get     'x-cache': 'MISS',
+30 silly registry.get     'x-cache-hits': '0',
+30 silly registry.get     'x-timer': 'S1418257527.402729,VS0,VE239',
+30 silly registry.get     'keep-alive': 'timeout=10, max=50',
+30 silly registry.get     connection: 'Keep-Alive' } ]
+31 silly lockFile c692606f-method-overide method-overide@*
+32 silly lockFile c692606f-method-overide method-overide@*
+33 error 404 'method-overide' is not in the npm registry.
+33 error 404 You should bug the author to publish it
+33 error 404 It was specified as a dependency of 'Test'
+33 error 404
+33 error 404 Note that you can also install from a
+33 error 404 tarball, folder, or http url, or git url.
+34 error System Darwin 13.4.0
+35 error command "node" "/usr/local/bin/npm" "install"
+36 error cwd /Users/pradeepv/personal/git/JMeter-Charts
+37 error node -v v0.10.25
+38 error npm -v 1.3.24
+39 error code E404
+40 verbose exit [ 1, true ]
