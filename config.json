@@ -1,0 +1,5 @@
+{
+	"mongoHost": "localHost",
+	"mongoPort": "27017", 
+	"mongoDB": "JMeterReportDB" 
+}

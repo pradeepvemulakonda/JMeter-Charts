@@ -3,7 +3,9 @@
  */
 var express = require('express'),
   Db = require('mongodb').Db,
+  fs = require('fs'),
   http = require('http'),
+  config = require('./config.json'),
   debug = require('util').debug,
   inspect = require('util').inspect,
   path = require('path'),
@@ -11,13 +13,11 @@ var express = require('express'),
   test = require('assert'),
   bodyParser = require('body-parser'),
   CollectionDriver = require('./collection-driver').CollectionDriver,
-  mongoHost = 'localHost',
-  mongoPort = 27017, 
   collectionDriver,
   mongoClient,
   db,
-  mongoUrl = 'mongodb://'+mongoHost+':'+mongoPort+'/JMeterReportDB';
- 
+  mongoUrl = 'mongodb://'+config.mongoHost+':'+config.mongoPort+'/'+config.mongoDB;
+
 MongoClient.connect(mongoUrl, function(err, db) {
 	  // Use the admin database for the operation
 	  var adminDb = db.admin();
@@ -76,9 +76,8 @@ app.get('/:collection/:entity', function(req, res) {
 });
 
 app.post('/:collection', function(req, res) {
-    var object = req.body;
-    console.dir(req.body);
-    var collection = req.params.collection;
+	var object = req.body,
+		collection = req.params.collection;
     collectionDriver.save(collection, object, function(err,docs) {
           if (err) {
         	  res.send(400, err); 
@@ -103,6 +102,12 @@ process.stdin.resume();
 process.on('SIGINT', function() {
   collectionDriver.shutdown();
   process.exit(1);
+});
+
+fs.watchFile('config.json', function (curr, prev) {
+  if(curr !== prev) {
+	  delete require.cache('./config.json');
+  }
 });
 
 
