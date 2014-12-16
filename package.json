@@ -11,6 +11,8 @@
     "mongodb": "~2.0",
     "angular": "*",
     "d3-chart": "*",
-    "body-parser": "*"
+    "body-parser": "*",
+    "unit.js": "*",
+    "mocha": "*"
   }
 }
