@@ -6,4 +6,4 @@ The data is organized as Project >> version >> report >> data.
 
 The front end is built using Angularjs and uses REST API to communicate with the Nodejs application in the backend.
 
-The application is in its initial state as of now.
+Current State of application only has a sample REST server and a A driver to access data from a MongoDB store.
