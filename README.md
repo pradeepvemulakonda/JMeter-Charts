@@ -1,3 +1,5 @@
+<H1>JMeter Charts Application </H1>
+
 This application is used to upload JMeter Jtl reports to automatically generate reports.
 
 Data from the jtl files are extracted and persisted in a mongoDB database.
