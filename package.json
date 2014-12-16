@@ -7,12 +7,13 @@
   },
   "dependencies": {
     "express": "~4.0",
-    "jade": "*",
+    "ejs": "*",
     "mongodb": "~2.0",
     "angular": "*",
     "d3-chart": "*",
     "body-parser": "*",
     "unit.js": "*",
-    "mocha": "*"
+    "mocha": "*",
+    "handlebars": "*"
   }
 }

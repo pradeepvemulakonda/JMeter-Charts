@@ -53,8 +53,9 @@ function _initialize() {
 	app.use(bodyParser.json());
 	app.use(express.static(path.join(__dirname, 'public')));
 	app.set('port', process.env.PORT || config.httpPort);
-	app.set('views', path.join(__dirname, 'views'));
-	app.set('view engine', 'jade');
+	app.set('views', path.join(__dirname, 'web/views'));
+	app.engine('html', require('ejs').renderFile);
+	app.set('view engine', 'html');
 
 	/**
 	 * Error handles used to handle system exceptions
@@ -70,7 +71,7 @@ function _initialize() {
 	}
 
 	app.use(errorHandler);
-
+	
 	app.get('/:collection', function(req, res) {
 	   var params = req.params;
 	   collectionDriver.findAll(req.params.collection, function(error, objs) {
@@ -79,7 +80,7 @@ function _initialize() {
 	    	  }
 		      else { 
 		          if (req.accepts('html')) {
-	    	          res.render('index',{objects: objs, collection: req.params.collection});
+	    	          res.render('index.html',{objects: objs, collection: req.params.collection});
 	              } else {
 		          res.set('Content-Type','application/json');
 	                  res.send(200, objs);
@@ -153,7 +154,7 @@ function _initialize() {
 	 * Default method that is called if no other route handled the request.
 	 */
 	app.use(function (req,res) {
-	    res.render('404', {url:req.url});
+	    res.render('404.html', {url:req.url});
 	});
 
 	//Start reading from stdin so we don't exit.
