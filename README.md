@@ -8,4 +8,4 @@ The data is organized as Project >> version >> report >> data.
 
 The front end is built using Angularjs and uses REST API to communicate with the Nodejs application in the backend.
 
-Current State of application only has a sample REST server and a A driver to access data from a MongoDB store.
+A REST server is created to accept *.jtl files and use an existing xsl stylesheet to populate data in mongodb. This data will be used to display charts in the frontend /html page.
