@@ -6,12 +6,15 @@
  * @requires mongodb server setup
  * @requires express server setup
  * @requires body-parser to parse json request body
+ * @requires connect-busboy to load jtl files from the client
  * @version 0.1
  */
 
 var express = require('express'),
   Db = require('mongodb').Db,
+  Busboy = require('connect-busboy'),
   fs = require('fs'),
+  multer  = require('multer'),
   http = require('http'),
   debug = require('util').debug,
   inspect = require('util').inspect,
@@ -20,13 +23,16 @@ var express = require('express'),
   test = require('assert'),
   bodyParser = require('body-parser'),
   CollectionDriver = require('./collection-driver').CollectionDriver,
+  XSLTProcessor = require('./xslt-processor').XSLTProcessor,
   /** @type {CollectionDriver} */
   collectionDriver,
   mongoClient,
+  STYLESHEET = "../../resources/report-style.xsl",
   db,
   ChartsServer,
   app = express(),
-  config;
+  config,
+  xsltProcessor = new XSLTProcessor(STYLESHEET);
 
 /**
  * Chart server class used to create a chart server
@@ -50,6 +56,10 @@ ChartsServer = function(conf) {
  * @access private
  */
 function _initialize() {
+	app.use(multer({ 
+		dest: '../../resources/', 
+		inMemory: true
+	}));
 	app.use(bodyParser.json());
 	app.use(express.static(path.join(__dirname, 'public')));
 	app.set('port', process.env.PORT || config.httpPort);
@@ -114,6 +124,26 @@ function _initialize() {
 	        	  res.send(201, docs); 
 	          }
 	     });
+	});
+	
+	app.post('/jc/upload', function(req, res) {
+		var arrayLength;
+		console.log(req.body);
+		if(req.files) {
+			if(req.files.resultFiles instanceof Array) {
+				arrayLength = req.files.resultFiles.length;
+				for(var i = 0;i < arrayLength; i++) {
+					console.log(req.files.resultFiles[i]);
+				}
+			} else {
+				xsltProcessor.translate(req.files.resultFiles.buffer, function (output) {
+					console.info(output);
+				});
+			}
+			res.send(202, 'File processing started and will be updated in some time');
+		} else {
+			res.send(415, 'no file present for upload');
+		}
 	});
 
 	app.put('/:collection/:entity', function(req, res) { //A
@@ -201,8 +231,8 @@ ChartsServer.prototype.start = function () {
 		    collectionDriver = new CollectionDriver(db);
 		  });
 		} catch(e) {
-			console.err("Cannot start MongoDB database server");
-			console.err(e);
+			console.error("Cannot start MongoDB database server");
+			console.error(e);
 			throw e;
 		}
 	});
