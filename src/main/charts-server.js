@@ -131,9 +131,12 @@ function _initialize() {
 		console.log(req.body);
 		if(req.files) {
 			if(req.files.resultFiles instanceof Array) {
+				console.info("Multiple files sent");
 				arrayLength = req.files.resultFiles.length;
 				for(var i = 0;i < arrayLength; i++) {
-					console.log(req.files.resultFiles[i]);
+					xsltProcessor.translate(req.files.resultFiles[i].buffer, function (output) {
+						console.info(output);
+					});
 				}
 			} else {
 				xsltProcessor.translate(req.files.resultFiles.buffer, function (output) {
