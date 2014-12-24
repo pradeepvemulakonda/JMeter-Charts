@@ -128,7 +128,6 @@ function _initialize() {
 	
 	app.post('/jc/upload', function(req, res) {
 		var arrayLength;
-		console.log(req.body);
 		if(req.files) {
 			if(req.files.resultFiles instanceof Array) {
 				console.info("Multiple files sent");
