@@ -70,6 +70,39 @@ CollectionDriver.prototype.findAll = function(collectionName, callback) {
     });
 };
 
+CollectionDriver.prototype.distinct = function(collectionName, query, field, callback) {
+    this.getCollection(collectionName, function(error, fetchedCollection) {
+      if( error ) {
+    	  callback(error);
+      } else {
+        fetchedCollection.distinct(field, query, function(error, results) {
+          if( error ) { 
+        	  callback(error);
+          } else {
+        	  callback(null, results);
+          }
+        });
+      }
+    });
+};
+
+CollectionDriver.prototype.findData = function(collectionName, query, callback) {
+    this.getCollection(collectionName, function(error, fetchedCollection) {
+      if( error ) {
+    	  callback(error);
+      } else {
+        fetchedCollection.find(query).toArray(function(error, results) {
+          if( error ) { 
+        	  callback(error);
+          } else {
+        	  callback(null, results);
+          }
+        });
+      }
+    });
+};
+
+
 /**
  * This filters the fetched collection based on id and returns the single row
  * @example

@@ -61,9 +61,9 @@ function _initialize() {
 		inMemory: true
 	}));
 	app.use(bodyParser.json());
-	app.use(express.static(path.join(__dirname, 'public')));
+	app.use(express.static(path.join(__dirname, 'web/views/static')));
 	app.set('port', process.env.PORT || config.httpPort);
-	app.set('views', path.join(__dirname, 'web/views'));
+	app.set('views', path.join(__dirname, 'web/views/dynamic'));
 	app.engine('html', require('ejs').renderFile);
 	app.set('view engine', 'html');
 
@@ -82,27 +82,68 @@ function _initialize() {
 
 	app.use(errorHandler);
 	
-	app.get('/:collection', function(req, res) {
-	   var params = req.params;
-	   collectionDriver.findAll(req.params.collection, function(error, objs) {
-	    	  if (error) { 
+	app.get('/jc/project/:name/version', function(req, res) {
+	   var params = req.params,
+	   	   query = {},
+	   	   field;
+		   query.name = params.name;
+		   field = 'version';
+	   
+	   collectionDriver.distinct('project', query, field, function(error, objs) {
+	    	  if (error) {
 	    		  res.send(400, error); 
 	    	  }
-		      else { 
-		          if (req.accepts('html')) {
-	    	          res.render('index.html',{objects: objs, collection: req.params.collection});
-	              } else {
+		      else {
 		          res.set('Content-Type','application/json');
 	                  res.send(200, objs);
-	              }
 	         }
 	   	});
 	});
+	
+	app.get('/jc/project/:name/version/:version/build', function(req, res) {
+		   var params = req.params,
+		   	   query = {},
+		   	   field;
+		   
+		   query.version = params.version;
+		   query.name = params.name;
+		   
+		   field = 'build';
+		   
+		   collectionDriver.distinct('project', query, field, function(error, objs) {
+		    	  if (error) {
+		    		  res.send(400, error); 
+		    	  }
+			      else {
+			          res.set('Content-Type','application/json');
+		                  res.send(200, objs);
+		         }
+		   	});
+		});
+	
+	app.get('/jc/project/:name/version/:version/build/:build', function(req, res) {
+		   var params = req.params,
+		   	   query = {},
+		   	   fields = null;	
+		   query.build = params.build;
+		   query.name = params.name;
+		   query.version = params.version;
+		   
+		   collectionDriver.findData('project', query, function(error, objs) {
+		    	  if (error) {
+		    		  res.send(400, error); 
+		    	  }
+			      else {
+			          res.set('Content-Type','application/json');
+		                  res.send(200, objs);
+		          }
+		   	});
+	});
 		 
-	app.get('/:collection/:entity', function(req, res) {
+	app.get('/jc/project/:entity', function(req, res) {
 	   var params = req.params;
 	   var entity = params.entity;
-	   var collection = params.collection;
+	   var collection = 'project';
 	   if (entity) {
 	       collectionDriver.get(collection, entity, function(error, objs) {
 	          if (error) { res.send(400, error); }
@@ -112,10 +153,26 @@ function _initialize() {
 	      res.send(400, {error: 'bad url', url: req.url});
 	   }
 	});
+	
+	app.get('/jc', function(req, res) {
+		res.render('dashboard/index.html', {url:req.url});
+	});
+	
+	app.get('/jc/project', function(req, res) {
+	   var collection = 'project',
+	   	   field = 'name',
+	   	   query = {};
+	   
+	   collectionDriver.distinct(collection, query, field, function(error, objs) {
+          if (error) { res.send(400, error); }
+          else { res.send(200, objs); }
+       });
+	});
+		
 
-	app.post('/:collection', function(req, res) {
+	app.post('/jc/project', function(req, res) {
 		var object = req.body,
-			collection = req.params.collection;
+			collection = 'project';
 	    collectionDriver.save(collection, object, function(err,docs) {
 	          if (err) {
 	        	  res.send(400, err); 
@@ -128,25 +185,58 @@ function _initialize() {
 	
 	app.post('/jc/upload', function(req, res) {
 		var arrayLength;
+		if(!(req.param('project') && req.param('version') && req.param('build'))) {
+			throw new Error('Project, version and build data should be provided');
+		}
 		if(req.files) {
 			if(req.files.resultFiles instanceof Array) {
 				console.info("Multiple files sent");
 				arrayLength = req.files.resultFiles.length;
+				// process each of the files and persist the same in mongodb table
 				for(var i = 0;i < arrayLength; i++) {
-					xsltProcessor.translate(req.files.resultFiles[i].buffer, function (output) {
-						console.info(output);
-					});
+					xsltProcessor.translate(req.files.resultFiles[i].buffer, _persistantHelper(req, res));
 				}
 			} else {
-				xsltProcessor.translate(req.files.resultFiles.buffer, function (output) {
-					console.info(output);
-				});
+				xsltProcessor.translate(req.files.resultFiles.buffer, _persistantHelper(req, res));
 			}
-			res.send(202, 'File processing started and will be updated in some time');
 		} else {
 			res.send(415, 'no file present for upload');
 		}
 	});
+	
+	/**
+	 * Helper to capture the request and response for the callback.
+	 * @param req current request
+	 * @param res current response
+	 * @access private
+	 */
+	function _persistantHelper(req, res) {
+		return function (jsondata) {
+			_persistJsonData(jsondata, req, res);
+		};
+	}
+	
+	/**
+	 * Persists passed in json data to Project collection in mongodb
+	 * @param jsonData Json data extracted from the uploaded result file.
+	 * @param req request from closure scope
+	 * @param resp response from closure scope
+	 */
+	function _persistJsonData (jsonData, req, res) {
+		var object = {};
+		object.name = req.param('project');
+		object.version = req.param('version');
+		object.build = req.param('build');
+		object.report = JSON.parse(jsonData);
+		collectionDriver.save('project', object, function(err,docs) {
+	          if (err) {
+	        	  res.send(400, err); 
+	          } 
+	          else {
+	        	  res.send(201, 'document created with id: : ' + docs._id);
+	          }
+	     });
+	}
 
 	app.put('/:collection/:entity', function(req, res) { //A
 	    var params = req.params;
@@ -186,7 +276,7 @@ function _initialize() {
 	 * Default method that is called if no other route handled the request.
 	 */
 	app.use(function (req,res) {
-	    res.render('404.html', {url:req.url});
+	    res.send(404, 'resource not found');
 	});
 
 	//Start reading from stdin so we don't exit.
