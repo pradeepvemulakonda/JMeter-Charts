@@ -10,6 +10,8 @@
     <meta name="author" content="">
 
     <title>JMeter Charts v0.1</title>
+    
+    <script data-main="js/main" src="js/require.js"></script>
 
     <!-- Bootstrap Core CSS -->
     <link href="css/bootstrap.min.css" rel="stylesheet">
@@ -21,7 +23,7 @@
     <link href="css/plugins/timeline.css" rel="stylesheet">
 
     <!-- Custom CSS -->
-    <link href="css/sb-admin-2.css" rel="stylesheet">
+    <link href="css/main.css" rel="stylesheet">
 
     <!-- Morris Charts CSS -->
     <link href="css/plugins/morris.css" rel="stylesheet">
@@ -322,59 +324,15 @@
             <!-- /.row -->
             <div class="row">
                 <div class="col-lg-3 col-md-6">
-                    <div class="panel panel-primary">
-                        <div class="panel-heading">
-                            <div class="row">
-                                <div class="col-xs-3">
-                                    <i class="fa fa-comments fa-5x"></i>
-                                </div>
-                                <div class="col-xs-9 text-right">
-                                    <div class="huge">26</div>
-                                    <div>New Comments!</div>
-                                </div>
-                            </div>
-                        </div>
-                        <a href="#">
-                            <div class="panel-footer">
-                                <span class="pull-left">View Details</span>
-                                <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
-                                <div class="clearfix"></div>
-                            </div>
-                        </a>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-6">
                     <div class="panel panel-green">
                         <div class="panel-heading">
                             <div class="row">
                                 <div class="col-xs-3">
-                                    <i class="fa fa-tasks fa-5x"></i>
+                                    <i class="fa fa-check fa-5x"></i>
                                 </div>
                                 <div class="col-xs-9 text-right">
-                                    <div class="huge">12</div>
-                                    <div>New Tasks!</div>
-                                </div>
-                            </div>
-                        </div>
-                        <a href="#">
-                            <div class="panel-footer">
-                                <span class="pull-left">View Details</span>
-                                <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
-                                <div class="clearfix"></div>
-                            </div>
-                        </a>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-6">
-                    <div class="panel panel-yellow">
-                        <div class="panel-heading">
-                            <div class="row">
-                                <div class="col-xs-3">
-                                    <i class="fa fa-shopping-cart fa-5x"></i>
-                                </div>
-                                <div class="col-xs-9 text-right">
-                                    <div class="huge">124</div>
-                                    <div>New Orders!</div>
+                                    <div class="huge">26</div>
+                                    <div>Success %</div>
                                 </div>
                             </div>
                         </div>
@@ -392,11 +350,11 @@
                         <div class="panel-heading">
                             <div class="row">
                                 <div class="col-xs-3">
-                                    <i class="fa fa-support fa-5x"></i>
+                                    <i class="fa fa-close fa-5x"></i>
                                 </div>
                                 <div class="col-xs-9 text-right">
-                                    <div class="huge">13</div>
-                                    <div>Support Tickets!</div>
+                                    <div class="huge">12</div>
+                                    <div>Failures %</div>
                                 </div>
                             </div>
                         </div>
@@ -411,6 +369,54 @@
                 </div>
             </div>
             <!-- /.row -->
+             <div class="row">
+                <div class="col-lg-12">
+                	<div class="file-upload">
+				      <div class="panel panel-default">
+				        <div class="panel-heading"><i class="fa fa-upload fa-fw"></i>&nbsp;<strong>File Upload</strong>
+				        </div>
+				        <div class="panel-body">
+				          <!-- Standar Form -->
+				          <h4>Select files from your computer</h4>
+				          <form action="" method="post" enctype="multipart/form-data" id="js-upload-form">
+				            <div class="form-inline">
+				              <div class="form-group">
+				              	<span class="btn btn-default btn-file">
+				              		Browse...
+					                <input type="file" name="resultFiles" id="js-upload-files" multiple>
+								</span>
+				              </div>
+				              <button type="submit" class="btn btn-sm btn-primary" id="js-upload-submit">Upload files</button>
+				            </div>
+				          </form>
+				
+				          <!-- Drop Zone -->
+				          <h4>Or drag and drop files below</h4>
+				          <div class="upload-drop-zone" id="drop-zone">
+				            Just drag and drop files here
+				          </div>
+				
+				          <!-- Progress Bar -->
+				          <div class="progress">
+				            <div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 60%;">
+				              <span class="sr-only">60% Complete</span>
+				            </div>
+				          </div>
+				
+				          <!-- Upload Finished -->
+				          <div class="js-upload-finished">
+				            <h3>Processed files</h3>
+				            <div class="list-group">
+				              <a href="#" class="list-group-item list-group-item-success"><span class="badge alert-success pull-right">Success</span>image-01.jpg</a>
+				              <a href="#" class="list-group-item list-group-item-success"><span class="badge alert-success pull-right">Success</span>image-02.jpg</a>
+				            </div>
+				          </div>
+				        </div>
+				      </div>
+				   </div>
+				 </div>  
+                <!-- /.col-lg-12 -->
+            </div>
             <div class="row">
                 <div class="no-class">
                     <div class="panel panel-default">
@@ -785,24 +791,6 @@
 
     </div>
     <!-- /#wrapper -->
-
-    <!-- jQuery -->
-    <script src="js/jquery.js"></script>
-
-    <!-- Bootstrap Core JavaScript -->
-    <script src="js/bootstrap.min.js"></script>
-
-    <!-- Metis Menu Plugin JavaScript -->
-    <script src="js/plugins/metisMenu/metisMenu.js"></script>
-
-    <!-- Morris Charts JavaScript -->
-    <script src="js/plugins/morris/raphael.min.js"></script>
-    <script src="js/plugins/morris/morris.js"></script>
-    <script src="js/plugins/morris/morris-data.js"></script>
-
-    <!-- Custom Theme JavaScript -->
-    <script src="js/sb-admin-2.js"></script>
-
 </body>
 
 </html>
