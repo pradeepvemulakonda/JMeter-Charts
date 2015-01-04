@@ -2,7 +2,8 @@ requirejs.config({
     paths: {
         "jquery": "jquery",
         "jquery.bootstrap": "bootstrap",
-        "rest": "rest"
+        "rest": "rest",
+        
     },
     shim: {
         "jquery.bootstrap": {
@@ -16,19 +17,29 @@ requirejs.config({
         
         "plugins/morris/morris": {
         	deps: [ 'jquery', 'plugins/morris/raphael.min' ]
-        }
+        },
+        
+        "plugins/combobox/bootstrap-combobox": {
+        	deps: [ 'jquery']
+        },
+        
+        "plugins/typeahead/typeahead": {
+        	deps: [ 'jquery']
+        },
+        
+        
     }
 });
 
-require(["require","jquery", "jquery.bootstrap", "plugins/metisMenu/metisMenu", "plugins/morris/morris", "rest"], function (require, $) {
+require(["require","jquery", "jquery.bootstrap", "plugins/metisMenu/metisMenu","plugins/typeahead/typeahead", "plugins/morris/morris", "rest", "plugins/combobox/bootstrap-combobox"], function (require, $) {
 	var rest = require('rest');
 	
 	$(function() {
 	    $('#side-menu').metisMenu();
 	});
 
-	//Loads the correct sidebar on window load,
-	//collapses the sidebar on window resize.
+	// Loads the correct sidebar on window load,
+	// collapses the sidebar on window resize.
 	// Sets the min-height of #page-wrapper to window size
 	$(function() {
 	    $(window).bind("load resize", function() {
@@ -89,7 +100,7 @@ require(["require","jquery", "jquery.bootstrap", "plugins/metisMenu/metisMenu", 
 			        pointSize: 3,
 			        resize: true,
 			        hideHover: true,
-			        //xLabels: '15sec',
+			        // xLabels: '15sec',
 			        hoverCallback: function (index, options, content, row) {
 			        	  return "Active threads: " + row.x;
 			        }
@@ -117,6 +128,7 @@ require(["require","jquery", "jquery.bootstrap", "plugins/metisMenu/metisMenu", 
 	$(function () {
 		rest.fetchProjects(function( data, statusText, jqXHR) {
 			var node = $(document.createDocumentFragment());
+			data = data.sort();
 			$.each(data, function (index, projectName) {
 				addMenu(node, projectName, 'project-nav', fetchVersion);
 			});
@@ -125,21 +137,18 @@ require(["require","jquery", "jquery.bootstrap", "plugins/metisMenu/metisMenu", 
 	});
 
 	function addMenu(node, text, clazz, callback) {
-			$("<li><a></a></li>") // li 
-				.find("a") // a 
-				.attr("href", "#")
-				.bind('click.fetch', callback)// a 
-				.html(text + '<span class="fa arrow"></span>') // a 
-				.end() // li
-				.addClass('active')
-				.addClass(clazz)
-				.appendTo(node);
+		var anchor = $('<a>'+text + '<span class="fa arrow"></span>'+'</a>');
+		anchor.bind('click.fetch', callback);
+		var liNode = $('<li class="active '+ clazz + '"></li>');
+		liNode.append(anchor);
+		node.append(liNode);
 	}
 
 	function fetchVersion(event) {
 		rest.fetchVersions(event.target.text, function (data, statusText, jqXHR) {
+			data = data.sort();
+			$("<ul class='nav nav-third-level'>").appendTo(event.target.parentNode);
 			$.each(data, function (index, version) {
-				$("<ul class='nav nav-third-level'>").appendTo(event.target.parentNode);
 				addMenu($(event.target.parentNode).find('ul'), version, 'version-nav', fetchBuild);
 			});
 			$(event.target).unbind('click.fetch');
@@ -149,8 +158,9 @@ require(["require","jquery", "jquery.bootstrap", "plugins/metisMenu/metisMenu", 
 
 	function fetchBuild(event) {
 		rest.fetchBuilds($($(event.target).parent().parent().parent()).children()[0].text, event.target.text, function (data, statusText, jqXHR) {
+			data = data.sort();
+			$("<ul class='nav nav-fourth-level'>").appendTo(event.target.parentNode);
 			$.each(data, function (index, build) {
-				$("<ul class='nav nav-fourth-level'>").appendTo(event.target.parentNode);
 				addMenu($(event.target.parentNode).find('ul'), build, 'build-nav', fetchChartData);
 			});
 			$(event.target).unbind('click.fetch');
@@ -177,27 +187,162 @@ require(["require","jquery", "jquery.bootstrap", "plugins/metisMenu/metisMenu", 
 	    // UPLOAD CLASS DEFINITION
 	    // ======================
 
-	    var dropZone = $('#drop-zone');
+	    var dropZone = $('#drop-zone'),
+	    filesToUpload= [];
+	    	
 	    
-	    var startUpload = function(files) {
-	    	var uploadFileSection = $('.js-upload-finished'),
+	    var prepareUpload = function(files) {
+	    	
+	    	var uploadFileSection = $('.js-upload-files'),
 	    		listGroup = uploadFileSection.find('.list-group');
+	    		
+	    	listGroup.find('em').remove();
+	    	
 	    	$.each(files, function (index, file) {
-	    		listGroup.append('<a href="#" class="list-group-item list-group-item-info"><span class="badge alert-info pull-right">uploading&nbsp;<i class="fa fa-refresh fa-spin"></i></span>'+file.name+'</a>');
+	    		filesToUpload.push({name:file.name, file: file});
+	    		// <i class="fa fa-refresh fa-spin"></i>
+	    		listGroup.append('<span class="list-group-item list-group-item-info"><span class="badge alert-info pull-right">ready to upload &nbsp;<i class="fa fa-times fa-fw"></i></span><span class="file-name">'+file.name+'</span></span>');
 	    	});
+	    	
+	    	 $(".js-upload-files .fa-times").hover(
+		       function () {
+		         $(this).toggleClass('fa-inverse');
+		       }, 
+		      function () {
+		          $(this).removeClass('fa-inverse');
+		       }
+		     );
+	    	 
+	    	 $(".js-upload-files .fa-times").click(function (event) {
+	    		 var fileName = $(event.target).closest('.list-group-item').find('.file-name').text();
+	    		 $.each(filesToUpload, function (index, fileData) {
+	    			 if(fileData && fileData.name === fileName) {
+	    				 filesToUpload.splice(index, 1);
+	    			 }
+	    		 });
+	    		 
+	    		 $(event.target).closest('.list-group-item').remove();
+	    		 if($('.js-upload-files .list-group .list-group-item').size() <= 0) {
+	    			 listGroup.append('<em>nothing selected</em>');
+	    		 }
+	    		 
+	    	 });
+	    	 
 	        console.log(files);
 	    };
+	    
+	    
+	    var startUpload = function (files, form) {
+	    	
+	     
+	        // START A LOADING SPINNER HERE
+	     
+	        // Create a formdata object and add the files
+	    	var data = new FormData();
+	    	$.each(files, function(index, file)
+	    	{
+	    		data.append("resultFiles", file.file);
+	    		console.info(file.name);
+	    	});
+	    	
+	    	data.append('project', form.find('[name="project"]').val());
+	    	data.append('version', form.find('[name="version"]').val());
+	    	data.append('build', form.find('[name="build"]').val());
+	        
+	        $.ajax({
+	            url: 'jc/upload',
+	            type: 'POST',
+	            data: data,
+	            cache: false,
+	            dataType: 'json',
+	            processData: false, // Don't process the files
+	            contentType: false, // Set content type to false as jQuery will
+									// tell the server its a query string
+									// request
+	            success: function(data, textStatus, jqXHR)
+	            {
+	            	if(typeof data.error === 'undefined')
+	            	{
+	            		// Success so call function to process the form
+	            		onSuccessfulUpload(event, data);
+	            	}
+	            	else
+	            	{
+	            		// Handle errors here
+	            		onFailedUpload(event, data);
+	            	}
+	            },
+	            error: function(jqXHR, textStatus, errorThrown)
+	            {
+	            	// Handle errors here
+	            	onFailedUpload(null, textStatus);
+	            	// STOP LOADING SPINNER
+	            }
+	        });
+	    };
+	    
+	    
+	    function onSuccessfulUpload(event, data) {
+	    	var uploadFileSection = $('.js-upload-files'),
+    		listGroup = uploadFileSection.find('.list-group');
+	    	var listFiles = $(listGroup).find('.file-name');
+	    	$.each(listFiles, function (index, fileSection) {
+	    		fileSection = $(fileSection);
+		    		$.each(data, function (index2, fileStatus) {
+		    			if(fileSection.text() === fileStatus.fileName) {
+			    			if (!fileStatus.error) {
+				    			fileSection.parent().removeClass('list-group-item-info').addClass('list-group-item-success');
+				    			fileSection.parent().find('.alert-info').html('Uploaded successfully');
+				    			fileSection.parent().find('.alert-info').removeClass('alert-info').addClass('alert-success');
+			    			} else {
+			    				fileSection.parent().removeClass('list-group-item-info').addClass('list-group-item-danger');
+				    			fileSection.parent().find('.alert-info').html('Uploaded failed');
+				    			fileSection.parent().find('.alert-info').removeClass('alert-info').addClass('alert-danger');
+			    			}
+		    			}
+	    			});
+	    	});
+	    }
+	    
+	    function onFailedUpload(event, data) {
+	    	var uploadFileSection = $('.js-upload-files'),
+    		listGroup = uploadFileSection.find('.list-group');
+	    	var listFiles = $(listGroup).find('.file-name');
+	    	$.each(listFiles, function (index, fileSection) {
+	    		fileSection = $(fileSection);
+    			fileSection.parent().removeClass('list-group-item-info').addClass('list-group-item-danger');
+    			fileSection.parent().find('.alert-info').html('Uploaded failed');
+    			fileSection.parent().find('.alert-info').removeClass('alert-info').addClass('alert-dangers');
+	    	});
+	    }
+	    
+	 // Add events
+	    $('#js-upload-form input[type=file]').on('change', function (event) {
+	    	var files = event.target.files;
+	    	prepareUpload(files);
+	    });
 
 	    $('#js-upload-form').submit(function(e) {
-	        var uploadFiles = this.files;
+	    	e.stopPropagation(); // Stop stuff happening
+	        e.preventDefault(); // Totally stop stuff happening
+	        var uploadFiles = filesToUpload;
 	        e.preventDefault();
-	        startUpload(uploadFiles);
+	        startUpload(uploadFiles, $(this));
+	    });
+	    
+	    $('#js-upload-reset').click(function(e) {
+	    	$('#js-upload-form').trigger("reset");
+	        filesToUpload= [];
+	        var uploadFileSection = $('.js-upload-files'),
+    		listGroup = uploadFileSection.find('.list-group');
+	        listGroup.empty();
+	        listGroup.append('<em>nothing selected</em>');
 	    });
 
 	    dropZone.on('drop', function(e) {
 	        e.preventDefault();
 	        this.className = 'upload-drop-zone';
-	        startUpload(e.dataTransfer.files);
+	        prepareUpload(e.dataTransfer.files);
 	    });
 
 	    dropZone.on('dragover', function() {
@@ -211,5 +356,112 @@ require(["require","jquery", "jquery.bootstrap", "plugins/metisMenu/metisMenu", 
 	    });
 
 	});
+	
+	/**
+	 * Fetch the dropdowns
+	 */
+	 $(function(){
+		 var projects;
+	     if($('.typeahead.project').size() > 1) {
+	    	 $('.typeahead.project').typeahead('destroy');
+	    	 
+	     }
+    	var projects = buildBloodHound('jc/project');
+ 		 projects.initialize(true); 
+ 		 
+		 $('.typeahead.project').typeahead({
+             hint: true,
+             highlight: true,
+             minLength: 0
+           },
+           {
+             name: 'projects',
+             displayKey: 'value',
+             source: projects.ttAdapter()
+           }
+         );
+ 	
+	 	// "select"-button
+	 	$('.emu-select').click(function(){
+	 	    // add something to ensure the menu will be shown
+	 	});
+ 	
+	 	$('.typeahead.project').on('typeahead:selected typeahead:autocompleted', function (event, suggestion) {
+	 		if($('.typeahead.version').size() > 1) {	
+	 			$('.typeahead.version').typeahead('destroy');
+	 			
+	 		}
+	 		var project = suggestion.value;
+	 		var versions = buildBloodHound('/jc/project/'+project+'/version');
+	 		// kicks off the loading/processing of `local` and
+			// `prefetch`
+	 		versions.initialize(true); 
+	 		
+	 			$('.typeahead.version').typeahead({
+ 	             hint: true,
+ 	             highlight: true,
+ 	             minLength: 0
+ 	           },
+ 	           {
+ 	             name: 'versions',
+ 	             displayKey: 'value',
+ 	             source: versions.ttAdapter()
+ 	           });
+	 		
+	 			
+	 			$('.typeahead.version').on('typeahead:selected typeahead:autocompleted', function (event, suggestion) {
+	 				if($('.typeahead.build').size() > 1) {	
+			 			$('.typeahead.build').typeahead('destroy');
+			 			
+			 		}
+	 				var project = $('.typeahead.project').typeahead('val');
+	 				var builds = buildBloodHound('/jc/project/'+project+'/version/'+suggestion.value+'/build');
+	 				builds.initialize(true);
+	 				
+ 		 			$('.typeahead.build').typeahead({
+ 		 	             hint: true,
+ 		 	             highlight: true,
+ 		 	             minLength: 0
+ 		 	           },
+ 		 	           {
+ 		 	             name: 'builds',
+ 		 	             displayKey: 'value',
+ 		 	             source: builds.ttAdapter()
+ 		 	         });
+	 		});
+		 });
+	 });
 
+	 function buildBloodHound(url) {
+			return new Bloodhound({
+				  datumTokenizer: Bloodhound.tokenizers.obj.whitespace('value'),
+					  queryTokenizer: Bloodhound.tokenizers.whitespace,
+					  limit: 10,
+					  sorter: function (a, b) {
+						  if (a > b) {
+							    return 1;
+						  }
+						  if (a < b) {
+						    return -1;
+						  }
+						  // a must be equal to b
+						  return 0;
+					  },
+					  remote: {
+					    // url points to a json file that contains an array of country
+						// names, see
+					    // https://github.com/twitter/typeahead.js/blob/gh-pages/data/countries.json
+						  remote: url,
+						  url: url,
+					    // the json file contains an array of strings, but the
+						// Bloodhound
+					    // suggestion engine expects JavaScript objects so this converts
+						// all of
+					    // those strings
+					    filter: function(list) {
+					      return $.map(list, function(data) { return { value: data }; });
+					    }
+					  }
+			});
+	}
 });

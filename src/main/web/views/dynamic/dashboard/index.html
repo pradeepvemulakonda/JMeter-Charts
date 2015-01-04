@@ -27,6 +27,10 @@
 
     <!-- Morris Charts CSS -->
     <link href="css/plugins/morris.css" rel="stylesheet">
+    
+    <!-- combobox bootstrap -->
+    <link href="css/plugins/bootstrap-combobox.css" rel="stylesheet">
+    
 
     <!-- Custom Fonts -->
     <link href="font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
@@ -378,18 +382,55 @@
 				        <div class="panel-body">
 				          <!-- Standar Form -->
 				          <h4>Select files from your computer</h4>
-				          <form action="" method="post" enctype="multipart/form-data" id="js-upload-form">
+				          <div class="upload-section">
+				          <form action="" method="post" enctype="multipart/form-data" class="js-upload-form" id="js-upload-form">
 				            <div class="form-inline">
-				              <div class="form-group">
-				              	<span class="btn btn-default btn-file">
-				              		Browse...
-					                <input type="file" name="resultFiles" id="js-upload-files" multiple>
-								</span>
-				              </div>
+				            <div class="row">
+				            	 <div class="col-lg-1">
+						              <div class="form-group">
+						              	<span class="btn btn-default btn-file">
+						              		Browse...
+							                <input type="file" name="resultFiles" id="js-upload-files" multiple>
+										</span>
+						              </div>
+						              </div>
+					              <div class="col-lg-3">
+								    <div class="input-group">
+								      <input class="typeahead combobox form-control project" name="project" type="text" placeholder="project">
+								      <span class="input-group-btn">
+								        <button class="btn btn-default emu-select" type="button"><i class="fa fa-chevron-down fa-fw"></i></button>
+								      </span>
+								    </div><!-- /input-group -->
+								  </div><!-- /.col-lg-6 -->
+								  <div class="col-lg-3">
+								    <div class="input-group">
+								      <input class="typeahead combobox form-control version" name="version" type="text" placeholder="project">
+								      <span class="input-group-btn">
+								        <button class="btn btn-default emu-select" type="button"><i class="fa fa-chevron-down fa-fw"></i></button>
+								      </span>
+								    </div><!-- /input-group -->
+								  </div><!-- /.col-lg-6 -->
+								  <div class="col-lg-5">
+								    <div class="input-group">
+								      <input class="typeahead combobox form-control build" name="build" type="text" placeholder="build">
+								      <span class="input-group-btn">
+								        <button class="btn btn-default emu-select" type="button"><i class="fa fa-chevron-down fa-fw"></i></button>
+								      </span>
+								    </div><!-- /input-group -->
+								  </div><!-- /.col-lg-6 -->
+								</div>  
 				              <button type="submit" class="btn btn-sm btn-primary" id="js-upload-submit">Upload files</button>
+				              <button type=reset class="btn btn-sm btn-secondary" id="js-upload-reset">clear</button>
 				            </div>
 				          </form>
-				
+				           <!-- Upload Finished -->
+				          <div class="js-upload-files">
+				            <h3>Selected files</h3>
+				            <div class="list-group">
+				            	<em>nothing selected</em>
+				            </div>
+				          </div>
+						  </div>	
 				          <!-- Drop Zone -->
 				          <h4>Or drag and drop files below</h4>
 				          <div class="upload-drop-zone" id="drop-zone">
@@ -400,15 +441,6 @@
 				          <div class="progress">
 				            <div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 60%;">
 				              <span class="sr-only">60% Complete</span>
-				            </div>
-				          </div>
-				
-				          <!-- Upload Finished -->
-				          <div class="js-upload-finished">
-				            <h3>Processed files</h3>
-				            <div class="list-group">
-				              <a href="#" class="list-group-item list-group-item-success"><span class="badge alert-success pull-right">Success</span>image-01.jpg</a>
-				              <a href="#" class="list-group-item list-group-item-success"><span class="badge alert-success pull-right">Success</span>image-02.jpg</a>
 				            </div>
 				          </div>
 				        </div>

@@ -184,23 +184,28 @@ function _initialize() {
 	});
 	
 	app.post('/jc/upload', function(req, res) {
-		var arrayLength;
-		if(!(req.param('project') && req.param('version') && req.param('build'))) {
+		var arrayLength,
+			project = req.param('project'),
+			version = req.param('version'),
+			build = req.param('build');
+		if(!(project && version && build)) {
 			throw new Error('Project, version and build data should be provided');
 		}
 		if(req.files) {
+			res.writeHead(201, { 'Content-Type': 'text/plain' });
+			res.write('[');
 			if(req.files.resultFiles instanceof Array) {
 				console.info("Multiple files sent");
 				arrayLength = req.files.resultFiles.length;
 				// process each of the files and persist the same in mongodb table
 				for(var i = 0;i < arrayLength; i++) {
-					xsltProcessor.translate(req.files.resultFiles[i].buffer, _persistantHelper(req, res));
+					xsltProcessor.translate(req.files.resultFiles[i].buffer, _persistantHelper(req, res, req.files.resultFiles[i].originalname, i === arrayLength - 1));
 				}
 			} else {
-				xsltProcessor.translate(req.files.resultFiles.buffer, _persistantHelper(req, res));
+				xsltProcessor.translate(req.files.resultFiles.buffer, _persistantHelper(req, res, req.files.resultFiles.originalname, true));
 			}
 		} else {
-			res.send(415, 'no file present for upload');
+			res.end(400, { 'Content-Type': 'text/plain' });
 		}
 	});
 	
@@ -210,9 +215,9 @@ function _initialize() {
 	 * @param res current response
 	 * @access private
 	 */
-	function _persistantHelper(req, res) {
-		return function (jsondata) {
-			_persistJsonData(jsondata, req, res);
+	function _persistantHelper(req, res, fileName, endResponse) {
+		return function (err, jsondata) {
+			_persistJsonData(err, jsondata, req, res, fileName, endResponse);
 		};
 	}
 	
@@ -222,7 +227,22 @@ function _initialize() {
 	 * @param req request from closure scope
 	 * @param resp response from closure scope
 	 */
-	function _persistJsonData (jsonData, req, res) {
+	function _persistJsonData (err, jsonData, req, res, fileName, endResponse) {
+		if (err) {
+			res.write(JSON.stringify({
+      		  id: null,
+      		  fileName: fileName,
+      		  error: err
+      	  }));
+      	  if(endResponse) {
+      		  res.write(']');
+      		  res.end();
+      	  } else {
+      		  res.write(',');
+      	  }
+      	  return;
+		}
+		
 		var object = {};
 		object.name = req.param('project');
 		object.version = req.param('version');
@@ -230,10 +250,31 @@ function _initialize() {
 		object.report = JSON.parse(jsonData);
 		collectionDriver.save('project', object, function(err,docs) {
 	          if (err) {
-	        	  res.send(400, err); 
+	        	  res.write(JSON.stringify({
+	        		  id: null,
+	        		  fileName: fileName,
+	        		  error: err
+	        	  }));
+	        	  if(endResponse) {
+	        		  res.write(']');
+	        		  res.end();
+	        	  } else {
+	        		  res.write(',');
+	        	  }
 	          } 
 	          else {
-	        	  res.send(201, 'document created with id: : ' + docs._id);
+	        	  res.write(JSON.stringify({
+	        		  id: docs._id,
+	        		  fileName: fileName
+	        	  }));
+	        	  
+	        	  
+	        	  if(endResponse) {
+	        		  res.write(']');
+	        		  res.end();
+	        	  } else {
+	        		  res.write(',');
+	        	  }
 	          }
 	     });
 	}

@@ -32,7 +32,11 @@ function init() {
  * @param callback
  */
 XSLTProcessor.prototype.translate = function (xmlData, callback) {
-	callback(nodeXslt.transform(this.stylesheet, nodeXslt.readXmlString(xmlData.toString()), [ ]));
+	try {
+		callback(null, nodeXslt.transform(this.stylesheet, nodeXslt.readXmlString(xmlData.toString()), [ ]));
+	} catch (error) {
+		callback(error);
+	}
 };
 
 exports.XSLTProcessor = XSLTProcessor;
