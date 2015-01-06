@@ -455,3 +455,7 @@ table.dataTable thead .sorting:after {
 	vertical-align: middle !important;
 }
 
+.input-group-btn {
+	vertical-align: top;
+}
+
