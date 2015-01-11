@@ -67,6 +67,9 @@
 
 			// Boolean - Whether to show labels on the scale
 			scaleShowLabels: true,
+			
+			// show x labels
+			showXLabels: false,
 
 			// Interpolated JS string - can access value
 			scaleLabel: "<%=value%>",
@@ -92,8 +95,8 @@
 			// Boolean - whether or not the chart should be responsive and resize when the browser does.
 			responsive: false,
 
-                        // Boolean - whether to maintain the starting aspect ratio or not when responsive, if set to false, will take up entire container
-                        maintainAspectRatio: true,
+            // Boolean - whether to maintain the starting aspect ratio or not when responsive, if set to false, will take up entire container
+            maintainAspectRatio: true,
 
 			// Boolean - Determines whether to draw tooltips on the canvas or not - attaches events to touchmove & mousemove
 			showTooltips: true,
@@ -1514,7 +1517,9 @@
 
 				}
 				if (this.xLabelRotation > 0){
-					this.endPoint -= Math.sin(toRadians(this.xLabelRotation))*originalLabelWidth + 3;
+					if (this.showXLabels) {
+						this.endPoint -= Math.sin(toRadians(this.xLabelRotation))*originalLabelWidth + 3;
+					}
 				}
 			}
 			else{
@@ -1635,7 +1640,9 @@
 					ctx.font = this.font;
 					ctx.textAlign = (isRotated) ? "right" : "center";
 					ctx.textBaseline = (isRotated) ? "middle" : "top";
-					ctx.fillText(label, 0, 0);
+					if(this.showXLabels) {
+						ctx.fillText(label, 0, 0);
+					}
 					ctx.restore();
 				},this);
 
@@ -2154,7 +2161,8 @@
 				gridLineColor : (this.options.scaleShowGridLines) ? this.options.scaleGridLineColor : "rgba(0,0,0,0)",
 				padding : (this.options.showScale) ? 0 : (this.options.barShowStroke) ? this.options.barStrokeWidth : 0,
 				showLabels : this.options.scaleShowLabels,
-				display : this.options.showScale
+				display : this.options.showScale,
+				showXLabels: this.options.showXLabels
 			};
 
 			if (this.options.scaleOverride){
@@ -2878,7 +2886,8 @@
 				yCenter: this.chart.height/2,
 				ctx : this.chart.ctx,
 				templateString: this.options.scaleLabel,
-				valuesCount: data.length
+				valuesCount: data.length,
+				showXLabels: this.options.showXLabels
 			});
 
 			this.updateScaleRange(data);
@@ -3228,7 +3237,8 @@
 				ctx : this.chart.ctx,
 				templateString: this.options.scaleLabel,
 				labels: data.labels,
-				valuesCount: data.datasets[0].data.length
+				valuesCount: data.datasets[0].data.length,
+				showXLabels: this.options.showXLabels
 			});
 
 			this.scale.setScaleSize();

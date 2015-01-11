@@ -3,7 +3,8 @@ requirejs.config({
         "jquery": "jquery",
         "jquery.bootstrap": "bootstrap",
         "rest": "rest",
-        "chartjs": "chartjs/Chart",
+        "d3": "d3/d3",
+        "tip": "d3/tip"
         
     },
     shim: {
@@ -28,9 +29,13 @@ requirejs.config({
         	deps: [ 'jquery']
         },
         
-        chartjs : {
-            exports : "Chart"
+        d3 : {
+            exports : "d3"
         },
+        
+        tip : {
+        	deps: ['d3']
+        }
         
         
     }
@@ -38,7 +43,7 @@ requirejs.config({
 
 require(["require","jquery", "jquery.bootstrap", "plugins/metisMenu/metisMenu","plugins/typeahead/typeahead", "plugins/morris/morris", "rest", "plugins/combobox/bootstrap-combobox"], function (require, $) {
 	var rest = require('rest');
-	
+	var myBarChart;
 	$(function() {
 	    $('#side-menu').metisMenu();
 	});
@@ -72,11 +77,11 @@ require(["require","jquery", "jquery.bootstrap", "plugins/metisMenu/metisMenu","
 	function renderCharts(json) {
 				var data = [],
 					dataBar = [],
+					dataLine = [],
 					graph,
 					jsonData = json[0].report.jsondata,
 					ykeys = [],
-					xkey = 'x',
-					barItem = {};
+					xkey = 'x';
 				
 				var spinHTML = "<i class='fa fa-refresh fa-spin'></i>";
 				
@@ -84,210 +89,213 @@ require(["require","jquery", "jquery.bootstrap", "plugins/metisMenu/metisMenu","
 				$('#morris-bar-chart').empty();
 				
 				$.each(jsonData, function (index, threadGroup) {
-					ykeys.push(threadGroup.threadgroup.name);
-					barItem.x = '';
-					barItem[threadGroup.threadgroup.name] = threadGroup.threadgroup.averageTime;
+					dataBar.push({
+						name: threadGroup.threadgroup.name,
+						value: threadGroup.threadgroup.averageTime
+					});
 					$.each(threadGroup.threadgroup.samples, function (innerIndex, sample) {
 						var item = {};
-						item.x = sample.activeThreads;
-						item[threadGroup.threadgroup.name] = sample.elapsedTime;
-						data.push(item);
+						
+						dataLine.push({
+							activeThread : sample.activeThreads,
+							time: sample.elapsedTime
+						});
+						
 					});
 				});
 				
-				dataBar.push(barItem);
-				graph = Morris.Line({
-			        element: 'morris-area-chart',
-			        data: data,
-			        xkey: xkey,
-			        ykeys: ykeys,
-			        labels: ykeys,
-			        xlabels: 'hour',
-			        pointSize: 3,
-			        resize: true,
-			        parseTime: true,
-			        hideHover: true,
-			        // xLabels: '15sec',
-			        hoverCallback: function (index, options, content, row) {
-			        	  return "Active threads: " + row.x;
-			        }
-				});
-				
-				var barGraph = Morris.Bar({
-			        element: 'morris-bar-chart',
-			        data: dataBar,
-			        xkey: 'x',
-			        ykeys: ykeys,
-			        labels: ykeys,
-			        hideHover: 'auto',
-			        resize: true,
-			        hoverCallback: function (index, options, content, row) {
-			        	  return "sin(" + row.x + ") = " + row.y + options;
-			        }
-			    });
+				// Using requirejs
+				require(['d3', 'tip'], function (d3, tip) {
+					function getRandomColor() {
+					    var letters = '0123456789ABCDEF'.split('');
+					    var color = '#';
+					    for (var i = 0; i < 6; i++ ) {
+					        color += letters[Math.floor(Math.random() * 16)];
+					    }
+					    return color;
+					}
+					
+					function ColorLuminance(hex, lum) {
 
+						// validate hex string
+						hex = String(hex).replace(/[^0-9a-f]/gi, '');
+						if (hex.length < 6) {
+							hex = hex[0]+hex[0]+hex[1]+hex[1]+hex[2]+hex[2];
+						}
+						lum = lum || 0;
+
+						// convert to decimal and change luminosity
+						var rgb = "#", c, i;
+						for (i = 0; i < 3; i++) {
+							c = parseInt(hex.substr(i*2,2), 16);
+							c = Math.round(Math.min(Math.max(0, c + (c * lum)), 255)).toString(16);
+							rgb += ("00"+c).substr(c.length);
+						}
+
+						return rgb;
+					}
+					
+					
+					var margin = {top: 20, right: 30, bottom: 30, left: 40},
+								    width = 960 - margin.left - margin.right,
+								    height = 500 - margin.top - margin.bottom;
+	
+					var x = d3.scale.ordinal().rangeRoundBands([0, width], 0.1);
+					
+					var y = d3.scale.linear().range([height, 0]);
+					
+					var xAxis = d3.svg.axis()
+							    .scale(x)
+							    .orient("bottom");
+
+					var yAxis = d3.svg.axis()
+							    .scale(y)
+							    .orient("left");
+					
+					var tipLocal = tip()
+					  .attr('class', 'd3-tip')
+					  .offset([-10, 0])
+					  .html(function(d) {
+					    return "<strong>Sample:</strong> <span style='color:white'>" + d.name + "</span>";
+					  });
+	
+					var chart = d3.select(".chart-bar")
+					    .attr("width", width + margin.left + margin.right)
+					    .attr("height", height + margin.top + margin.bottom)
+					    .append("g")
+					    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+					
+					chart.call(tipLocal);
+					
+					 var dataBarValue = [];
+					 
+					 $.each(dataBar, function (index, data) {
+						 dataBarValue.push(parseFloat(data.value));
+					 });
+					 
+					 var p=d3.scale.category20();
+					
+					 
+					  x.domain(dataBar.map(function(d) { return d.name; }));
+					  y.domain([0, d3.max(dataBarValue)]);
+	
+					  chart.append("g")
+					      .attr("class", "x axis")
+					      .attr("transform", "translate(0," + height + ")")
+					      .call(xAxis)
+					      .selectAll("text")  
+				            .style("text-anchor", "end")
+				            .attr("dx", "-.8em")
+				            .attr("dy", ".15em")
+				            .attr("transform", function(d) {
+				                return "rotate(-65)";
+				          });
+
+					  chart.append("g")
+					      .attr("class", "y axis")
+					      .call(yAxis);
+					  var barWidth = width / dataBar.length;
+	
+					  var bar = chart.selectAll(".bar")
+				      .data(dataBar)
+				      .enter()
+				      .append("g");
+					  
+					   bar.append("rect")
+					      .attr("class", "bar")
+					      .attr("x", function(d) { return x(d.name); })
+					      .attr("y", function(d) {
+					    	  return y(d.value); 
+					    	})
+					      .attr("height", function(d) { return height - y(d.value); })
+					      .attr("width", x.rangeBand())
+					      .on('mouseover', tipLocal.show)
+					      .on('mouseout', tipLocal.hide)
+					      .style("fill", function(d) { 
+					    	  return p(Math.floor(Math.random() * 20) + 1); 
+					      });
+					      
+//					  bar.on("mouseover", function(d) { 
+//						  console.log(d3.select(this).attr('x'));
+//					  });
+					  
+					  bar.append("text")
+					      .attr("x", function(d) {
+					    	  return x(d.name) + barWidth/2;
+					      })
+					      .attr("y", function(d) { return y(d.value) + 3; })
+					      .attr("dy", ".75em")
+					      .attr("class", "bar-text")
+					      .text(function(d) { return Math.floor(d.value); });
+	
+					function type(d) {
+					  d.value = +d.value; // coerce to number
+					  return d;
+					}
+				
+				/// line chart
+				
+				
+			var marginLine = {top: 20, right: 20, bottom: 30, left: 50},
+		    widthLine = 960 - marginLine.left - marginLine.right,
+		    heightLine = 500 - marginLine.top - marginLine.bottom;
+
+			var parseDate = d3.time.format("%d-%b-%y").parse;
+
+			var xLine = d3.time.scale()
+			    .range([0, widthLine]);
+
+			var yLine = d3.scale.linear()
+			    .range([heightLine, 0]);
+
+			var xAxisLine = d3.svg.axis()
+			    .scale(xLine)
+			    .orient("bottom");
+
+			var yAxisLine = d3.svg.axis()
+			    .scale(yLine)
+			    .orient("left");
+
+			var line = d3.svg.line()
+			    .x(function(d) { return x(d.date); })
+			    .y(function(d) { return y(d.activeThread); });
+
+			var svg = d3.select(".chart-line")
+			    .attr("width", widthLine + marginLine.left + marginLine.right)
+			    .attr("height", heightLine + marginLine.top + marginLine.bottom)
+			    .append("g")
+			    .attr("transform", "translate(" + marginLine.left + "," + marginLine.top + ")");
+
+			  dataLine.forEach(function(d) {
+			    d.date = parseDate(d.time);
+			    d.activeThread = +d.activeThread;
+			  });
+
+			  x.domain(d3.extent(data, function(d) { return d.date; }));
+			  y.domain(d3.extent(data, function(d) { return d.threads; }));
+
+			  svg.append("g")
+			      .attr("class", "x axis")
+			      .attr("transform", "translate(0," + height + ")")
+			      .call(xAxis);
+
+			  svg.append("g")
+			      .attr("class", "y axis")
+			      .call(yAxis)
+			    .append("text")
+			      .attr("transform", "rotate(-90)")
+			      .attr("y", 6)
+			      .attr("dy", ".71em")
+			      .style("text-anchor", "end")
+			      .text("Price ($)");
+
+			  svg.append("path")
+			      .datum(dataLine)
+			      .attr("class", "line")
+			      .attr("d", line);
+		});// require		
 	}
 	
-	
-	$(function () {
-		// Using requirejs
-		require(['chartjs'], function(Chart){
-			var options = {
-
-				    // Boolean - Whether to animate the chart
-				    animation: true,
-
-				    // Number - Number of animation steps
-				    animationSteps: 60,
-
-				    // String - Animation easing effect
-				    animationEasing: "easeOutQuart",
-
-				    // Boolean - If we should show the scale at all
-				    showScale: true,
-
-				    // Boolean - If we want to override with a hard coded scale
-				    scaleOverride: false,
-
-				    // ** Required if scaleOverride is true **
-				    // Number - The number of steps in a hard coded scale
-				    scaleSteps: null,
-				    // Number - The value jump in the hard coded scale
-				    scaleStepWidth: null,
-				    // Number - The scale starting value
-				    scaleStartValue: null,
-
-				    // String - Colour of the scale line
-				    scaleLineColor: "rgba(0,0,0,.1)",
-
-				    // Number - Pixel width of the scale line
-				    scaleLineWidth: 1,
-
-				    // Boolean - Whether to show labels on the scale
-				    scaleShowLabels: true,
-
-				    // Interpolated JS string - can access value
-				    scaleLabel: "<%=value%>",
-
-				    // Boolean - Whether the scale should stick to integers, not floats even if drawing space is there
-				    scaleIntegersOnly: true,
-
-				    // Boolean - Whether the scale should start at zero, or an order of magnitude down from the lowest value
-				    scaleBeginAtZero: false,
-
-				    // String - Scale label font declaration for the scale label
-				    scaleFontFamily: "'Helvetica Neue', 'Helvetica', 'Arial', sans-serif",
-
-				    // Number - Scale label font size in pixels
-				    scaleFontSize: 12,
-
-				    // String - Scale label font weight style
-				    scaleFontStyle: "normal",
-
-				    // String - Scale label font colour
-				    scaleFontColor: "#666",
-
-				    // Boolean - whether or not the chart should be responsive and resize when the browser does.
-				    responsive: true,
-
-				    // Boolean - whether to maintain the starting aspect ratio or not when responsive, if set to false, will take up entire container
-				    maintainAspectRatio: true,
-
-				    // Boolean - Determines whether to draw tooltips on the canvas or not
-				    showTooltips: true,
-
-				    // Array - Array of string names to attach tooltip events
-				    tooltipEvents: ["mousemove", "touchstart", "touchmove"],
-
-				    // String - Tooltip background colour
-				    tooltipFillColor: "rgba(0,0,0,0.8)",
-
-				    // String - Tooltip label font declaration for the scale label
-				    tooltipFontFamily: "'Helvetica Neue', 'Helvetica', 'Arial', sans-serif",
-
-				    // Number - Tooltip label font size in pixels
-				    tooltipFontSize: 14,
-
-				    // String - Tooltip font weight style
-				    tooltipFontStyle: "normal",
-
-				    // String - Tooltip label font colour
-				    tooltipFontColor: "#fff",
-
-				    // String - Tooltip title font declaration for the scale label
-				    tooltipTitleFontFamily: "'Helvetica Neue', 'Helvetica', 'Arial', sans-serif",
-
-				    // Number - Tooltip title font size in pixels
-				    tooltipTitleFontSize: 14,
-
-				    // String - Tooltip title font weight style
-				    tooltipTitleFontStyle: "bold",
-
-				    // String - Tooltip title font colour
-				    tooltipTitleFontColor: "#fff",
-
-				    // Number - pixel width of padding around tooltip text
-				    tooltipYPadding: 6,
-
-				    // Number - pixel width of padding around tooltip text
-				    tooltipXPadding: 6,
-
-				    // Number - Size of the caret on the tooltip
-				    tooltipCaretSize: 8,
-
-				    // Number - Pixel radius of the tooltip border
-				    tooltipCornerRadius: 6,
-
-				    // Number - Pixel offset from point x to tooltip edge
-				    tooltipXOffset: 10,
-
-				    // String - Template string for single tooltips
-				    tooltipTemplate: "<%if (label){%><%=label%>: <%}%><%= value %>",
-
-				    // String - Template string for single tooltips
-				    multiTooltipTemplate: "<%= value %>",
-
-				    // Function - Will fire on animation progression.
-				    onAnimationProgress: function(){},
-
-				    // Function - Will fire on animation completion.
-				    onAnimationComplete: function(){},
-
-				    //String - A legend template
-				    legendTemplate : "<ul class=\"<%=name.toLowerCase()%>-legend\"><% for (var i=0; i<datasets.length; i++){%><li><span style=\"background-color:<%=datasets[i].lineColor%>\"></span><%if(datasets[i].label){%><%=datasets[i].label%><%}%></li><%}%></ul>"
-
-				};
-			var data = {
-				    labels: ["January", "February", "March", "April", "May", "June", "July"],
-				    datasets: [
-				        {
-				            label: "My First dataset",
-				            fillColor: "rgba(220,220,220,0.5)",
-				            strokeColor: "rgba(220,220,220,0.8)",
-				            highlightFill: "rgba(220,220,220,0.75)",
-				            highlightStroke: "rgba(220,220,220,1)",
-				            data: [65, 59, 80, 81, 56, 55, 40]
-				        },
-				        {
-				            label: "My Second dataset",
-				            fillColor: "rgba(151,187,205,0.5)",
-				            strokeColor: "rgba(151,187,205,0.8)",
-				            highlightFill: "rgba(151,187,205,0.75)",
-				            highlightStroke: "rgba(151,187,205,1)",
-				            data: [28, 48, 40, 19, 86, 27, 90]
-				        }
-				    ]
-				};
-			var ctx = $("#chartjs-bar-chart")[0].getContext('2d');
-			var myBarChart = new Chart(ctx).Bar(data, options);
-			$("#chartjs-bar-chart").click(function(evt){
-			    var activePoints = myBarChart.getBarsAtEvent(evt);
-			    alert(activePoints);
-			    // => activePoints is an array of points on the canvas that are at the same position as the click event.
-			});
-		});
-	});
-
 	/**
 	 * Set the navigation links on document ready
 	 */
