@@ -227,7 +227,8 @@ function _initialize() {
 	 * @param req request from closure scope
 	 * @param resp response from closure scope
 	 */
-	function _persistJsonData (err, jsonData, req, res, fileName, endResponse) {
+	function _persistJsonData(err, jsonData, req, res, fileName, endResponse) {
+		console.info(jsonData);
 		if (err) {
 			res.write(JSON.stringify({
       		  id: null,

@@ -35,6 +35,7 @@ XSLTProcessor.prototype.translate = function (xmlData, callback) {
 	try {
 		callback(null, nodeXslt.transform(this.stylesheet, nodeXslt.readXmlString(xmlData.toString()), [ ]));
 	} catch (error) {
+		console.info(error);
 		callback(error);
 	}
 };

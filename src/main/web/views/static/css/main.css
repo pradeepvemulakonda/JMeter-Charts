@@ -484,10 +484,6 @@ table.dataTable thead .sorting:after {
   shape-rendering: crispEdges;
 }
 
-.x.axis path {
-  display: none;
-}
-
 .chart-bar .bar-text {
   fill: white;
   font: 10px sans-serif;
@@ -521,5 +517,18 @@ table.dataTable thead .sorting:after {
   margin: -1px 0 0 0;
   top: 100%;
   left: 0;
+}
+
+.line {
+	fill: none;
+	stroke: steelblue;
+	stroke-width: 1.5px;
+}
+
+.axis path,
+.axis line {
+  fill: none;
+  stroke: #000;
+  shape-rendering: crispEdges;
 }
 

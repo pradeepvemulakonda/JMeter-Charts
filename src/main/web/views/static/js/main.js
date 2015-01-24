@@ -78,6 +78,8 @@ require(["require","jquery", "jquery.bootstrap", "plugins/metisMenu/metisMenu","
 				var data = [],
 					dataBar = [],
 					dataLine = [],
+					lineDomian = [],
+					dataLineGroup=[],
 					graph,
 					jsonData = json[0].report.jsondata,
 					ykeys = [],
@@ -94,14 +96,22 @@ require(["require","jquery", "jquery.bootstrap", "plugins/metisMenu/metisMenu","
 						value: threadGroup.threadgroup.averageTime
 					});
 					$.each(threadGroup.threadgroup.samples, function (innerIndex, sample) {
-						var item = {};
-						
 						dataLine.push({
 							activeThread : sample.activeThreads,
-							time: sample.elapsedTime
+							time: sample.timestamp,
+							ms: sample.elapsedTime
 						});
-						
+						lineDomian.push({
+							activeThread : sample.activeThreads,
+							time: sample.timestamp,
+							ms: sample.elapsedTime
+						});
 					});
+					dataLineGroup.push({
+						group: threadGroup.threadgroup.name,
+						dataLine: dataLine
+					});
+					dataLine = [];
 				});
 				
 				// Using requirejs
@@ -135,7 +145,7 @@ require(["require","jquery", "jquery.bootstrap", "plugins/metisMenu/metisMenu","
 						return rgb;
 					}
 					
-					
+				/*	
 					var margin = {top: 20, right: 30, bottom: 30, left: 40},
 								    width = 960 - margin.left - margin.right,
 								    height = 500 - margin.top - margin.bottom;
@@ -228,56 +238,68 @@ require(["require","jquery", "jquery.bootstrap", "plugins/metisMenu/metisMenu","
 					      .attr("class", "bar-text")
 					      .text(function(d) { return Math.floor(d.value); });
 	
-					function type(d) {
-					  d.value = +d.value; // coerce to number
-					  return d;
-					}
 				
 				/// line chart
+			*/	
 				
-				
-			var marginLine = {top: 20, right: 20, bottom: 30, left: 50},
-		    widthLine = 960 - marginLine.left - marginLine.right,
-		    heightLine = 500 - marginLine.top - marginLine.bottom;
+		  var margin = {top: 20, right: 80, bottom: 30, left: 50},
+		    width = 960 - margin.left - margin.right,
+		    height = 500 - margin.top - margin.bottom;
+		   var p=d3.scale.category20();
+			var max1 = d3.max(lineDomian, function (d) {
+				return +d.activeThread;
+			});
+			
+			var max2 = d3.max(lineDomian, function (d) {
+				return +d.ms;
+			});
+			
+			var min1 = d3.min(lineDomian, function (d) {
+				return +d.activeThread;
+			});
+			
+			var min2 = d3.min(lineDomian, function (d) {
+				return +d.ms;
+			});
+			
+			var x = d3.scale.linear()
+			    .range([0, width])
+			    .domain([min1,max1])
+			    .nice();
+			
+			var y = d3.scale.linear()
+			    .range([height, 0])
+			    .domain([min2,max2])
+			    .nice();
 
-			var parseDate = d3.time.format("%d-%b-%y").parse;
+			var color = d3.scale.category10();
 
-			var xLine = d3.time.scale()
-			    .range([0, widthLine]);
-
-			var yLine = d3.scale.linear()
-			    .range([heightLine, 0]);
-
-			var xAxisLine = d3.svg.axis()
-			    .scale(xLine)
+			var xAxis = d3.svg.axis()
+			    .scale(x)
 			    .orient("bottom");
+			    
 
-			var yAxisLine = d3.svg.axis()
-			    .scale(yLine)
+			var yAxis = d3.svg.axis()
+			    .scale(y)
 			    .orient("left");
-
-			var line = d3.svg.line()
-			    .x(function(d) { return x(d.date); })
-			    .y(function(d) { return y(d.activeThread); });
+			    
 
 			var svg = d3.select(".chart-line")
-			    .attr("width", widthLine + marginLine.left + marginLine.right)
-			    .attr("height", heightLine + marginLine.top + marginLine.bottom)
-			    .append("g")
-			    .attr("transform", "translate(" + marginLine.left + "," + marginLine.top + ")");
-
-			  dataLine.forEach(function(d) {
-			    d.date = parseDate(d.time);
-			    d.activeThread = +d.activeThread;
-			  });
-
-			  x.domain(d3.extent(data, function(d) { return d.date; }));
-			  y.domain(d3.extent(data, function(d) { return d.threads; }));
-
+			    	.attr("width", width + margin.left + margin.right)
+				    .attr("height", height + margin.top + margin.bottom)
+				    .append("g")
+				    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+			  
 			  svg.append("g")
 			      .attr("class", "x axis")
 			      .attr("transform", "translate(0," + height + ")")
-			      .call(xAxis);
+			      .call(xAxis)
+			      .append("text")
+			      .attr("y", -12)
+			      .attr("x", width)
+			      .attr("dy", ".71em")
+			      .style("text-anchor", "end")
+			      .text("response time in ms");
 
 			  svg.append("g")
 			      .attr("class", "y axis")
@@ -287,12 +309,62 @@ require(["require","jquery", "jquery.bootstrap", "plugins/metisMenu/metisMenu","
 			      .attr("y", 6)
 			      .attr("dy", ".71em")
 			      .style("text-anchor", "end")
-			      .text("Price ($)");
+			      .text("response time in ms");
 
-			  svg.append("path")
-			      .datum(dataLine)
+			  var line = d3.svg.line()
+			    .interpolate("basis")
+			    .x(function(d) { return x(d.ms); })
+			    .y(function(d) { return y(d.activeThread); });
+			  
+			  var lineContainer = svg.selectAll(".container")
+		      .data(dataLineGroup)
+		      .enter().append("g")
+		      .attr("class", "container");
+			  
+			  lineContainer.append("path")
 			      .attr("class", "line")
-			      .attr("d", line);
+			      .attr("d", function(d) { return line(d.dataLine); })
+			      .style("stroke", function(d) {
+				    	  return p(Math.floor(Math.random() * 20) + 1)
+			      }); 
+			  
+			  lineContainer.append("text")
+			      .datum(function(d) { return {name: d.group, value: d.dataLine[d.dataLine.length - 1]}; })
+			      .attr("transform", function(d) { return "translate(" + x(d.value.ms) + "," + y(d.value.activeThread) + ")"; })
+			      .attr("x", 3)
+			      .attr("dy", ".35em")
+			      .text(function(d) { return d.name; });
+			  
+			/*  dataLineGroup.forEach(function (lineData) {
+				  var x = d3.scale.ordinal().rangeRoundBands([0, width], 0.1);
+				  var y = d3.scale.linear().range([height, 0]);
+					
+				  lineData.dataLine.sort(function (a, b) {
+					  return b.time - a.time;
+				  });
+				  
+				  x.domain(1,500);
+				  
+				  y.domain(lineData.dataLine.map(function (d) {
+					  return d.ms;
+				  }));
+				  
+				  line = d3.svg.line()
+				    .x(function(d) { 
+				    		return x(+d.activeThread); 
+				    	})
+				    .y(function(d) {
+				    		return y(+d.ms); 
+				  });
+				  
+				  svg.append("path")
+				      .datum(lineData.dataLine)
+				      .attr("class", "line")
+				      .attr("d", line)
+				      .style("stroke", function(d) {
+				    	  return p(Math.floor(Math.random() * 20) + 1); 
+				  });
+			  });*/
 		});// require		
 	}
 	

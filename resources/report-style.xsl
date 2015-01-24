@@ -3,7 +3,7 @@
 
 <!-- match the testResults and call the template build-json-->
 <xsl:template match="testResults">
-	   {	
+	   {
 	   		"name":"resultJson",
 	   		"jsondata":[
 	   			<xsl:call-template name="build-json" />
@@ -23,28 +23,29 @@
 			<xsl:variable name="averageTime" select="$totalTime div $count" />
 			<xsl:variable name="avgActiveThreads" select="sum(../*[@lb = current()/@lb]/@ng) div $count" />
 			{
-				"threadgroup": { 
+				"threadgroup": {
 					"name": "<xsl:value-of select="$label"/>",
 					"averageTime": "<xsl:value-of select="$averageTime"/>",
 					"successCount": "<xsl:value-of select="$successCount"/>",
-					"failureCount": "<xsl:value-of select="$failureCount"/>", 
+					"failureCount": "<xsl:value-of select="$failureCount"/>",
 					"totalCount": "<xsl:value-of select="$count"/>",
 					"successPercentage": "<xsl:value-of select="$successPercent"/>",
 					"averageActiveThreads": "<xsl:value-of select="round($avgActiveThreads)"/>",
 					"samples": [
 					<!--For each thread group collect data-->
-					<xsl:for-each select="../*[@lb = $label and @tn != $label]">		         			            
+					<xsl:for-each select="../*[@lb = $label and @tn != $label]">
 						{
 							"threadName": "<xsl:value-of select="@tn" />",
 							"elapsedTime":  "<xsl:value-of select="@t" />",
 							"noOfBytes": "<xsl:value-of select="@by" />",
 							"success": "<xsl:value-of select="@s" />",
-							"activeThreads": "<xsl:value-of select="@ng" />"
+							"activeThreads": "<xsl:value-of select="@ng" />",
+							"timestamp": <xsl:value-of select="@ts" />
 						}<xsl:if test="not(position()=last())">,</xsl:if>
 			        </xsl:for-each>
 			        ]
 			    }
-			}<xsl:if test="not(position()=last())">,</xsl:if>       
-	</xsl:for-each>		
+			}<xsl:if test="not(position()=last())">,</xsl:if>
+	</xsl:for-each>
 </xsl:template>
 </xsl:stylesheet>
