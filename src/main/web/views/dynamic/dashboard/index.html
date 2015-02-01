@@ -10,7 +10,7 @@
     <meta name="author" content="">
 
     <title>JMeter Charts v0.1</title>
-    
+
     <script data-main="js/main" src="js/require.js"></script>
 
     <!-- Bootstrap Core CSS -->
@@ -27,10 +27,10 @@
 
     <!-- Morris Charts CSS -->
     <link href="css/plugins/morris.css" rel="stylesheet">
-    
+
     <!-- combobox bootstrap -->
     <link href="css/plugins/bootstrap-combobox.css" rel="stylesheet">
-    
+
 
     <!-- Custom Fonts -->
     <link href="font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
@@ -418,7 +418,7 @@
 								      </span>
 								    </div><!-- /input-group -->
 								  </div><!-- /.col-lg-6 -->
-								</div>  
+								</div>
 				              <button type="submit" class="btn btn-sm btn-primary" id="js-upload-submit">Upload files</button>
 				              <button type=reset class="btn btn-sm btn-secondary" id="js-upload-reset">clear</button>
 				            </div>
@@ -430,13 +430,13 @@
 				            	<em>nothing selected</em>
 				            </div>
 				          </div>
-						  </div>	
+						  </div>
 				          <!-- Drop Zone -->
 				          <h4>Or drag and drop files below</h4>
 				          <div class="upload-drop-zone" id="drop-zone">
 				            Just drag and drop files here
 				          </div>
-				
+
 				          <!-- Progress Bar -->
 				          <div class="progress">
 				            <div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 60%;">
@@ -446,7 +446,7 @@
 				        </div>
 				      </div>
 				   </div>
-				 </div>  
+				 </div>
                 <!-- /.col-lg-12 -->
             </div>
             <div class="row">
@@ -472,7 +472,9 @@
                         </div>
                         <!-- /.panel-heading -->
                         <div class="panel-body">
-                            <div id="morris-area-chart"></div>
+                            <div id="bar-chart">
+                                <svg class="chart-bar"></svg>
+                            </div>
                         </div>
                         <!-- /.panel-body -->
                     </div>
@@ -502,8 +504,8 @@
                         </div>
                                 <!-- /.col-lg-4 (nested) -->
                                 <div class="no-class bar-parent">
-                                    	<svg class="chart-bar"></svg>
                                     	<svg class="chart-line"></svg>
+                                        <svg class="chart-line-2"></svg>
                                 </div>
                                 <!-- /.col-lg-8 (nested) -->
                             </div>
@@ -744,7 +746,7 @@
                                     </span>
                                     <div class="chat-body clearfix">
                                         <div class="header">
-                                            <strong class="primary-font">Jack Sparrow</strong> 
+                                            <strong class="primary-font">Jack Sparrow</strong>
                                             <small class="pull-right text-muted">
                                                 <i class="fa fa-clock-o fa-fw"></i> 12 mins ago
                                             </small>
@@ -775,7 +777,7 @@
                                     </span>
                                     <div class="chat-body clearfix">
                                         <div class="header">
-                                            <strong class="primary-font">Jack Sparrow</strong> 
+                                            <strong class="primary-font">Jack Sparrow</strong>
                                             <small class="pull-right text-muted">
                                                 <i class="fa fa-clock-o fa-fw"></i> 14 mins ago</small>
                                         </div>

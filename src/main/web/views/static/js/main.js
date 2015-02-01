@@ -1,47 +1,47 @@
 requirejs.config({
     paths: {
-        "jquery": "jquery",
-        "jquery.bootstrap": "bootstrap",
-        "rest": "rest",
-        "d3": "d3/d3",
-        "tip": "d3/tip"
-        
+        'jquery': 'jquery',
+        'jquery.bootstrap': 'bootstrap',
+        'rest': 'rest',
+        'd3': 'd3/d3',
+        'tip': 'd3/tip'
+
     },
     shim: {
-        "jquery.bootstrap": {
-            deps: ["jquery"]
+        'jquery.bootstrap': {
+            deps: ['jquery']
         },
-        
-        "plugins/metisMenu/metisMenu": {
+
+        'plugins/metisMenu/metisMenu': {
         	deps: [ 'jquery' ],
             exports: 'jQuery.fn.metisMenu'
         },
-        
-        "plugins/morris/morris": {
+
+        'plugins/morris/morris': {
         	deps: [ 'jquery', 'plugins/morris/raphael.min' ]
         },
-        
-        "plugins/combobox/bootstrap-combobox": {
+
+        'plugins/combobox/bootstrap-combobox': {
         	deps: [ 'jquery']
         },
-        
-        "plugins/typeahead/typeahead": {
+
+        'plugins/typeahead/typeahead': {
         	deps: [ 'jquery']
         },
-        
+
         d3 : {
-            exports : "d3"
+            exports : 'd3'
         },
-        
+
         tip : {
         	deps: ['d3']
         }
-        
-        
+
+
     }
 });
 
-require(["require","jquery", "jquery.bootstrap", "plugins/metisMenu/metisMenu","plugins/typeahead/typeahead", "plugins/morris/morris", "rest", "plugins/combobox/bootstrap-combobox"], function (require, $) {
+require(['require','jquery', 'jquery.bootstrap', 'plugins/metisMenu/metisMenu','plugins/typeahead/typeahead', 'plugins/morris/morris', 'rest', 'plugins/combobox/bootstrap-combobox'], function (require, $) {
 	var rest = require('rest');
 	var myBarChart;
 	$(function() {
@@ -52,7 +52,7 @@ require(["require","jquery", "jquery.bootstrap", "plugins/metisMenu/metisMenu","
 	// collapses the sidebar on window resize.
 	// Sets the min-height of #page-wrapper to window size
 	$(function() {
-	    $(window).bind("load resize", function() {
+	    $(window).bind('load resize', function() {
 	        topOffset = 50;
 	        width = (this.window.innerWidth > 0) ? this.window.innerWidth : this.screen.width;
 	        if (width < 768) {
@@ -64,9 +64,11 @@ require(["require","jquery", "jquery.bootstrap", "plugins/metisMenu/metisMenu","
 
 	        height = (this.window.innerHeight > 0) ? this.window.innerHeight : this.screen.height;
 	        height = height - topOffset;
-	        if (height < 1) height = 1;
+	        if (height < 1) {
+	        	height = 1;
+	        }
 	        if (height > topOffset) {
-	            $("#page-wrapper").css("min-height", (height) + "px");
+	            $('#page-wrapper').css('min-height', (height) + 'px');
 	        }
 	    });
 	});
@@ -83,13 +85,12 @@ require(["require","jquery", "jquery.bootstrap", "plugins/metisMenu/metisMenu","
 					graph,
 					jsonData = json[0].report.jsondata,
 					ykeys = [],
-					xkey = 'x';
-				
-				var spinHTML = "<i class='fa fa-refresh fa-spin'></i>";
-				
+					xkey = 'x',
+					spinHTML = '<i class="fa fa-refresh fa-spin"></i>';
+
 				$('#morris-area-chart').empty();
 				$('#morris-bar-chart').empty();
-				
+
 				$.each(jsonData, function (index, threadGroup) {
 					dataBar.push({
 						name: threadGroup.threadgroup.name,
@@ -113,7 +114,7 @@ require(["require","jquery", "jquery.bootstrap", "plugins/metisMenu/metisMenu","
 					});
 					dataLine = [];
 				});
-				
+
 				// Using requirejs
 				require(['d3', 'tip'], function (d3, tip) {
 					function getRandomColor() {
@@ -124,7 +125,7 @@ require(["require","jquery", "jquery.bootstrap", "plugins/metisMenu/metisMenu","
 					    }
 					    return color;
 					}
-					
+
 					function ColorLuminance(hex, lum) {
 
 						// validate hex string
@@ -135,239 +136,344 @@ require(["require","jquery", "jquery.bootstrap", "plugins/metisMenu/metisMenu","
 						lum = lum || 0;
 
 						// convert to decimal and change luminosity
-						var rgb = "#", c, i;
+						var rgb = '#', c, i;
 						for (i = 0; i < 3; i++) {
 							c = parseInt(hex.substr(i*2,2), 16);
 							c = Math.round(Math.min(Math.max(0, c + (c * lum)), 255)).toString(16);
-							rgb += ("00"+c).substr(c.length);
+							rgb += ('00'+c).substr(c.length);
 						}
 
 						return rgb;
 					}
-					
-				/*	
-					var margin = {top: 20, right: 30, bottom: 30, left: 40},
+
+					// render a bar chart
+					barChart(d3, tip, dataBar);
+					// render a bar chart
+					lineChart(d3, lineDomian, dataLineGroup);
+					//render at vs time
+					lineChartNTvsTime(d3, lineDomian, dataLineGroup);
+				/*
+
+
+				/// line chart
+			*/
+		});// require
+	}
+
+
+	function barChart(d3, tip, dataBar) {
+		var margin = {top: 20, right: 30, bottom: 30, left: 40},
 								    width = 960 - margin.left - margin.right,
 								    height = 500 - margin.top - margin.bottom;
-	
-					var x = d3.scale.ordinal().rangeRoundBands([0, width], 0.1);
-					
-					var y = d3.scale.linear().range([height, 0]);
-					
-					var xAxis = d3.svg.axis()
-							    .scale(x)
-							    .orient("bottom");
 
-					var yAxis = d3.svg.axis()
-							    .scale(y)
-							    .orient("left");
-					
-					var tipLocal = tip()
-					  .attr('class', 'd3-tip')
-					  .offset([-10, 0])
-					  .html(function(d) {
-					    return "<strong>Sample:</strong> <span style='color:white'>" + d.name + "</span>";
-					  });
-	
-					var chart = d3.select(".chart-bar")
-					    .attr("width", width + margin.left + margin.right)
-					    .attr("height", height + margin.top + margin.bottom)
-					    .append("g")
-					    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-					
-					chart.call(tipLocal);
-					
-					 var dataBarValue = [];
-					 
-					 $.each(dataBar, function (index, data) {
-						 dataBarValue.push(parseFloat(data.value));
-					 });
-					 
-					 var p=d3.scale.category20();
-					
-					 
-					  x.domain(dataBar.map(function(d) { return d.name; }));
-					  y.domain([0, d3.max(dataBarValue)]);
-	
-					  chart.append("g")
-					      .attr("class", "x axis")
-					      .attr("transform", "translate(0," + height + ")")
-					      .call(xAxis)
-					      .selectAll("text")  
-				            .style("text-anchor", "end")
-				            .attr("dx", "-.8em")
-				            .attr("dy", ".15em")
-				            .attr("transform", function(d) {
-				                return "rotate(-65)";
-				          });
+		var x = d3.scale.ordinal().rangeRoundBands([0, width], 0.1);
 
-					  chart.append("g")
-					      .attr("class", "y axis")
-					      .call(yAxis);
-					  var barWidth = width / dataBar.length;
-	
-					  var bar = chart.selectAll(".bar")
-				      .data(dataBar)
-				      .enter()
-				      .append("g");
-					  
-					   bar.append("rect")
-					      .attr("class", "bar")
-					      .attr("x", function(d) { return x(d.name); })
-					      .attr("y", function(d) {
-					    	  return y(d.value); 
-					    	})
-					      .attr("height", function(d) { return height - y(d.value); })
-					      .attr("width", x.rangeBand())
-					      .on('mouseover', tipLocal.show)
-					      .on('mouseout', tipLocal.hide)
-					      .style("fill", function(d) { 
-					    	  return p(Math.floor(Math.random() * 20) + 1); 
-					      });
-					      
-//					  bar.on("mouseover", function(d) { 
-//						  console.log(d3.select(this).attr('x'));
-//					  });
-					  
-					  bar.append("text")
-					      .attr("x", function(d) {
-					    	  return x(d.name) + barWidth/2;
-					      })
-					      .attr("y", function(d) { return y(d.value) + 3; })
-					      .attr("dy", ".75em")
-					      .attr("class", "bar-text")
-					      .text(function(d) { return Math.floor(d.value); });
-	
-				
-				/// line chart
-			*/	
-				
+		var y = d3.scale.linear().range([height, 0]);
+
+		var xAxis = d3.svg.axis()
+				    .scale(x)
+				    .orient('bottom');
+
+		var yAxis = d3.svg.axis()
+				    .scale(y)
+				    .orient('left');
+
+		var tipLocal = tip()
+		  .attr('class', 'd3-tip')
+		  .offset([-10, 0])
+		  .html(function(d) {
+		    return '<strong>Sample:</strong> <span style="color:white">' + d.name + '</span>';
+		  });
+
+		var chart = d3.select('.chart-bar')
+		    .attr('width', width + margin.left + margin.right)
+		    .attr('height', height + margin.top + margin.bottom)
+		    .append('g')
+		    .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
+
+		chart.call(tipLocal);
+
+		 var dataBarValue = [];
+
+		 $.each(dataBar, function (index, data) {
+			 dataBarValue.push(parseFloat(data.value));
+		 });
+
+		 var p=d3.scale.category20();
+
+
+		  x.domain(dataBar.map(function(d) { return d.name; }));
+		  y.domain([0, d3.max(dataBarValue)]);
+
+		  chart.append('g')
+		      .attr('class', 'x axis')
+		      .attr('transform', 'translate(0,' + height + ')')
+		      .call(xAxis)
+		      .selectAll('text')
+	            .style('text-anchor', 'end')
+	            .attr('dx', '-.8em')
+	            .attr('dy', '.15em')
+	            .attr('transform', function(d) {
+	                return 'rotate(-65)';
+	          });
+
+		  chart.append('g')
+		      .attr('class', 'y axis')
+		      .call(yAxis);
+		  var barWidth = width / dataBar.length;
+
+		  var bar = chart.selectAll('.bar')
+	      .data(dataBar)
+	      .enter()
+	      .append('g');
+
+		   bar.append('rect')
+		      .attr('class', 'bar')
+		      .attr('x', function(d) { return x(d.name); })
+		      .attr('y', function(d) {
+		    	  return y(d.value);
+		    	})
+		      .attr('height', function(d) { return height - y(d.value); })
+		      .attr('width', x.rangeBand())
+		      .on('mouseover', tipLocal.show)
+		      .on('mouseout', tipLocal.hide)
+		      .style('fill', function(d) {
+		    	  return p(Math.floor(Math.random() * 20) + 1);
+		      });
+
+	//					  bar.on('mouseover', function(d) {
+	//						  console.log(d3.select(this).attr('x'));
+	//					  });
+
+		  bar.append('text')
+		      .attr('x', function(d) {
+		    	  return x(d.name) + barWidth/2;
+		      })
+		      .attr('y', function(d) { return y(d.value) + 3; })
+		      .attr('dy', '.75em')
+		      .attr('class', 'bar-text')
+		      .text(function(d) { return Math.floor(d.value); });
+
+	}
+
+	/**
+	 * Generates a line chart
+	 * @param  {Object} d3            [description]
+	 * @param  {Object} lineDomian    [description]
+	 * @param  {Object} dataLineGroup [description]
+	 * @return {this}               [description]
+	 */
+	function lineChart(d3, lineDomian, dataLineGroup) {
+
 		  var margin = {top: 20, right: 80, bottom: 30, left: 50},
 		    width = 960 - margin.left - margin.right,
 		    height = 500 - margin.top - margin.bottom;
 		   var p=d3.scale.category20();
+
 			var max1 = d3.max(lineDomian, function (d) {
 				return +d.activeThread;
 			});
-			
+
 			var max2 = d3.max(lineDomian, function (d) {
 				return +d.ms;
 			});
-			
+
 			var min1 = d3.min(lineDomian, function (d) {
 				return +d.activeThread;
 			});
-			
+
 			var min2 = d3.min(lineDomian, function (d) {
 				return +d.ms;
 			});
-			
+
 			var x = d3.scale.linear()
 			    .range([0, width])
 			    .domain([min1,max1])
 			    .nice();
-			
+
 			var y = d3.scale.linear()
 			    .range([height, 0])
 			    .domain([min2,max2])
 			    .nice();
 
-			var color = d3.scale.category10();
-
 			var xAxis = d3.svg.axis()
 			    .scale(x)
-			    .orient("bottom");
-			    
+			    .orient('bottom');
+
 
 			var yAxis = d3.svg.axis()
 			    .scale(y)
-			    .orient("left");
-			    
+			    .orient('left');
 
-			var svg = d3.select(".chart-line")
-			    	.attr("width", width + margin.left + margin.right)
-				    .attr("height", height + margin.top + margin.bottom)
-				    .append("g")
-				    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-			  
-			  svg.append("g")
-			      .attr("class", "x axis")
-			      .attr("transform", "translate(0," + height + ")")
-			      .call(xAxis)
-			      .append("text")
-			      .attr("y", -12)
-			      .attr("x", width)
-			      .attr("dy", ".71em")
-			      .style("text-anchor", "end")
-			      .text("response time in ms");
 
-			  svg.append("g")
-			      .attr("class", "y axis")
-			      .call(yAxis)
-			    .append("text")
-			      .attr("transform", "rotate(-90)")
-			      .attr("y", 6)
-			      .attr("dy", ".71em")
-			      .style("text-anchor", "end")
-			      .text("response time in ms");
+			var svg = d3.select('.chart-line')
+			    	.attr('width', width + margin.left + margin.right)
+				    .attr('height', height + margin.top + margin.bottom)
+				    .append('g')
+				    .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
 
-			  var line = d3.svg.line()
-			    .interpolate("basis")
-			    .x(function(d) { return x(d.ms); })
-			    .y(function(d) { return y(d.activeThread); });
-			  
-			  var lineContainer = svg.selectAll(".container")
-		      .data(dataLineGroup)
-		      .enter().append("g")
-		      .attr("class", "container");
-			  
-			  lineContainer.append("path")
-			      .attr("class", "line")
-			      .attr("d", function(d) { return line(d.dataLine); })
-			      .style("stroke", function(d) {
-				    	  return p(Math.floor(Math.random() * 20) + 1)
-			      }); 
-			  
-			  lineContainer.append("text")
-			      .datum(function(d) { return {name: d.group, value: d.dataLine[d.dataLine.length - 1]}; })
-			      .attr("transform", function(d) { return "translate(" + x(d.value.ms) + "," + y(d.value.activeThread) + ")"; })
-			      .attr("x", 3)
-			      .attr("dy", ".35em")
-			      .text(function(d) { return d.name; });
-			  
-			/*  dataLineGroup.forEach(function (lineData) {
-				  var x = d3.scale.ordinal().rangeRoundBands([0, width], 0.1);
-				  var y = d3.scale.linear().range([height, 0]);
-					
-				  lineData.dataLine.sort(function (a, b) {
-					  return b.time - a.time;
-				  });
-				  
-				  x.domain(1,500);
-				  
-				  y.domain(lineData.dataLine.map(function (d) {
-					  return d.ms;
-				  }));
-				  
-				  line = d3.svg.line()
-				    .x(function(d) { 
-				    		return x(+d.activeThread); 
-				    	})
-				    .y(function(d) {
-				    		return y(+d.ms); 
-				  });
-				  
-				  svg.append("path")
-				      .datum(lineData.dataLine)
-				      .attr("class", "line")
-				      .attr("d", line)
-				      .style("stroke", function(d) {
-				    	  return p(Math.floor(Math.random() * 20) + 1); 
-				  });
-			  });*/
-		});// require		
+			svg.append('g')
+				.attr('class', 'x axis')
+				.attr('transform', 'translate(0,' + height + ')')
+				.call(xAxis)
+				.append('text')
+				.attr('y', -12)
+				.attr('x', width)
+				.attr('dy', '.71em')
+				.style('text-anchor', 'end')
+				.text('no of active threads');
+
+			svg.append('g')
+				.attr('class', 'y axis')
+				.call(yAxis)
+				.append('text')
+				.attr('transform', 'rotate(-90)')
+				.attr('y', 6)
+				.attr('dy', '.71em')
+				.style('text-anchor', 'end')
+				.text('response time in ms');
+
+			var line = d3.svg.line()
+				.interpolate('basis')
+				.x(function(d) {
+					return x(d.activeThread);
+				})
+				.y(function(d) {
+					return y(d.ms);
+				});
+
+			var lineContainer = svg.selectAll('.container')
+				.data(dataLineGroup)
+				.enter().append('g')
+				.attr('class', 'container');
+
+			lineContainer.append('path')
+				.attr('class', 'line')
+				.attr('d', function(d) {
+					return line(d.dataLine);
+				})
+				.style('stroke', function() {
+				  return p(Math.floor(Math.random() * 20) + 1);
+				});
+
+			lineContainer.append('text')
+				.datum(function(d) { return {name: d.group, value: d.dataLine[d.dataLine.length - 1]}; })
+				.attr('transform', function(d) { return 'translate(' + x(d.value.ms) + ',' + y(d.value.activeThread) + ')'; })
+				.attr('x', 3)
+				.attr('dy', '.35em')
+				.text(function(d) { return d.name; });
 	}
-	
+
+	/**
+	 * Generates a line chart
+	 * @param  {Object} d3            [description]
+	 * @param  {Object} lineDomian    [description]
+	 * @param  {Object} dataLineGroup [description]
+	 * @return {this}               [description]
+	 */
+	function lineChartNTvsTime(d3, lineDomian, dataLineGroup) {
+
+		  var margin = {top: 20, right: 80, bottom: 30, left: 50},
+		    width = 960 - margin.left - margin.right,
+		    height = 500 - margin.top - margin.bottom;
+		   var p=d3.scale.category20();
+
+			var max1 = d3.max(lineDomian, function (d) {
+				return +d.time;
+			});
+
+			var max2 = d3.max(lineDomian, function (d) {
+				return +d.activeThread;
+			});
+
+			var min1 = d3.min(lineDomian, function (d) {
+				return +d.time;
+			});
+
+			var min2 = d3.min(lineDomian, function (d) {
+				return +d.activeThread;
+			});
+
+			var x = d3.time.scale()
+			    .range([0, width])
+			    .domain([min1,max1])
+			    .nice();
+
+			var y = d3.scale.linear()
+			    .range([height, 0])
+			    .domain([min2,max2])
+			    .nice();
+
+			var xAxis = d3.svg.axis()
+			    .scale(x)
+			    .orient('bottom');
+
+
+			var yAxis = d3.svg.axis()
+			    .scale(y)
+			    .orient('left');
+
+
+			var svg = d3.select('.chart-line-2')
+			    	.attr('width', width + margin.left + margin.right)
+				    .attr('height', height + margin.top + margin.bottom)
+				    .append('g')
+				    .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
+
+			svg.append('g')
+				.attr('class', 'x axis')
+				.attr('transform', 'translate(0,' + height + ')')
+				.call(xAxis)
+				.append('text')
+				.attr('y', -12)
+				.attr('x', width)
+				.attr('dy', '.71em')
+				.style('text-anchor', 'end')
+				.text('time in seconds');
+
+			svg.append('g')
+				.attr('class', 'y axis')
+				.call(yAxis)
+				.append('text')
+				.attr('transform', 'rotate(-90)')
+				.attr('y', 6)
+				.attr('dy', '.71em')
+				.style('text-anchor', 'end')
+				.text('no of active threads');
+
+			var line = d3.svg.line()
+				.interpolate('basis')
+				.x(function(d) {
+					return x(d.time);
+				})
+				.y(function(d) {
+					return y(d.activeThread);
+				});
+
+			var lineContainer = svg.selectAll('.container')
+				.data(dataLineGroup)
+				.enter().append('g')
+				.attr('class', 'container');
+
+			lineContainer.append('path')
+				.attr('class', 'line')
+				.attr('d', function(d) {
+					return line(d.dataLine);
+				})
+				.style('stroke', function() {
+				  return p(Math.floor(Math.random() * 20) + 1);
+				});
+
+			lineContainer.append('text')
+				.datum(function(d) { return {name: d.group, value: d.dataLine[d.dataLine.length - 1]}; })
+				.attr('transform', function(d) { return 'translate(' + x(d.value.ms) + ',' + y(d.value.activeThread) + ')'; })
+				.attr('x', 3)
+				.attr('dy', '.35em')
+				.text(function(d) { return d.name; });
+	}
+
+
+
 	/**
 	 * Set the navigation links on document ready
 	 */
@@ -386,7 +492,7 @@ require(["require","jquery", "jquery.bootstrap", "plugins/metisMenu/metisMenu","
 	function addMenu(node, text, clazz, callback) {
 		var anchor = $('<a>'+text + '<span class="fa arrow"></span>'+'</a>');
 		anchor.bind('click.fetch', callback);
-		var liNode = $('<li class="active '+ clazz + '"></li>');
+		var liNode = $('<li class = "active "' + clazz + '></li>');
 		liNode.append(anchor);
 		node.append(liNode);
 	}
@@ -394,7 +500,7 @@ require(["require","jquery", "jquery.bootstrap", "plugins/metisMenu/metisMenu","
 	function fetchVersion(event) {
 		rest.fetchVersions(event.target.text, function (data, statusText, jqXHR) {
 			data = data.sort();
-			$("<ul class='nav nav-third-level'>").appendTo(event.target.parentNode);
+			$('<ul class="nav nav-third-level">').appendTo(event.target.parentNode);
 			$.each(data, function (index, version) {
 				addMenu($(event.target.parentNode).find('ul'), version, 'version-nav', fetchBuild);
 			});
@@ -406,7 +512,7 @@ require(["require","jquery", "jquery.bootstrap", "plugins/metisMenu/metisMenu","
 	function fetchBuild(event) {
 		rest.fetchBuilds($($(event.target).parent().parent().parent()).children()[0].text, event.target.text, function (data, statusText, jqXHR) {
 			data = data.sort();
-			$("<ul class='nav nav-fourth-level'>").appendTo(event.target.parentNode);
+			$('<ul class="nav nav-fourth-level">').appendTo(event.target.parentNode);
 			$.each(data, function (index, build) {
 				addMenu($(event.target.parentNode).find('ul'), build, 'build-nav', fetchChartData);
 			});
@@ -424,78 +530,78 @@ require(["require","jquery", "jquery.bootstrap", "plugins/metisMenu/metisMenu","
 		});
 		$('#side-menu').metisMenu();
 	}
-	
-	
+
+
 	$(function () {
 	    'use strict';
-	    
-	    $.event.props.push( "dataTransfer" );
+
+	    $.event.props.push( 'dataTransfer' );
 
 	    // UPLOAD CLASS DEFINITION
 	    // ======================
 
 	    var dropZone = $('#drop-zone'),
 	    filesToUpload= [];
-	    	
-	    
+
+
 	    var prepareUpload = function(files) {
-	    	
+
 	    	var uploadFileSection = $('.js-upload-files'),
 	    		listGroup = uploadFileSection.find('.list-group');
-	    		
+
 	    	listGroup.find('em').remove();
-	    	
+
 	    	$.each(files, function (index, file) {
 	    		filesToUpload.push({name:file.name, file: file});
-	    		// <i class="fa fa-refresh fa-spin"></i>
+	    		// <i class='fa fa-refresh fa-spin'></i>
 	    		listGroup.append('<span class="list-group-item list-group-item-info"><span class="badge alert-info pull-right">ready to upload &nbsp;<i class="fa fa-times fa-fw"></i></span><span class="file-name">'+file.name+'</span></span>');
 	    	});
-	    	
-	    	 $(".js-upload-files .fa-times").hover(
+
+	    	 $('.js-upload-files .fa-times').hover(
 		       function () {
 		         $(this).toggleClass('fa-inverse');
-		       }, 
+		       },
 		      function () {
 		          $(this).removeClass('fa-inverse');
 		       }
 		     );
-	    	 
-	    	 $(".js-upload-files .fa-times").click(function (event) {
+
+	    	 $('.js-upload-files .fa-times').click(function (event) {
 	    		 var fileName = $(event.target).closest('.list-group-item').find('.file-name').text();
 	    		 $.each(filesToUpload, function (index, fileData) {
 	    			 if(fileData && fileData.name === fileName) {
 	    				 filesToUpload.splice(index, 1);
 	    			 }
 	    		 });
-	    		 
+
 	    		 $(event.target).closest('.list-group-item').remove();
 	    		 if($('.js-upload-files .list-group .list-group-item').size() <= 0) {
 	    			 listGroup.append('<em>nothing selected</em>');
 	    		 }
-	    		 
+
 	    	 });
-	    	 
+
 	        console.log(files);
 	    };
-	    
-	    
+
+
 	    var startUpload = function (files, form) {
-	    	
-	     
+
+
 	        // START A LOADING SPINNER HERE
-	     
+
 	        // Create a formdata object and add the files
 	    	var data = new FormData();
 	    	$.each(files, function(index, file)
 	    	{
-	    		data.append("resultFiles", file.file);
+	    		data.append('resultFiles', file.file);
 	    		console.info(file.name);
 	    	});
-	    	
+
 	    	data.append('project', form.find('[name="project"]').val());
 	    	data.append('version', form.find('[name="version"]').val());
 	    	data.append('build', form.find('[name="build"]').val());
-	        
+
 	        $.ajax({
 	            url: 'jc/upload',
 	            type: 'POST',
@@ -527,8 +633,8 @@ require(["require","jquery", "jquery.bootstrap", "plugins/metisMenu/metisMenu","
 	            }
 	        });
 	    };
-	    
-	    
+
+
 	    function onSuccessfulUpload(event, data) {
 	    	var uploadFileSection = $('.js-upload-files'),
     		listGroup = uploadFileSection.find('.list-group');
@@ -550,7 +656,7 @@ require(["require","jquery", "jquery.bootstrap", "plugins/metisMenu/metisMenu","
 	    			});
 	    	});
 	    }
-	    
+
 	    function onFailedUpload(event, data) {
 	    	var uploadFileSection = $('.js-upload-files'),
     		listGroup = uploadFileSection.find('.list-group');
@@ -562,7 +668,7 @@ require(["require","jquery", "jquery.bootstrap", "plugins/metisMenu/metisMenu","
     			fileSection.parent().find('.alert-info').removeClass('alert-info').addClass('alert-dangers');
 	    	});
 	    }
-	    
+
 	 // Add events
 	    $('#js-upload-form input[type=file]').on('change', function (event) {
 	    	var files = event.target.files;
@@ -576,9 +682,9 @@ require(["require","jquery", "jquery.bootstrap", "plugins/metisMenu/metisMenu","
 	        e.preventDefault();
 	        startUpload(uploadFiles, $(this));
 	    });
-	    
+
 	    $('#js-upload-reset').click(function(e) {
-	    	$('#js-upload-form').trigger("reset");
+	    	$('#js-upload-form').trigger('reset');
 	        filesToUpload= [];
 	        var uploadFileSection = $('.js-upload-files'),
     		listGroup = uploadFileSection.find('.list-group');
@@ -603,7 +709,7 @@ require(["require","jquery", "jquery.bootstrap", "plugins/metisMenu/metisMenu","
 	    });
 
 	});
-	
+
 	/**
 	 * Fetch the dropdowns
 	 */
@@ -611,11 +717,11 @@ require(["require","jquery", "jquery.bootstrap", "plugins/metisMenu/metisMenu","
 		 var projects;
 	     if($('.typeahead.project').size() > 1) {
 	    	 $('.typeahead.project').typeahead('destroy');
-	    	 
+
 	     }
-    	var projects = buildBloodHound('jc/project');
- 		 projects.initialize(true); 
- 		 
+    	 projects = buildBloodHound('jc/project');
+ 		 projects.initialize(true);
+
 		 $('.typeahead.project').typeahead({
              hint: true,
              highlight: true,
@@ -627,23 +733,23 @@ require(["require","jquery", "jquery.bootstrap", "plugins/metisMenu/metisMenu","
              source: projects.ttAdapter()
            }
          );
- 	
-	 	// "select"-button
+
+	 	// 'select'-button
 	 	$('.emu-select').click(function(){
 	 	    // add something to ensure the menu will be shown
 	 	});
- 	
+
 	 	$('.typeahead.project').on('typeahead:selected typeahead:autocompleted', function (event, suggestion) {
-	 		if($('.typeahead.version').size() > 1) {	
+	 		if($('.typeahead.version').size() > 1) {
 	 			$('.typeahead.version').typeahead('destroy');
-	 			
+
 	 		}
 	 		var project = suggestion.value;
 	 		var versions = buildBloodHound('/jc/project/'+project+'/version');
 	 		// kicks off the loading/processing of `local` and
 			// `prefetch`
-	 		versions.initialize(true); 
-	 		
+	 		versions.initialize(true);
+
 	 			$('.typeahead.version').typeahead({
  	             hint: true,
  	             highlight: true,
@@ -654,17 +760,17 @@ require(["require","jquery", "jquery.bootstrap", "plugins/metisMenu/metisMenu","
  	             displayKey: 'value',
  	             source: versions.ttAdapter()
  	           });
-	 		
-	 			
+
+
 	 			$('.typeahead.version').on('typeahead:selected typeahead:autocompleted', function (event, suggestion) {
-	 				if($('.typeahead.build').size() > 1) {	
+	 				if($('.typeahead.build').size() > 1) {
 			 			$('.typeahead.build').typeahead('destroy');
-			 			
+
 			 		}
 	 				var project = $('.typeahead.project').typeahead('val');
 	 				var builds = buildBloodHound('/jc/project/'+project+'/version/'+suggestion.value+'/build');
 	 				builds.initialize(true);
-	 				
+
  		 			$('.typeahead.build').typeahead({
  		 	             hint: true,
  		 	             highlight: true,
