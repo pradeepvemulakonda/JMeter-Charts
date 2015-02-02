@@ -428,7 +428,7 @@ table.dataTable thead .sorting:after {
           box-shadow: 0 5px 10px rgba(0,0,0,.2);
    -webkit-border-radius: 8px;
      -moz-border-radius: 8px;
-          border-radius: 8px;    
+          border-radius: 8px;
 }
 
 .tt-suggestion {
@@ -530,5 +530,9 @@ table.dataTable thead .sorting:after {
   fill: none;
   stroke: #000;
   shape-rendering: crispEdges;
+}
+
+.version-nav, .project-nav, .build-nav {
+  cursor: pointer;
 }
 

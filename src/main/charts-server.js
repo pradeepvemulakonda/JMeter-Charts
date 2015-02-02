@@ -56,8 +56,8 @@ ChartsServer = function(conf) {
  * @access private
  */
 function _initialize() {
-	app.use(multer({ 
-		dest: '../../resources/', 
+	app.use(multer({
+		dest: '../../resources/',
 		inMemory: true
 	}));
 	app.use(bodyParser.json());
@@ -69,7 +69,7 @@ function _initialize() {
 
 	/**
 	 * Error handles used to handle system exceptions
-	 * 
+	 *
 	 * @param err the error
 	 * @param req the request
 	 * @param res the response
@@ -81,17 +81,17 @@ function _initialize() {
 	}
 
 	app.use(errorHandler);
-	
+
 	app.get('/jc/project/:name/version', function(req, res) {
 	   var params = req.params,
 	   	   query = {},
 	   	   field;
 		   query.name = params.name;
 		   field = 'version';
-	   
+
 	   collectionDriver.distinct('project', query, field, function(error, objs) {
 	    	  if (error) {
-	    		  res.send(400, error); 
+	    		  res.send(400, error);
 	    	  }
 		      else {
 		          res.set('Content-Type','application/json');
@@ -99,20 +99,20 @@ function _initialize() {
 	         }
 	   	});
 	});
-	
+
 	app.get('/jc/project/:name/version/:version/build', function(req, res) {
 		   var params = req.params,
 		   	   query = {},
 		   	   field;
-		   
+
 		   query.version = params.version;
 		   query.name = params.name;
-		   
+
 		   field = 'build';
-		   
+
 		   collectionDriver.distinct('project', query, field, function(error, objs) {
 		    	  if (error) {
-		    		  res.send(400, error); 
+		    		  res.send(400, error);
 		    	  }
 			      else {
 			          res.set('Content-Type','application/json');
@@ -120,18 +120,18 @@ function _initialize() {
 		         }
 		   	});
 		});
-	
+
 	app.get('/jc/project/:name/version/:version/build/:build', function(req, res) {
 		   var params = req.params,
 		   	   query = {},
-		   	   fields = null;	
+		   	   fields = null;
 		   query.build = params.build;
 		   query.name = params.name;
 		   query.version = params.version;
-		   
+
 		   collectionDriver.findData('project', query, function(error, objs) {
 		    	  if (error) {
-		    		  res.send(400, error); 
+		    		  res.send(400, error);
 		    	  }
 			      else {
 			          res.set('Content-Type','application/json');
@@ -139,7 +139,7 @@ function _initialize() {
 		          }
 		   	});
 	});
-		 
+
 	app.get('/jc/project/:entity', function(req, res) {
 	   var params = req.params;
 	   var entity = params.entity;
@@ -153,36 +153,40 @@ function _initialize() {
 	      res.send(400, {error: 'bad url', url: req.url});
 	   }
 	});
-	
+
 	app.get('/jc', function(req, res) {
 		res.render('dashboard/index.html', {url:req.url});
 	});
-	
+
+	app.get('/jc/templates/:template', function(req, res) {
+		res.render('dashboard/' + req.params.template);
+	});
+
 	app.get('/jc/project', function(req, res) {
 	   var collection = 'project',
 	   	   field = 'name',
 	   	   query = {};
-	   
+
 	   collectionDriver.distinct(collection, query, field, function(error, objs) {
           if (error) { res.send(400, error); }
           else { res.send(200, objs); }
        });
 	});
-		
+
 
 	app.post('/jc/project', function(req, res) {
 		var object = req.body,
 			collection = 'project';
 	    collectionDriver.save(collection, object, function(err,docs) {
 	          if (err) {
-	        	  res.send(400, err); 
-	          } 
+	        	  res.send(400, err);
+	          }
 	          else {
-	        	  res.send(201, docs); 
+	        	  res.send(201, docs);
 	          }
 	     });
 	});
-	
+
 	app.post('/jc/upload', function(req, res) {
 		var arrayLength,
 			project = req.param('project'),
@@ -208,7 +212,7 @@ function _initialize() {
 			res.end(400, { 'Content-Type': 'text/plain' });
 		}
 	});
-	
+
 	/**
 	 * Helper to capture the request and response for the callback.
 	 * @param req current request
@@ -220,7 +224,7 @@ function _initialize() {
 			_persistJsonData(err, jsondata, req, res, fileName, endResponse);
 		};
 	}
-	
+
 	/**
 	 * Persists passed in json data to Project collection in mongodb
 	 * @param jsonData Json data extracted from the uploaded result file.
@@ -243,7 +247,7 @@ function _initialize() {
       	  }
       	  return;
 		}
-		
+
 		var object = {};
 		object.name = req.param('project');
 		object.version = req.param('version');
@@ -262,14 +266,14 @@ function _initialize() {
 	        	  } else {
 	        		  res.write(',');
 	        	  }
-	          } 
+	          }
 	          else {
 	        	  res.write(JSON.stringify({
 	        		  id: docs._id,
 	        		  fileName: fileName
 	        	  }));
-	        	  
-	        	  
+
+
 	        	  if(endResponse) {
 	        		  res.write(']');
 	        		  res.end();
@@ -287,7 +291,7 @@ function _initialize() {
 	    if (entity) {
 	       collectionDriver.update(collection, req.body, entity, function(error, objs) { //B
 	          if (error) {
-	        	  res.send(400, error); 
+	        	  res.send(400, error);
 	          }
 	          else { res.send(200, objs); } //C
 	       });
@@ -304,7 +308,7 @@ function _initialize() {
 	    if (entity) {
 	       collectionDriver.delete(collection, entity, function(error, objs) { //B
 	          if (error) {
-	        	  res.send(400, error); 
+	        	  res.send(400, error);
 	          }
 	          else { res.send(200, objs); } //C 200 b/c includes the original doc
 	       });
@@ -332,7 +336,7 @@ function _initialize() {
 	/**
 	 * listen for changes in the config and update the config object.
 	 * The mongodb config will be updated only at initial app,load time.
-	 * 
+	 *
 	 */
 	fs.watchFile('config.json', function (curr, prev) {
 		var data = fs.readFileSync('./config.json'),
@@ -370,7 +374,7 @@ ChartsServer.prototype.start = function () {
 			throw e;
 		}
 	});
-	
+
 	http.createServer(app).listen(app.get('port'), function(){
 		console.log('Express server listening on port ' + app.get('port'));
 	});

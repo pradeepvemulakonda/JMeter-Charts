@@ -1,0 +1,71 @@
+
+             <div class="row">
+                <div class="col-lg-12">
+                	<div class="file-upload">
+				      <div class="panel panel-default">
+				        <div class="panel-heading"><i class="fa fa-upload fa-fw"></i>&nbsp;<strong>File Upload</strong>
+				        </div>
+				        <div class="panel-body">
+				          <!-- Standar Form -->
+				          <h4>Select files from your computer</h4>
+				          <div class="upload-section">
+				          <form action="" method="post" enctype="multipart/form-data" class="js-upload-form" id="js-upload-form">
+				            <div class="form-inline">
+				            <div class="row">
+				            	 <div class="col-lg-1">
+						              <div class="form-group">
+						              	<span class="btn btn-default btn-file">
+						              		Browse...
+							                <input type="file" name="resultFiles" id="js-upload-files" multiple>
+										</span>
+						              </div>
+						              </div>
+					              <div class="col-lg-3">
+								    <div class="input-group">
+								      <input class="typeahead combobox form-control project" name="project" type="text" placeholder="project">
+								      <span class="input-group-btn">
+								        <button class="btn btn-default emu-select" type="button"><i class="fa fa-chevron-down fa-fw"></i></button>
+								      </span>
+								    </div><!-- /input-group -->
+								  </div><!-- /.col-lg-6 -->
+								  <div class="col-lg-3">
+								    <div class="input-group">
+								      <input class="typeahead combobox form-control version" name="version" type="text" placeholder="project">
+								      <span class="input-group-btn">
+								        <button class="btn btn-default emu-select" type="button"><i class="fa fa-chevron-down fa-fw"></i></button>
+								      </span>
+								    </div><!-- /input-group -->
+								  </div><!-- /.col-lg-6 -->
+								  <div class="col-lg-5">
+								    <div class="input-group">
+								      <input class="typeahead combobox form-control build" name="build" type="text" placeholder="build">
+								      <span class="input-group-btn">
+								        <button class="btn btn-default emu-select" type="button"><i class="fa fa-chevron-down fa-fw"></i></button>
+								      </span>
+								    </div><!-- /input-group -->
+								  </div><!-- /.col-lg-6 -->
+								</div>
+				              <button type="submit" class="btn btn-sm btn-primary" id="js-upload-submit">Upload files</button>
+				              <button type=reset class="btn btn-sm btn-secondary" id="js-upload-reset">clear</button>
+				            </div>
+				          </form>
+				           <!-- Upload Finished -->
+				          <div class="js-upload-files">
+				            <h3>Selected files</h3>
+				            <div class="list-group">
+				            	<em>nothing selected</em>
+				            </div>
+				          </div>
+						  </div>
+				          <!-- Drop Zone -->
+				          <h4>Or drag and drop files below</h4>
+				          <div class="upload-drop-zone" id="drop-zone">
+				            Just drag and drop files here
+				          </div>
+				        </div>
+				      </div>
+				   </div>
+				 </div>
+                <!-- /.col-lg-12 -->
+            </div>
+            <!-- /.row -->
