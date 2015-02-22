@@ -1,0 +1,125 @@
+	comparisionBarChart: function (data) {
+				data = [
+							['Version', '1', '2', '3', '4', '5', '6', '7', '8'],
+							['one', '100','200', '190', '123', '200', '190', '123'],
+							['two', '300', '1300'],
+							['three', '200', '500'],
+							['four', '100', '800'],
+							['five', '600', '1200']
+						];
+
+
+				data = {
+					sampleNames: ['one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight'],
+					versionNames : ['1', '2', '3', '4', '5', '6', '7', '8'],
+					versions: [
+						[200, 300, 400, 500, 600, 700, 800, 900],
+						[200, 350, 450, 550, 650, 750, 850, 950],
+						[1200, 1300, 1400, 1500, 1600, 1700, 1800, 1900]
+					]
+				};
+
+				require(['d3', 'tip'], function (d3, tip) {
+					var margin = {top: 20, right: 20, bottom: 30, left: 40},
+					    width = 960 - margin.left - margin.right,
+					    height = 500 - margin.top - margin.bottom;
+
+					var x0 = d3.scale.ordinal().rangeRoundBands([0, width], 0.1);
+
+					var x1 = d3.scale.ordinal();
+
+					var y = d3.scale.linear()
+					    .range([height, 0]);
+
+					var color = d3.scale.ordinal()
+					    .range(['#98abc5', '#8a89a6', '#7b6888', '#6b486b', '#a05d56', '#d0743c', '#ff8c00']);
+
+					var xAxis = d3.svg.axis()
+					    .scale(x0)
+					    .orient('bottom');
+
+					var yAxis = d3.svg.axis()
+					    .scale(y)
+					    .orient('left');
+
+					var svg = d3.select('.chart-bar')
+					    .attr('width', width + margin.left + margin.right)
+					    .attr('height', height + margin.top + margin.bottom)
+					  .append('g')
+					    .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
+
+					  var versionNames = data.versionNames;
+
+					  data.versions.forEach(function(d) {
+					    d.version = versionNames.map(
+					    	function(name, index) {
+					    	 return {
+					    	 	name: name,
+					    	 	value: +d[index]
+					    	 };
+					    });
+					  });
+
+					  x0.domain(data.sampleNames);
+					  x1.domain(versionNames).rangeRoundBands([0, x0.rangeBand()]);
+					  y.domain([0, d3.max(data.versions, function(d) {
+					   	return d3.max(d.version, function(d) {
+					   	 return d.value;
+					   	});
+					 })]);
+
+					  svg.append('g')
+					      .attr('class', 'x axis')
+					      .attr('transform', 'translate(0,' + height + ')')
+					      .call(xAxis);
+
+					  svg.append('g')
+					      .attr('class', 'y axis')
+					      .call(yAxis)
+					    .append('text')
+					      .attr('transform', 'rotate(-90)')
+					      .attr('y', 6)
+					      .attr('dy', '.71em')
+					      .style('text-anchor', 'end')
+					      .text('time in (ms)');
+
+					  var version = svg.selectAll('.version')
+					      .data(data.versions)
+					      .enter().append('g')
+					      .attr('class', 'g')
+					      .attr('transform', function(d, index) {
+					      	return 'translate(' + x0(data.sampleNames[index]) + ',0)';
+					      });
+
+					  version.selectAll('rect')
+					      .data(function(d) {
+					      	return d.version;
+					      })
+					    .enter().append('rect')
+					      .attr('width', x1.rangeBand())
+					      .attr('x', function(d) {
+					      	return x1(d.name);
+					      })
+					      .attr('y', function(d) { return y(d.value); })
+					      .attr('height', function(d) { return height - y(d.value); })
+					      .style('fill', function(d) { return color(d.name); });
+
+					  var legend = svg.selectAll('.legend')
+					      .data(versionNames.slice().reverse())
+					    .enter().append('g')
+					      .attr('class', 'legend')
+					      .attr('transform', function(d, i) { return 'translate(0,' + i * 20 + ')'; });
+
+					  legend.append('rect')
+					      .attr('x', width - 18)
+					      .attr('width', 18)
+					      .attr('height', 18)
+					      .style('fill', color);
+
+					  legend.append('text')
+					      .attr('x', width - 24)
+					      .attr('y', 9)
+					      .attr('dy', '.35em')
+					      .style('text-anchor', 'end')
+					      .text(function(d) { return d; });
+				});

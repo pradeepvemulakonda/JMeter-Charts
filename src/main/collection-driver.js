@@ -2,7 +2,7 @@
  * @fileoverview A facade to MongoDB API with error handling
  * @author Pradeep Vemulakonda
  * @exports CollectionDriver CollectionDriver utility object to access a mongodb instance
- * @module Persistence 
+ * @module Persistence
  * @requires mongodb server DB instance
  * @version 0.1
  */
@@ -16,7 +16,7 @@ var ObjectID = require('mongodb').ObjectID,
 CollectionDriver = function(db) {
 	  this.db = db;
 };
-	
+
 /**
  * fetch a collection from mongodb
  * @param collectionName {string} name of the collection
@@ -32,16 +32,16 @@ CollectionDriver.prototype.getCollection = function(collectionName, callback) {
 			callback(null, fetchedCollection);
 		}
 	});
-};	
+};
 
 /**
  * Returns all the objects found in the collection
- * @example 
+ * @example
  * collectionDriver.findAll(req.params.collection, function(error, objs) {
- *	    	  if (error) { 
- *	    		  res.send(400, error); 
+ *	    	  if (error) {
+ *	    		  res.send(400, error);
  *	    	  }
- *		      else { 
+ *		      else {
  *		          if (req.accepts('html')) {
  *	    	          res.render('index',{objects: objs, collection: req.params.collection});
  *	              } else {
@@ -60,7 +60,7 @@ CollectionDriver.prototype.findAll = function(collectionName, callback) {
     	  callback(error);
       } else {
         fetchedCollection.find().toArray(function(error, results) {
-          if( error ) { 
+          if( error ) {
         	  callback(error);
           } else {
         	  callback(null, results);
@@ -76,7 +76,7 @@ CollectionDriver.prototype.distinct = function(collectionName, query, field, cal
     	  callback(error);
       } else {
         fetchedCollection.distinct(field, query, function(error, results) {
-          if( error ) { 
+          if( error ) {
         	  callback(error);
           } else {
         	  callback(null, results);
@@ -92,7 +92,7 @@ CollectionDriver.prototype.findData = function(collectionName, query, callback) 
     	  callback(error);
       } else {
         fetchedCollection.find(query).toArray(function(error, results) {
-          if( error ) { 
+          if( error ) {
         	  callback(error);
           } else {
         	  callback(null, results);
@@ -101,6 +101,39 @@ CollectionDriver.prototype.findData = function(collectionName, query, callback) 
       }
     });
 };
+
+CollectionDriver.prototype.getLatest = function(collectionName, findConfig, sortConfig, callback) {
+    this.getCollection(collectionName, function(error, fetchedCollection) {
+      if( error ) {
+        callback(error);
+      } else {
+        fetchedCollection.find(findConfig).sort(sortConfig).limit(1).next(function(error, result) {
+          if( error ) {
+            callback(error);
+          } else {
+            callback(null, result);
+          }
+        });
+      }
+    });
+};
+
+CollectionDriver.prototype.aggregate = function(collectionName, aggregateArray, callback) {
+    this.getCollection(collectionName, function(error, fetchedCollection) {
+      if( error ) {
+        callback(error);
+      } else {
+        fetchedCollection.aggregate(aggregateArray).toArray(function(error, results) {
+          if( error ) {
+            callback(error);
+          } else {
+            callback(null, results);
+          }
+        });
+      }
+    });
+};
+
 
 
 /**
@@ -131,7 +164,7 @@ CollectionDriver.prototype.get = function(collectionName, id, callback) {
                 		callback(null, doc);
                 	}
             	});
-            }	
+            }
         }
     });
 };
@@ -169,12 +202,12 @@ CollectionDriver.prototype.update = function(collectionName, obj, entityId, call
         if (error) {
         	callback(error);
         } else {
-            obj._id = ObjectID(entityId); 
-            obj.updated_at = new Date(); 
-            the_collection.save(obj, function(error,doc) { 
+            obj._id = ObjectID(entityId);
+            obj.updated_at = new Date();
+            the_collection.save(obj, function(error,doc) {
                 if (error) {
                 	callback(error);
-                }	
+                }
                 else {
                 	callback(null, obj);
                 }
@@ -191,15 +224,15 @@ CollectionDriver.prototype.update = function(collectionName, obj, entityId, call
  * @access public
  */
 CollectionDriver.prototype.delete = function(collectionName, entityId, callback) {
-    this.getCollection(collectionName, function(error, the_collection) { 
+    this.getCollection(collectionName, function(error, the_collection) {
         if (error) {
         	callback(error);
-        }	
+        }
         else {
-            the_collection.remove({'_id':ObjectID(entityId)}, function(error,doc) { 
+            the_collection.remove({'_id':ObjectID(entityId)}, function(error,doc) {
                 if (error){
                 	callback(error);
-                }	
+                }
                 else {
                 	callback(null, doc);
                 }

@@ -19,13 +19,13 @@
 			<xsl:variable name="failureCount" select="count(../*[@lb = current()/@lb][attribute::s='false'])" />
 			<xsl:variable name="successCount" select="count(../*[@lb = current()/@lb][attribute::s='true'])" />
 			<xsl:variable name="successPercent" select="($successCount div $count) * 100" />
-			<xsl:variable name="totalTime" select="sum(../*[@lb = current()/@lb]/@t)" />
-			<xsl:variable name="averageTime" select="$totalTime div $count" />
+			<xsl:variable name="totalTime" select="round(sum(../*[@lb = current()/@lb]/@t))" />
+			<xsl:variable name="averageTime" select="round($totalTime div $count)" />
 			<xsl:variable name="avgActiveThreads" select="sum(../*[@lb = current()/@lb]/@ng) div $count" />
 			{
 				"threadgroup": {
 					"name": "<xsl:value-of select="$label"/>",
-					"averageTime": "<xsl:value-of select="$averageTime"/>",
+					"averageTime": <xsl:value-of select="$averageTime"/>,
 					"successCount": "<xsl:value-of select="$successCount"/>",
 					"failureCount": "<xsl:value-of select="$failureCount"/>",
 					"totalCount": "<xsl:value-of select="$count"/>",

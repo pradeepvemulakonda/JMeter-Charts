@@ -154,6 +154,59 @@ function _initialize() {
 	   }
 	});
 
+	app.get('/jc/latest', function(req, res) {
+	   collectionDriver.getLatest('project', {}, {'created_at': -1}, function(error, object) {
+	    	  if (error) {
+	    		  res.send(400, error);
+	    	  }
+		      else {
+		          res.set('Content-Type','application/json');
+	                  res.send(200, object);
+	          }
+		 });
+	});
+
+
+
+   app.get('/jc/project/:project/version/:version/latest/build', function(req, res) {
+   	var query =     [
+                        {$match : { name : req.params.project, version: req.params.version}},
+                        { $sort: {created_at: -1}},
+                        { $limit: 1}
+                      ];
+	   collectionDriver.aggregate('project', query, function(error, object) {
+	    	  if (error) {
+	    		  res.send(400, error);
+	    	  }
+		      else {
+		          res.set('Content-Type','application/json');
+	                  res.send(200, object);
+	          }
+		 });
+	});
+
+	app.get('/jc/project/:project/samples', function(req, res) {
+	   	var project = req.params.project;
+	   	var query = [
+				        { $match : { name : project}},
+				        { $project :
+				            { _id: 0,
+				              name: '$report.jsondata.threadgroup.name'}
+				        },
+				        { $limit : 1 }
+				   ];
+		   collectionDriver.aggregate('project', query, function(error, object) {
+		    	  if (error) {
+		    		  res.send(400, error);
+		    	  }
+			      else {
+			          res.set('Content-Type','application/json');
+		                  res.send(200, object);
+		          }
+			 });
+	});
+
+
 	app.get('/jc', function(req, res) {
 		res.render('dashboard/index.html', {url:req.url});
 	});

@@ -1,0 +1,1154 @@
+{
+	"auto_complete":
+	{
+		"selected_items":
+		[
+			[
+				"chart-li",
+				"chart-line"
+			],
+			[
+				"co",
+				"color"
+			],
+			[
+				"chart-line",
+				"chart-line-2"
+			],
+			[
+				"da",
+				"dataLineGroup"
+			],
+			[
+				"sampl",
+				"sampleNames"
+			],
+			[
+				"sam",
+				"sampleNames"
+			],
+			[
+				"chart",
+				"chartData"
+			],
+			[
+				"version",
+				"versionText"
+			],
+			[
+				"add",
+				"addClass"
+			],
+			[
+				"remove",
+				"removeClass"
+			],
+			[
+				"e",
+				"e"
+			],
+			[
+				"project",
+				"project-nav"
+			],
+			[
+				"fun",
+				"function"
+			],
+			[
+				"tip",
+				"tipLocal"
+			],
+			[
+				"active",
+				"activeThread"
+			],
+			[
+				"ti",
+				"tip"
+			],
+			[
+				"data",
+				"dataBar"
+			],
+			[
+				"lin",
+				"dataLineGroup"
+			],
+			[
+				"line",
+				"lineDomian"
+			],
+			[
+				"parse",
+				"parseModel"
+			],
+			[
+				"model",
+				"modelList"
+			],
+			[
+				"warning",
+				"warning-notification"
+			],
+			[
+				"m",
+				"method	@method"
+			],
+			[
+				"re",
+				"return	@return"
+			],
+			[
+				"is",
+				"isMerged"
+			],
+			[
+				"merge",
+				"mergeChains"
+			],
+			[
+				"patie",
+				"patientHandle"
+			],
+			[
+				"get",
+				"getResolvingIdentifier"
+			],
+			[
+				"full",
+				"fullReview"
+			],
+			[
+				"patient",
+				"patientId"
+			],
+			[
+				"FULl",
+				"FullReview"
+			],
+			[
+				"Med",
+				"MedicationPrescription"
+			],
+			[
+				"pa",
+				"param	@param"
+			],
+			[
+				"curr",
+				"currentListOfMedications"
+			],
+			[
+				"last",
+				"lastModifiedBy"
+			],
+			[
+				"draft",
+				"draftFullReview"
+			],
+			[
+				"app",
+				"appWorker"
+			],
+			[
+				"met",
+				"metadata"
+			],
+			[
+				"APP",
+				"MedManAppWorker"
+			],
+			[
+				"MEDMAN",
+				"MEDMAN"
+			],
+			[
+				"promis",
+				"promises"
+			],
+			[
+				"fetchMe",
+				"_fetchMetaData"
+			],
+			[
+				"result",
+				"resultList"
+			],
+			[
+				"stat",
+				"static	@static"
+			],
+			[
+				"compute",
+				"computeMetaData"
+			],
+			[
+				"fetc",
+				"fetchActiveMedications"
+			],
+			[
+				"darft",
+				"draftFullReview"
+			],
+			[
+				"mock",
+				"mockFullReview"
+			],
+			[
+				"Full",
+				"fullReview"
+			],
+			[
+				"up",
+				"_updateDetailsDisplay"
+			]
+		]
+	},
+	"buffers":
+	[
+		{
+			"file": "chart.js",
+			"settings":
+			{
+				"buffer_size": 21236,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "/Users/pradeepv/personal/git/JMeter-Charts/src/main/web/views/dynamic/dashboard/chart.html",
+			"settings":
+			{
+				"buffer_size": 6647,
+				"line_ending": "Windows"
+			}
+		}
+	],
+	"build_system": "Packages/User/advk.sublime-build",
+	"command_palette":
+	{
+		"height": 127.0,
+		"selected_items":
+		[
+			[
+				"install",
+				"Package Control: Install Package"
+			],
+			[
+				"insta",
+				"Package Control: Install Package"
+			],
+			[
+				"remove",
+				"Package Control: Remove Package"
+			],
+			[
+				"install ",
+				"Package Control: Install Package"
+			],
+			[
+				"package",
+				"Package Control: Remove Package"
+			],
+			[
+				"pa",
+				"Package Control: Install Package"
+			],
+			[
+				"package ",
+				"Package Control: Install Package"
+			]
+		],
+		"width": 746.0
+	},
+	"console":
+	{
+		"height": 126.0,
+		"history":
+		[
+			"advk",
+			"os.system(\"clear\")",
+			"os.system(\"cls\")",
+			"import urllib.request,os,hashlib; h = '2deb499853c4371624f5a07e27c334aa' + 'bf8c4e67d14fb0525ba4f89698a6d7e1'; pf = 'Package Control.sublime-package'; ipp = sublime.installed_packages_path(); urllib.request.install_opener( urllib.request.build_opener( urllib.request.ProxyHandler()) ); by = urllib.request.urlopen( 'http://packagecontrol.io/' + pf.replace(' ', '%20')).read(); dh = hashlib.sha256(by).hexdigest(); print('Error validating download (got %s instead of %s), please try manual install' % (dh, h)) if dh != h else open(os.path.join( ipp, pf), 'wb' ).write(by)"
+		]
+	},
+	"distraction_free":
+	{
+		"menu_visible": true,
+		"show_minimap": false,
+		"show_open_files": false,
+		"show_tabs": false,
+		"side_bar_visible": false,
+		"status_bar_visible": false
+	},
+	"expanded_folders":
+	[
+		"/Users/pradeepv/personal/git/JMeter-Charts",
+		"/Users/pradeepv/personal/git/JMeter-Charts/src",
+		"/Users/pradeepv/personal/git/JMeter-Charts/src/main",
+		"/Users/pradeepv/personal/git/JMeter-Charts/src/main/web",
+		"/Users/pradeepv/personal/git/JMeter-Charts/src/main/web/views",
+		"/Users/pradeepv/personal/git/JMeter-Charts/src/main/web/views/dynamic",
+		"/Users/pradeepv/personal/git/JMeter-Charts/src/main/web/views/dynamic/dashboard",
+		"/Users/pradeepv/personal/git/JMeter-Charts/src/main/web/views/static",
+		"/Users/pradeepv/personal/git/JMeter-Charts/src/main/web/views/static/js"
+	],
+	"file_history":
+	[
+		"/Users/pradeepv/personal/git/JMeter-Charts/src/main/web/views/dynamic/dashboard/project.html",
+		"/Users/pradeepv/personal/git/JMeter-Charts/src/main/web/views/static/js/main.js",
+		"/Users/pradeepv/personal/git/JMeter-Charts/src/main/web/views/static/js/rest.js",
+		"/Users/pradeepv/personal/git/JMeter-Charts/src/main/charts-server.js",
+		"/Users/pradeepv/personal/git/JMeter-Charts/src/main/web/views/dynamic/dashboard/chart.html",
+		"/Users/pradeepv/personal/git/JMeter-Charts/src/main/web/views/dynamic/dashboard/index.html",
+		"/Users/pradeepv/personal/git/JMeter-Charts/src/main/web/views/static/js/chart.js",
+		"/Users/pradeepv/personal/git/JMeter-Charts/src/main/web/views/static/css/main.css",
+		"/Users/pradeepv/personal/git/JMeter-Charts/node_modules/connect-busboy/node_modules/busboy/lib/main.js",
+		"/Users/pradeepv/personal/git/JMeter-Charts/node_modules/handlebars/node_modules/uglify-js/lib/mozilla-ast.js",
+		"/Users/pradeepv/personal/git/JMeter-Charts/node_modules/.bin/mocha",
+		"/Users/pradeepv/personal/git/JMeter-Charts/Apache-License-2.0.txt",
+		"/Users/pradeepv/personal/git/JMeter-Charts/src/main/web/views/dynamic/dashboard/dashboard.html",
+		"/Users/pradeepv/personal/git/JMeter-Charts/src/main/web/views/dynamic/dashboard/report.html",
+		"/Users/pradeepv/personal/git/JMeter-Charts/src/main/web/views/dynamic/dashboard/dashboard.mst",
+		"/Users/pradeepv/git/medman/com.orchestral.medman.web/src/main/web/medman-patient-summary-page-view/js/medman-patient-summary-page-view.js",
+		"/Users/pradeepv/git/medman/com.orchestral.medman.web/src/main/web/medman-app-worker/js/medman-app-worker.js",
+		"/Users/pradeepv/git/medman/com.orchestral.medman.web/src/main/web/medman-medication-app/js/medman-medication-app.js",
+		"/Users/pradeepv/git/medman/com.orchestral.medman.web/src/main/web/copyright.js",
+		"/Users/pradeepv/git/acceptance-tests/target/failsafe-reports/Scenario: Reject the changes and keep existing medications.txt",
+		"/Users/pradeepv/git/acceptance-tests/target/failsafe-reports/Scenario: Remove medication.txt",
+		"/Users/pradeepv/git/medman/com.orchestral.medman.web/META-INF/com.orchestral.core.web.support/static_modules.properties",
+		"/Users/pradeepv/git/medman/com.orchestral.medman.web/META-INF/com.orchestral.core.translation/messages.properties",
+		"/Users/pradeepv/git/medman/com.orchestral.medman.web/src/main/web/PatientDashboard.jsp",
+		"/Users/pradeepv/git/medman/com.orchestral.medman.forms.medication/src/main/web/medman-forms-medication-component/js/medman-forms-medication-component.js",
+		"/Users/pradeepv/git/medman/com.orchestral.medman.web/src/main/web/medman-patient-summary-page-view/meta/medman-patient-summary-page-view.json",
+		"/Users/pradeepv/git/acceptance-tests/src/test/java/com/orchestral/medman/acceptance/stepdefs/FormsComponentStepdefs.java",
+		"/Users/pradeepv/git/medman/com.orchestral.medman.web/src/main/web/medman-full-review/js/medman-full-review.js",
+		"/Users/pradeepv/git/medman/com.orchestral.medman.web/src/main/web/medman-patient-summary-page-view/templates/medman-patient-summary-page.handlebars",
+		"/Users/pradeepv/git/medman/com.orchestral.medman.web/src/main/web/medman-statement-list-view/js/medman-statement-list-view.js",
+		"/Users/pradeepv/git/medman/com.orchestral.medman.web/src/test/yuitest/medman-statement-section-view-test.js",
+		"/Users/pradeepv/git/medman/com.orchestral.medman.web/src/test/yuitest/medman-statement-section-view-test.html",
+		"/Users/pradeepv/git/medman/com.orchestral.medman.web/src/test/yuitest/medman-statement-list-view-test.js",
+		"/Users/pradeepv/git/medman/com.orchestral.medman.web/src/test/yuitest/medman-statement-list-view-test.html",
+		"/Users/pradeepv/git/medman/com.orchestral.medman.web/src/main/web/medman-medication-statement/js/medman-medication-statement.js",
+		"/Users/pradeepv/git/medman/com.orchestral.medman.web/src/main/web/medman-medication-statement-list/js/medman-medication-statement-list.js",
+		"/Users/pradeepv/git/medman/com.orchestral.medman.web/src/test/yuitest/medman-security-domain-test.html",
+		"/Users/pradeepv/git/medman/com.orchestral.medman.web/src/main/web/medman-script-page-view/js/medman-script-page-view.js",
+		"/Users/pradeepv/git/medman/com.orchestral.medman.web/src/main/web/medman-medication-statement/meta/medman-medication-statement.json",
+		"/Users/pradeepv/git/medman/com.orchestral.medman.web/src/main/web/medman-statement-list-view/templates/medman-statement-list.handlebars",
+		"/Users/pradeepv/git/medman/com.orchestral.medman.web/src/main/web/medman-statement-section-view/templates/medman-statement-section.handlebars",
+		"/Users/pradeepv/git/medman/com.orchestral.medman.web/src/main/web/medman-medication-prescription/js/medman-medication-prescription.js",
+		"/Users/pradeepv/git/medman/com.orchestral.medman.web/src/main/web/medman-medication-prescription-list/js/medman-medication-prescription-list.js",
+		"/Users/pradeepv/git/medman/com.orchestral.medman.web/src/main/web/medman-full-review-list/js/medman-full-review-list.js",
+		"/Users/pradeepv/git/medman/com.orchestral.medman.web/src/main/web/medman-medication-list-view/js/medman-medication-list-view.js",
+		"/Users/pradeepv/git/medman/com.orchestral.medman.web/src/test/yuitest/medman-medication-prescription-test.js",
+		"/Users/pradeepv/git/medman/com.orchestral.medman.web/src/main/web/medman-edit-page-view/templates/medman-edit-or-discard-draft.handlebars",
+		"/Users/pradeepv/git/medman/com.orchestral.medman.web/src/main/web/medman-error/meta/medman-error.json",
+		"/Users/pradeepv/git/medman/com.orchestral.medman.web/web/medman-full-review-list/medman-full-review-list.js",
+		"/Users/pradeepv/git/medman/com.orchestral.medman.web/src/main/web/medman-patient/js/medman-patient.js",
+		"/Users/pradeepv/git/medman/com.orchestral.medman.web/src/main/web/medman-helper/js/medman-merge-helper.js",
+		"/Users/pradeepv/git/medman/com.orchestral.medman.web/src/main/web/medman-helper/build.json",
+		"/Users/pradeepv/git/medman/com.orchestral.medman.forms.medication/src/main/java/com/orchestral/medman/forms/medication/ClientTranslationProvider.java",
+		"/Users/pradeepv/git/medman/com.orchestral.medman.forms.medication/META-INF/com.orchestral.core.translation/messages.properties",
+		"/Users/pradeepv/git/medman/com.orchestral.medman.web/src/main/web/medman-compare-reviews-page-view/templates/medman-compare-reviews-page-view.handlebars",
+		"/Users/pradeepv/git/medman/com.orchestral.medman.web/src/main/web/medman-summary-page-view/js/medman-summary-page-view.js",
+		"/Users/pradeepv/git/medman/com.orchestral.medman.web/src/main/web/medman-common-templates/templates/medman-merge-warning-with-fullreview-link.handlebars",
+		"/Users/pradeepv/git/medman/com.orchestral.medman.web/src/main/web/medman-edit-page-view/js/medman-edit-page-view.js",
+		"/Users/pradeepv/git/medman/com.orchestral.medman.web/src/main/web/medman-common-templates/build.json",
+		"/Users/pradeepv/git/medman/com.orchestral.medman.web/src/main/web/medman-script-page-view/meta/medman-script-page-view.json",
+		"/Users/pradeepv/git/medman/com.orchestral.medman.web/src/main/web/medman-summary-page-view/meta/medman-summary-page-view.json",
+		"/Users/pradeepv/git/medman/com.orchestral.medman.web/src/main/web/medman-script-page-view/assets/skins/_core.scss",
+		"/Users/pradeepv/git/medman/com.orchestral.medman.web/src/main/web/medman-summary-page-view/assets/skins/_core.scss",
+		"/Users/pradeepv/git/medman/com.orchestral.medman.web/src/main/web/medman-compare-reviews-page-view/js/medman-compare-reviews-page-view.js",
+		"/Users/pradeepv/git/medman/com.orchestral.medman.web/src/main/web/medman-error/js/medman-error-runtime.js",
+		"/Users/pradeepv/git/medman/com.orchestral.medman.forms.medication/src/test/yuitest/medman-forms-medication-test.html",
+		"/Users/pradeepv/git/medman/com.orchestral.medman.web/src/test/yuitest/medman-full-review-test.html",
+		"/Users/pradeepv/git/medman/com.orchestral.medman.web/src/main/web/medman-compare-reviews-page-view/templates/medman-compare-reviews-history.handlebars",
+		"/Users/pradeepv/git/medman/com.orchestral.medman.web/src/test/yuitest/medman-compare-reviews-page-view-test.js",
+		"/Users/pradeepv/git/medman/com.orchestral.medman.web/src/test/yuitest/medman-compare-reviews-page-view-test.html",
+		"/Users/pradeepv/git/medman/com.orchestral.medman.web/src/main/web/medication-ui/javascript/comments/comments-module.js",
+		"/Users/pradeepv/git/medman/com.orchestral.medman.web/src/main/web/medman-app-worker/meta/medman-app-worker.json",
+		"/Users/pradeepv/git/medman/com.orchestral.medman.web/src/test/yuitest/medman-app-worker-test.js",
+		"/Users/pradeepv/git/medman/com.orchestral.medman.forms.medication/src/main/web/medman-forms-medication-component/templates/medman-forms-medication-component.handlebars",
+		"/Users/pradeepv/git/medman/com.orchestral.medman.web/src/main/web/medman-edit-page-view/templates/medman-full-review-title.handlebars",
+		"/Users/pradeepv/git/medman/com.orchestral.medman.web/src/main/web/medman-script-page-view/templates/medman-script-page.handlebars",
+		"/Users/pradeepv/git/medman/com.orchestral.medman.web/src/main/web/medman-summary-page-view/templates/medman-summary-page.handlebars",
+		"/Users/pradeepv/git/medman/com.orchestral.medman.web/src/main/web/medman-action-reason-component-view/js/medman-action-reason-component-view.js",
+		"/Users/pradeepv/git/medman/com.orchestral.medman.web/src/test/yuitest/medman-handlebars-test.html",
+		"/Users/pradeepv/git/acceptance-tests/src/test/java/com/orchestral/medman/acceptance/stepdefs/FullReviewFormStepdefs.java",
+		"/Users/pradeepv/git/acceptance-tests/src/test/java/com/orchestral/medman/acceptance/collaborator/FormsDocumentAdd.java",
+		"/Users/pradeepv/git/acceptance-tests/src/test/java/com/orchestral/medman/acceptance/collaborator/FormsDocument.java",
+		"/Users/pradeepv/git/medman/com.orchestral.medman.forms.medication/src/test/yuitest/medman-forms-medication-test.js",
+		"/Users/pradeepv/git/medman/com.orchestral.medman.web/src/test/yuitest/medman-summary-page-view-test.js",
+		"/Users/pradeepv/git/medman/com.orchestral.medman.web/src/test/yuitest/medman-summary-page-view-test.html",
+		"/Users/pradeepv/git/medman/com.orchestral.medman.web/src/test/yuitest/medman-medication-prescription-test.html",
+		"/Users/pradeepv/git/medman/com.orchestral.medman.web/web/medman-patient/medman-patient.js",
+		"/Users/pradeepv/git/medman/com.orchestral.medman.web/META-INF/com.yahoo.yui3/medman-patient.json",
+		"/Users/pradeepv/git/medman/com.orchestral.medman.web/web/medman-helper/medman-helper.js",
+		"/Users/pradeepv/git/medman/com.orchestral.medman.web/web/medman-error/medman-error-debug.js",
+		"/Users/pradeepv/git/medman/com.orchestral.medman.web/META-INF/com.yahoo.yui3/medman-error.json",
+		"/Users/pradeepv/git/medman/com.orchestral.medman.web/.sass-cache/22da4b1c3c3f97778f58e6ee6f4835ee2fe921eb/medman-medlist-extended-view.scssc",
+		"/Users/pradeepv/git/medman/com.orchestral.medman.web/META-INF/com.yahoo.yui3/medman-medication.json",
+		"/Users/pradeepv/git/medman/com.orchestral.medman.web/.sass-cache/8d0dead4b883fbffc59667c5c25d0eb159f92394/medman-add-medication-plugin.scssc",
+		"/Users/pradeepv/git/medman/com.orchestral.medman.web/src/test/yuitest/medman-patient-summary-page-view-test.js",
+		"/Users/pradeepv/git/medman/com.orchestral.medman.web/src/test/yuitest/medman-patient-summary-page-view-test.html",
+		"/Users/pradeepv/git/medman/com.orchestral.medman.web/src/main/web/medman-prescription/js/medman-prescription.js",
+		"/Users/pradeepv/git/medman/com.orchestral.medman.forms.medication/src/main/web/medman-forms-medication-component/meta/medman-forms-medication-component.json",
+		"/Users/pradeepv/git/medman/com.orchestral.medman.web/src/main/web/WEB-INF/jspf/prelude.jspf",
+		"/Users/pradeepv/git/medman/com.orchestral.medman.web/src/test/yuitest/medman-app-worker-test.html",
+		"/Users/pradeepv/git/medman/com.orchestral.medman.web/src/test/yuitest/medman-medication-prescription-list-test.js",
+		"/Users/pradeepv/git/medman/com.orchestral.medman.web/src/test/yuitest/medman-medication-prescription-list-test.html",
+		"/Users/pradeepv/git/acceptance-tests/src/test/java/com/orchestral/medman/acceptance/collaborator/MedicationAddForm.java",
+		"/Users/pradeepv/git/medman/com.orchestral.medman.web/src/test/yuitest/medman-medication-list-view-test.js",
+		"/Users/pradeepv/git/medman/com.orchestral.medman.web/src/test/yuitest/medman-medication-list-view-test.html",
+		"/Users/pradeepv/git/acceptance-tests/src/test/java/com/orchestral/medman/acceptance/collaborator/MedicationList.java",
+		"/Users/pradeepv/git/medman/com.orchestral.medman.web/src/test/yuitest/medman-edit-page-view-test.js",
+		"/Users/pradeepv/git/medman/com.orchestral.medman.web/src/test/yuitest/medman-edit-page-view-test.html",
+		"/Users/pradeepv/git/medman/com.orchestral.medman.web/src/test/yuitest/medman-edit-field-test.html",
+		"/Users/pradeepv/git/medman/com.orchestral.medman.web/META-INF/com.yahoo.yui3/medman-edit-page-view.json",
+		"/Users/pradeepv/git/medman/com.orchestral.medman.web/web/medman-helper/medman-helper-debug.js",
+		"/Users/pradeepv/git/medman/com.orchestral.medman.web/src/main/web/medman-helper/meta/medman-helper.json",
+		"/Users/pradeepv/git/medman/com.orchestral.medman.web/META-INF/com.yahoo.yui3/medman-header.json",
+		"/Users/pradeepv/git/medman/com.orchestral.medman.web/MedMan.launch",
+		"/Users/pradeepv/git/medman/com.orchestral.medman.web/src/main/web/medman-common-templates/meta/medman-common-templates.json",
+		"/Users/pradeepv/git/medman/com.orchestral.medman.web/web/medman-edit-page-view/medman-edit-page-view.js",
+		"/Users/pradeepv/git/medman/com.orchestral.medman.web/.sass-cache/6b3078293ef79bad83088eb0cd5e267fa3cfd770/medman-edit-page-view.scssc",
+		"/Users/pradeepv/git/medman/com.orchestral.medman.web/.sass-cache/1960866b74500eaa2a065666a3ce03e455ea2c69/medman-edit-field-plugin.scssc",
+		"/Users/pradeepv/git/medman/com.orchestral.medman.web/src/test/yuitest/medman-full-review-test.js",
+		"/Users/pradeepv/git/medman/com.orchestral.medman.web/src/test/yuitest/medman-medication-prescription-view-test.js",
+		"/Users/pradeepv/git/medman/com.orchestral.medman.web/src/main/web/medman-full-review/meta/medman-full-review.json",
+		"/Users/pradeepv/git/acceptance-tests/src/test/java/com/orchestral/medman/acceptance/collaborator/ScriptMedicationList.java",
+		"/Users/pradeepv/git/acceptance-tests/src/test/resources/com/orchestral/medman/acceptance/full_review/save_and_complete_full_review.feature",
+		"/Users/pradeepv/git/acceptance-tests/src/test/java/com/orchestral/medman/acceptance/collaborator/FullReviewForm.java",
+		"/Users/pradeepv/git/medman/com.orchestral.medman.web/src/main/web/medication-ui/css/medication-ui.scss",
+		"/Users/pradeepv/git/medman/com.orchestral.medman.web/src/main/web/medman-edit-page-view/templates/medman-edit-page.handlebars",
+		"/Users/pradeepv/git/medman/com.orchestral.medman.web/src/main/web/medman-medlist-additional-info-plugin/js/medman-medlist-additional-info-plugin.js",
+		"/Users/pradeepv/git/medman/com.orchestral.medman.web/web/medman-medlist-additional-info-plugin/medman-medlist-additional-info-plugin-min.js"
+	],
+	"find":
+	{
+		"height": 35.0
+	},
+	"find_in_files":
+	{
+		"height": 93.0,
+		"where_history":
+		[
+			""
+		]
+	},
+	"find_state":
+	{
+		"case_sensitive": false,
+		"find_history":
+		[
+			"data-legend",
+			"color",
+			"svg",
+			"latest",
+			" ",
+			"verion-nav",
+			"page-header",
+			"dashboard",
+			"-    ",
+			"fetchChartData",
+			"renderCharts",
+			"                              \n",
+			"alert",
+			"click(",
+			"project-nav",
+			"						\n",
+			"tip",
+			"svg",
+			"morris-area",
+			"\"",
+			"statement",
+			"merge",
+			"patient",
+			"CSS",
+			"_renderActionMenuButtons",
+			"statement",
+			"_medicationList",
+			"_renderModifyLightBox",
+			"renderContent",
+			"_renderContent",
+			"_fetchDataAndRenderComponent",
+			"backToMedicationSummary",
+			"border",
+			"Y.Template",
+			"label",
+			"draft",
+			"_renderEditDraftMessage",
+			"trans",
+			"translat",
+			"_renderContent",
+			"notification",
+			"_renderNotification",
+			"clearNoti",
+			"renderNotification",
+			"notification",
+			"banner",
+			"						\n",
+			"patientId",
+			"seriali",
+			"_saveAndPrintPrescription",
+			";",
+			"=",
+			"this",
+			"data",
+			"this",
+			"this.get('activeMedications')",
+			"this.get('active",
+			"patientId",
+			"medman-model-helper",
+			"setMedicationStatementAttrs",
+			"requested",
+			"requestBy",
+			"_updateData",
+			"_isOutOfDate",
+			"patientMed",
+			"patient",
+			"	})",
+			"appWorker",
+			"AppWorker",
+			"appWorker",
+			"show",
+			"AppWorker",
+			"appWorker",
+			"_fetchPatientMedications",
+			"_updateData",
+			"			\n",
+			"appWorker",
+			"_updateData",
+			"appWorker",
+			"_updateData",
+			"appWorker",
+			"_updateData",
+			"latestMedPrescription = ;",
+			"_this = this;",
+			"/ TODO do not use class level properties to share data.\n						_this.fullReviewList = fullReviewList;",
+			"setMeta",
+			"_this.activeListOfMedications = activeListOfMedications;\n						_this.requestedDate =\n						_this.requestedBy =",
+			"var _this = this;",
+			"var promises = [];",
+			"handleCurrentListOfMedications",
+			"Y.Promise.all",
+			"return",
+			"		/**\n		* Fetches\n		*	1) latestFinalFullReview\n		*	2) LatestMedPresTx\n		*\n\n		*\n		* @private\n		* @method _fetchMetaData\n		*\n		*/\n		_fetchMetaData: function () {\n			var _this = this;\n			return new Y.Promise(function (resolve) {\n\n					// if empty return an empty promise which is resolved\n					if(_this.activeListOfMedications && _this.activeListOfMedications.isEmpty()) {\n						resolve(_this.fetchLatestFinalFullReview());\n					} else {\n						resolve();\n					}\n				}).then(function () {\n					return _this.fetchLatestMedPresTx();\n				});\n\n		},",
+			"var _this = this,",
+			"computeMetaData",
+			"	    	// initialize data\n	    	activeListOfMedications = data[0];\n	    	latestFinalFullReview = data[1];\n	    	latestMedPresTx = data[2];",
+			"}\n",
+			"draft",
+			"/**\n		 * The patient id set from the frontend should be used to .\n		 *\n		 * @attribute patientId\n		 * @type {object}\n		 */",
+			"appWorker.fetchActiveMedication",
+			"	Y.Mock.expect(mockFullReview, {\n				method: 'set',\n				args: [Y.Mock.Value.String, Y.Mock.Value.Any],\n				run: function() {\n					return;\n				}\n			});",
+			"response",
+			"fullReviewList",
+			"Fetch latest final full review",
+			"					var statementData = _this.appWorker.statementData;\n",
+			" Fetch latest final full revie",
+			" Fetch latest final full review",
+			"FullRview",
+			"set('patientId'",
+			"			\n",
+			"\n	_fetchDraftFullReview",
+			"		\n",
+			"default",
+			"		 \n",
+			"* @readOnly",
+			" \n",
+			"		 \n",
+			"\n		 ",
+			"		 \n",
+			"The caller should handle the resolve and reject as required.",
+			"*\n",
+			"fullReview",
+			"		\n",
+			"appWorker.draftFullReview.set('status','DRAFT' );",
+			"			\n",
+			"var _this = this,",
+			"withStatus: Y.MEDMAN.FullReview.Status.LATEST",
+			"comments"
+		],
+		"highlight": true,
+		"in_selection": false,
+		"preserve_case": false,
+		"regex": false,
+		"replace_history":
+		[
+			"",
+			"'",
+			");",
+			",",
+			"this.set('",
+			"this",
+			"thia",
+			"data"
+		],
+		"reverse": false,
+		"show_context": true,
+		"use_buffer2": true,
+		"whole_word": false,
+		"wrap": true
+	},
+	"groups":
+	[
+		{
+			"selected": 0,
+			"sheets":
+			[
+				{
+					"buffer": 0,
+					"file": "chart.js",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 21236,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								14082,
+								14082
+							]
+						],
+						"settings":
+						{
+							"BracketHighlighterBusy": false,
+							"bh_regions":
+							[
+								"bh_angle",
+								"bh_angle_center",
+								"bh_angle_open",
+								"bh_angle_close",
+								"bh_angle_content",
+								"bh_square",
+								"bh_square_center",
+								"bh_square_open",
+								"bh_square_close",
+								"bh_square_content",
+								"bh_default",
+								"bh_default_center",
+								"bh_default_open",
+								"bh_default_close",
+								"bh_default_content",
+								"bh_single_quote",
+								"bh_single_quote_center",
+								"bh_single_quote_open",
+								"bh_single_quote_close",
+								"bh_single_quote_content",
+								"bh_c_define",
+								"bh_c_define_center",
+								"bh_c_define_open",
+								"bh_c_define_close",
+								"bh_c_define_content",
+								"bh_round",
+								"bh_round_center",
+								"bh_round_open",
+								"bh_round_close",
+								"bh_round_content",
+								"bh_tag",
+								"bh_tag_center",
+								"bh_tag_open",
+								"bh_tag_close",
+								"bh_tag_content",
+								"bh_regex",
+								"bh_regex_center",
+								"bh_regex_open",
+								"bh_regex_close",
+								"bh_regex_content",
+								"bh_curly",
+								"bh_curly_center",
+								"bh_curly_open",
+								"bh_curly_close",
+								"bh_curly_content",
+								"bh_double_quote",
+								"bh_double_quote_center",
+								"bh_double_quote_open",
+								"bh_double_quote_close",
+								"bh_double_quote_content",
+								"bh_unmatched",
+								"bh_unmatched_center",
+								"bh_unmatched_open",
+								"bh_unmatched_close",
+								"bh_unmatched_content"
+							],
+							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 22.0,
+						"translation.y": 6439.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 0,
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"file": "/Users/pradeepv/personal/git/JMeter-Charts/src/main/web/views/dynamic/dashboard/chart.html",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 6647,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								5770,
+								5770
+							]
+						],
+						"settings":
+						{
+							"BracketHighlighterBusy": false,
+							"bh_regions":
+							[
+								"bh_angle",
+								"bh_angle_center",
+								"bh_angle_open",
+								"bh_angle_close",
+								"bh_angle_content",
+								"bh_square",
+								"bh_square_center",
+								"bh_square_open",
+								"bh_square_close",
+								"bh_square_content",
+								"bh_default",
+								"bh_default_center",
+								"bh_default_open",
+								"bh_default_close",
+								"bh_default_content",
+								"bh_single_quote",
+								"bh_single_quote_center",
+								"bh_single_quote_open",
+								"bh_single_quote_close",
+								"bh_single_quote_content",
+								"bh_c_define",
+								"bh_c_define_center",
+								"bh_c_define_open",
+								"bh_c_define_close",
+								"bh_c_define_content",
+								"bh_round",
+								"bh_round_center",
+								"bh_round_open",
+								"bh_round_close",
+								"bh_round_content",
+								"bh_tag",
+								"bh_tag_center",
+								"bh_tag_open",
+								"bh_tag_close",
+								"bh_tag_content",
+								"bh_regex",
+								"bh_regex_center",
+								"bh_regex_open",
+								"bh_regex_close",
+								"bh_regex_content",
+								"bh_curly",
+								"bh_curly_center",
+								"bh_curly_open",
+								"bh_curly_close",
+								"bh_curly_content",
+								"bh_double_quote",
+								"bh_double_quote_center",
+								"bh_double_quote_open",
+								"bh_double_quote_close",
+								"bh_double_quote_content",
+								"bh_unmatched",
+								"bh_unmatched_center",
+								"bh_unmatched_open",
+								"bh_unmatched_close",
+								"bh_unmatched_content"
+							],
+							"syntax": "Packages/HTML/HTML.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 1297.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 1,
+					"type": "text"
+				}
+			]
+		}
+	],
+	"incremental_find":
+	{
+		"height": 23.0
+	},
+	"input":
+	{
+		"height": 31.0
+	},
+	"layout":
+	{
+		"cells":
+		[
+			[
+				0,
+				0,
+				1,
+				1
+			]
+		],
+		"cols":
+		[
+			0.0,
+			1.0
+		],
+		"rows":
+		[
+			0.0,
+			1.0
+		]
+	},
+	"menu_visible": true,
+	"output.exec":
+	{
+		"height": 100.0
+	},
+	"output.find_results":
+	{
+		"height": 0.0
+	},
+	"project": "test.sublime-project",
+	"replace":
+	{
+		"height": 64.0
+	},
+	"save_all_on_build": true,
+	"select_file":
+	{
+		"height": 0.0,
+		"selected_items":
+		[
+			[
+				"js/main",
+				"src/main/web/views/static/js/main.js"
+			],
+			[
+				"src/appworker",
+				"com.orchestral.medman.web/src/main/web/medman-app-worker/js/medman-app-worker.js"
+			],
+			[
+				"src/formscomjs",
+				"com.orchestral.medman.forms.medication/src/main/web/medman-forms-medication-component/js/medman-forms-medication-component.js"
+			],
+			[
+				"src/statementview",
+				"com.orchestral.medman.web/src/main/web/medman-statement-list-view/js/medman-statement-list-view.js"
+			],
+			[
+				"src/statement",
+				"com.orchestral.medman.web/src/main/web/medman-medication-statement/js/medman-medication-statement.js"
+			],
+			[
+				"src/statemen",
+				"com.orchestral.medman.web/src/main/web/medman-medication-statement-list/js/medman-medication-statement-list.js"
+			],
+			[
+				"src/forms",
+				"com.orchestral.medman.forms.medication/src/main/web/medman-forms-medication-component/js/medman-forms-medication-component.js"
+			],
+			[
+				"src/fullreview",
+				"com.orchestral.medman.web/src/main/web/medman-full-review/js/medman-full-review.js"
+			],
+			[
+				"src/fullreviewlist",
+				"com.orchestral.medman.web/src/main/web/medman-full-review-list/js/medman-full-review-list.js"
+			],
+			[
+				"src/medicationpreslist",
+				"com.orchestral.medman.web/src/main/web/medman-medication-prescription-list/js/medman-medication-prescription-list.js"
+			],
+			[
+				"src/full",
+				"com.orchestral.medman.web/src/main/web/medman-full-review/js/medman-full-review.js"
+			],
+			[
+				"src/medicationpres",
+				"com.orchestral.medman.web/src/main/web/medman-medication-prescription/js/medman-medication-prescription.js"
+			],
+			[
+				"src/script",
+				"com.orchestral.medman.web/src/main/web/medman-script-page-view/js/medman-script-page-view.js"
+			],
+			[
+				"src/medicationapp",
+				"com.orchestral.medman.web/src/main/web/medman-medication-app/js/medman-medication-app.js"
+			],
+			[
+				"src/edit",
+				"com.orchestral.medman.web/src/main/web/medman-edit-page-view/js/medman-edit-page-view.js"
+			],
+			[
+				"src/summa",
+				"com.orchestral.medman.web/src/main/web/medman-summary-page-view/js/medman-summary-page-view.js"
+			],
+			[
+				"src/comp",
+				"com.orchestral.medman.web/src/main/web/medman-compare-reviews-page-view/js/medman-compare-reviews-page-view.js"
+			],
+			[
+				"src/summ",
+				"com.orchestral.medman.web/src/main/web/medman-summary-page-view/js/medman-summary-page-view.js"
+			],
+			[
+				"src/compare",
+				"com.orchestral.medman.web/src/main/web/medman-compare-reviews-page-view/js/medman-compare-reviews-page-view.js"
+			],
+			[
+				"src/summary",
+				"com.orchestral.medman.web/src/main/web/medman-summary-page-view/js/medman-summary-page-view.js"
+			],
+			[
+				"src/medicationappjs",
+				"com.orchestral.medman.web/src/main/web/medman-medication-app/js/medman-medication-app.js"
+			],
+			[
+				"src/comparerev",
+				"com.orchestral.medman.web/src/main/web/medman-compare-reviews-page-view/js/medman-compare-reviews-page-view.js"
+			],
+			[
+				"src/summarypage",
+				"com.orchestral.medman.web/src/main/web/medman-summary-page-view/js/medman-summary-page-view.js"
+			],
+			[
+				"src/fromscompjs",
+				"com.orchestral.medman.forms.medication/src/main/web/medman-forms-medication-component/js/medman-forms-medication-component.js"
+			],
+			[
+				"src/editpageview",
+				"com.orchestral.medman.web/src/main/web/medman-edit-page-view/js/medman-edit-page-view.js"
+			],
+			[
+				"src/appjs",
+				"com.orchestral.medman.web/src/main/web/medman-medication-app/js/medman-medication-app.js"
+			],
+			[
+				"src/medicationpresc",
+				"com.orchestral.medman.web/src/main/web/medman-medication-prescription/js/medman-medication-prescription.js"
+			],
+			[
+				"src/scriptpageview",
+				"com.orchestral.medman.web/src/main/web/medman-script-page-view/js/medman-script-page-view.js"
+			],
+			[
+				"src/summarypageview",
+				"com.orchestral.medman.web/src/main/web/medman-summary-page-view/js/medman-summary-page-view.js"
+			],
+			[
+				"src/medman-merge",
+				"com.orchestral.medman.web/src/main/web/medman-helper/js/medman-merge-helper.js"
+			],
+			[
+				"src/patientjs",
+				"com.orchestral.medman.web/src/main/web/medman-patient/js/medman-patient.js"
+			],
+			[
+				"medmanpat",
+				"com.orchestral.medman.web/web/medman-patient/medman-patient.js"
+			],
+			[
+				"medmanmerge",
+				"com.orchestral.medman.web/src/main/web/medman-helper/js/medman-merge-helper.js"
+			],
+			[
+				"appworker",
+				"com.orchestral.medman.web/src/main/web/medman-app-worker/js/medman-app-worker.js"
+			],
+			[
+				"src/medicationpresli",
+				"com.orchestral.medman.web/src/main/web/medman-medication-prescription-list/js/medman-medication-prescription-list.js"
+			],
+			[
+				"src/medicationprescr",
+				"com.orchestral.medman.web/src/main/web/medman-medication-prescription/js/medman-medication-prescription.js"
+			],
+			[
+				"src/medicationprescriptionlist",
+				"com.orchestral.medman.web/src/main/web/medman-medication-prescription-list/js/medman-medication-prescription-list.js"
+			],
+			[
+				"src/patient",
+				"com.orchestral.medman.web/src/main/web/medman-patient/js/medman-patient.js"
+			],
+			[
+				"src/medicationpre",
+				"com.orchestral.medman.web/src/main/web/medman-medication-prescription/js/medman-medication-prescription.js"
+			],
+			[
+				"src/prescription",
+				"com.orchestral.medman.web/src/main/web/medman-prescription/js/medman-prescription.js"
+			],
+			[
+				"src/scriptpage",
+				"com.orchestral.medman.web/src/main/web/medman-script-page-view/js/medman-script-page-view.js"
+			],
+			[
+				"src/appmedication",
+				"com.orchestral.medman.web/src/main/web/medman-medication-app/js/medman-medication-app.js"
+			],
+			[
+				"full",
+				"com.orchestral.medman.web/src/main/web/medman-full-review/js/medman-full-review.js"
+			],
+			[
+				"src/medicationprlist",
+				"com.orchestral.medman.web/src/main/web/medman-medication-prescription-list/js/medman-medication-prescription-list.js"
+			],
+			[
+				"src/appwoker",
+				"com.orchestral.medman.web/src/main/web/medman-app-worker/js/medman-app-worker.js"
+			],
+			[
+				"src/medicationlistview",
+				"com.orchestral.medman.web/src/main/web/medman-medication-list-view/js/medman-medication-list-view.js"
+			],
+			[
+				"medmanhelper",
+				"com.orchestral.medman.web/web/medman-helper/medman-helper.js"
+			],
+			[
+				"editpageviejson",
+				"com.orchestral.medman.web/META-INF/com.yahoo.yui3/medman-edit-page-view.json"
+			],
+			[
+				"src/medicationprescription",
+				"com.orchestral.medman.web/src/main/web/medman-medication-prescription/js/medman-medication-prescription.js"
+			],
+			[
+				"src/fullreviewjs",
+				"com.orchestral.medman.web/src/main/web/medman-full-review/js/medman-full-review.js"
+			],
+			[
+				"src/full-review",
+				"com.orchestral.medman.web/src/main/web/medman-full-review/js/medman-full-review.js"
+			],
+			[
+				"src/medication-pres-list.js",
+				"com.orchestral.medman.web/src/main/web/medman-medication-prescription-list/js/medman-medication-prescription-list.js"
+			],
+			[
+				"src/medicationpresjs",
+				"com.orchestral.medman.web/src/main/web/medman-medication-prescription/js/medman-medication-prescription.js"
+			],
+			[
+				"src/medicationprescriptionjs",
+				"com.orchestral.medman.web/src/main/web/medman-medication-prescription/js/medman-medication-prescription.js"
+			],
+			[
+				"src/medication-pres.js",
+				"com.orchestral.medman.web/src/main/web/medman-medication-prescription/js/medman-medication-prescription.js"
+			],
+			[
+				"src/medication-prescription",
+				"com.orchestral.medman.web/src/test/yuitest/medman-medication-prescription-test.js"
+			],
+			[
+				"medman-medlist-additional-info-plugin",
+				"com.orchestral.medman.web/src/main/web/medman-medlist-additional-info-plugin/js/medman-medlist-additional-info-plugin.js"
+			],
+			[
+				"src/medicationprescriptionlidt",
+				"com.orchestral.medman.web/src/main/web/medman-medication-prescription-list/js/medman-medication-prescription-list.js"
+			],
+			[
+				"medicationdetailsview",
+				"com.orchestral.medman.web/src/main/web/medman-medication-details-view/js/medman-medication-details-view.js"
+			],
+			[
+				"src/statementlist",
+				"com.orchestral.medman.web/src/main/web/medman-medication-statement-list/js/medman-medication-statement-list.js"
+			],
+			[
+				"src/medmanfullreviewjs",
+				"com.orchestral.medman.web/src/main/web/medman-full-review/js/medman-full-review.js"
+			],
+			[
+				"medicationprescription",
+				"com.orchestral.medman.web/src/test/yuitest/medman-medication-prescription-test.js"
+			],
+			[
+				"srcmedicationprescriptionjs",
+				"com.orchestral.medman.web/src/main/web/medman-medication-prescription/js/medman-medication-prescription.js"
+			],
+			[
+				"medicationprescr/srcjs",
+				"com.orchestral.medman.web/src/main/web/medman-medication-prescription-list/js/medman-medication-prescription-list.js"
+			],
+			[
+				"medicationpresjssrc",
+				"com.orchestral.medman.web/src/main/web/medman-medication-prescription/js/medman-medication-prescription.js"
+			],
+			[
+				"medmanapp",
+				"com.orchestral.medman.web/src/main/web/medman-medication-app/js/medman-medication-app.js"
+			],
+			[
+				"appworkere",
+				"com.orchestral.medman.web/src/main/web/medman-app-worker/js/medman-app-worker.js"
+			],
+			[
+				"medmanappworker",
+				"com.orchestral.medman.web/src/main/web/medman-app-worker/js/medman-app-worker.js"
+			],
+			[
+				"medmanmedicationapp",
+				"com.orchestral.medman.web/src/main/web/medman-medication-app/js/medman-medication-app.js"
+			],
+			[
+				"fullreviewjs",
+				"com.orchestral.medman.web/src/main/web/medman-full-review/js/medman-full-review.js"
+			],
+			[
+				"fullreviewlist",
+				"com.orchestral.medman.web/web/medman-full-review-list/medman-full-review-list.js"
+			],
+			[
+				"appworkertest",
+				"com.orchestral.medman.web/src/test/yuitest/medman-app-worker-test.js"
+			],
+			[
+				"medmanappmedication",
+				"com.orchestral.medman.web/src/main/web/medman-medication-app/js/medman-medication-app.js"
+			]
+		],
+		"width": 0.0
+	},
+	"select_project":
+	{
+		"height": 500.0,
+		"selected_items":
+		[
+		],
+		"width": 380.0
+	},
+	"select_symbol":
+	{
+		"height": 0.0,
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"selected_group": 0,
+	"settings":
+	{
+	},
+	"show_minimap": true,
+	"show_open_files": false,
+	"show_tabs": true,
+	"side_bar_visible": true,
+	"side_bar_width": 278.0,
+	"status_bar_visible": true,
+	"template_settings":
+	{
+	}
+}

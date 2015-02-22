@@ -5,7 +5,8 @@ requirejs.config({
         'rest': 'rest',
         'd3': 'd3/d3',
         'tip': 'd3/tip',
-        'mustache': 'mustache'
+        'mustache': 'mustache',
+        'chart': 'chart'
 
     },
     shim: {
@@ -30,6 +31,10 @@ requirejs.config({
         	deps: [ 'jquery']
         },
 
+		'plugins/scrollTo/scrollTo': {
+        	deps: [ 'jquery']
+        },
+
         d3 : {
             exports : 'd3'
         },
@@ -44,7 +49,7 @@ requirejs.config({
     }
 });
 
-require(['require','jquery', 'jquery.bootstrap', 'plugins/metisMenu/metisMenu','plugins/typeahead/typeahead', 'plugins/morris/morris', 'rest', 'mustache', 'plugins/combobox/bootstrap-combobox'], function (require, $) {
+require(['require','jquery', 'jquery.bootstrap', 'plugins/metisMenu/metisMenu','plugins/scrollTo/scrollTo','plugins/typeahead/typeahead', 'plugins/morris/morris', 'rest', 'mustache', 'plugins/combobox/bootstrap-combobox'], function (require, $) {
 	var rest = require('rest');
 	var myBarChart;
 	$(function() {
@@ -92,497 +97,22 @@ require(['require','jquery', 'jquery.bootstrap', 'plugins/metisMenu/metisMenu','
 	});
 
 	function addEvents() {
-		$('.project-nav').click(function (e) {
-			require(['mustache'], function (Mustache) {
-					$.get('/jc/templates/project.html', function(template) {
-			    	var rendered = Mustache.render(template);
-			    	$('.dynamic-template').html(rendered);
-			    	if($(e.target).parent().hasClass('version-nav')) {
-			    		$('.page-header').text('Version: ' + $(e.target).text());
-			    	} else {
-			    		$('.page-header').text('Project: ' + $(e.target).text());
-			    	}
-
-				});
-			});
-		});
 		$('.main-project').click(function () {
 			require(['mustache'], function (Mustache) {
-					$.get('/jc/templates/project.html', function(template) {
-				    	var rendered = Mustache.render(template);
-				    	$('.dynamic-template').html(rendered);
-						$('.page-header').text('Select a build to view detailed performance charts');
-
+					$.get('/jc/templates/latest-project.html', function(template) {
+						rest.fetchLatest(function (data) {
+							var rendered = Mustache.render(template, {
+								project: data.name,
+								version: data.version,
+								build: data.build
+							});
+					    	$('.dynamic-template').html(rendered);
+							$('.page-header').text('Select a Project to view detailed performance charts');
+						});
 					});
-
 			});
 		});
 	}
-
-
-	/**
-	 * Set the chart data
-	 */
-	function renderCharts(json) {
-				var data = [],
-					dataBar = [],
-					dataLine = [],
-					lineDomian = [],
-					dataLineGroup=[],
-					graph,
-					jsonData = json[0].report.jsondata,
-					ykeys = [],
-					xkey = 'x',
-					spinHTML = '<i class="fa fa-refresh fa-spin"></i>';
-
-				$('#morris-area-chart').empty();
-				$('#morris-bar-chart').empty();
-
-				$.each(jsonData, function (index, threadGroup) {
-						dataBar.push({
-							name: threadGroup.threadgroup.name,
-							value: threadGroup.threadgroup.averageTime
-						});
-						$.each(threadGroup.threadgroup.samples, function (innerIndex, sample) {
-							dataLine.push({
-								activeThread : sample.activeThreads,
-								time: sample.timestamp,
-								ms: sample.elapsedTime,
-								name: sample.name
-							});
-							lineDomian.push({
-								activeThread : sample.activeThreads,
-								time: sample.timestamp,
-								ms: sample.elapsedTime,
-								name: sample.name
-							});
-						});
-						dataLineGroup.push({
-							group: threadGroup.threadgroup.name,
-							dataLine: dataLine
-						});
-						dataLine = [];
-				});
-
-				// Using requirejs
-				require(['d3', 'tip'], function (d3, tip) {
-					function getRandomColor() {
-					    var letters = '0123456789ABCDEF'.split('');
-					    var color = '#';
-					    for (var i = 0; i < 6; i++ ) {
-					        color += letters[Math.floor(Math.random() * 16)];
-					    }
-					    return color;
-					}
-
-					function ColorLuminance(hex, lum) {
-
-						// validate hex string
-						hex = String(hex).replace(/[^0-9a-f]/gi, '');
-						if (hex.length < 6) {
-							hex = hex[0]+hex[0]+hex[1]+hex[1]+hex[2]+hex[2];
-						}
-						lum = lum || 0;
-
-						// convert to decimal and change luminosity
-						var rgb = '#', c, i;
-						for (i = 0; i < 3; i++) {
-							c = parseInt(hex.substr(i*2,2), 16);
-							c = Math.round(Math.min(Math.max(0, c + (c * lum)), 255)).toString(16);
-							rgb += ('00'+c).substr(c.length);
-						}
-
-						return rgb;
-					}
-
-					// render a bar chart
-					barChart(d3, tip, dataBar);
-					// render a bar chart
-					lineChart(d3, lineDomian, dataLineGroup, tip);
-					//render at vs time
-					lineChartNTvsTime(d3, lineDomian, dataLineGroup);
-				/*
-
-
-				/// line chart
-			*/
-		});// require
-	}
-
-
-	function barChart(d3, tip, dataBar) {
-		var margin = {top: 20, right: 30, bottom: 30, left: 40},
-								    width = 960 - margin.left - margin.right,
-								    height = 500 - margin.top - margin.bottom;
-
-		var x = d3.scale.ordinal().rangeRoundBands([0, width], 0.1);
-
-		var y = d3.scale.linear().range([height, 0]);
-
-		var xAxis = d3.svg.axis()
-				    .scale(x)
-				    .orient('bottom');
-
-		var yAxis = d3.svg.axis()
-				    .scale(y)
-				    .orient('left');
-
-		var tipLocal = tip()
-		  .attr('class', 'd3-tip')
-		  .offset([-10, 0])
-		  .html(function(d) {
-		    return '<strong>Sample:</strong> <span style="color:white">' + d.name + '</span>';
-		  });
-
-		var chart = d3.select('.chart-bar')
-		    .attr('width', width + margin.left + margin.right)
-		    .attr('height', height + margin.top + margin.bottom)
-		    .append('g')
-		    .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
-
-		chart.call(tipLocal);
-
-		 var dataBarValue = [];
-
-		 $.each(dataBar, function (index, data) {
-			 dataBarValue.push(parseFloat(data.value));
-		 });
-
-		 var p=d3.scale.category20();
-
-
-		  x.domain(dataBar.map(function(d) { return d.name; }));
-		  y.domain([0, d3.max(dataBarValue)]);
-
-		  chart.append('g')
-		      .attr('class', 'x axis')
-		      .attr('transform', 'translate(0,' + height + ')')
-		      .call(xAxis)
-		      .selectAll('text')
-	            .style('text-anchor', 'end')
-	            .attr('dx', '-.8em')
-	            .attr('dy', '.15em')
-	            .attr('transform', function(d) {
-	                return 'rotate(-65)';
-	          });
-
-		  chart.append('g')
-		      .attr('class', 'y axis')
-		      .call(yAxis);
-		  var barWidth = width / dataBar.length;
-
-		  var bar = chart.selectAll('.bar')
-	      .data(dataBar)
-	      .enter()
-	      .append('g');
-
-		   bar.append('rect')
-		      .attr('class', 'bar')
-		      .attr('x', function(d) { return x(d.name); })
-		      .attr('y', function(d) {
-		    	  return y(d.value);
-		    	})
-		      .attr('height', function(d) { return height - y(d.value); })
-		      .attr('width', x.rangeBand())
-		      .on('mouseover', tipLocal.show)
-		      .on('mouseout', tipLocal.hide)
-		      .style('fill', function(d) {
-		    	  return p(Math.floor(Math.random() * 20) + 1);
-		      });
-
-	//					  bar.on('mouseover', function(d) {
-	//						  console.log(d3.select(this).attr('x'));
-	//					  });
-
-		  bar.append('text')
-		      .attr('x', function(d) {
-		    	  return x(d.name) + barWidth/2;
-		      })
-		      .attr('y', function(d) { return y(d.value) + 3; })
-		      .attr('dy', '.75em')
-		      .attr('class', 'bar-text')
-		      .text(function(d) { return Math.floor(d.value); });
-
-	}
-
-	/**
-	 * Generates a line chart
-	 * @param  {Object} d3            [description]
-	 * @param  {Object} lineDomian    [description]
-	 * @param  {Object} dataLineGroup [description]
-	 * @return {this}               [description]
-	 */
-	function lineChart(d3, lineDomian, dataLineGroup, tip) {
-
-		  var margin = {top: 20, right: 80, bottom: 30, left: 50},
-		    width = 960 - margin.left - margin.right,
-		    height = 500 - margin.top - margin.bottom;
-		   var p=d3.scale.category20();
-
-			var max1 = d3.max(lineDomian, function (d) {
-				return +d.activeThread;
-			});
-
-			var max2 = d3.max(lineDomian, function (d) {
-				return +d.ms;
-			});
-
-			var min1 = d3.min(lineDomian, function (d) {
-				return +d.activeThread;
-			});
-
-			var min2 = d3.min(lineDomian, function (d) {
-				return +d.ms;
-			});
-
-			var x = d3.scale.linear()
-			    .range([0, width])
-			    .domain([min1,max1])
-			    .nice();
-
-			var y = d3.scale.linear()
-			    .range([height, 0])
-			    .domain([min2,max2])
-			    .nice();
-
-			var xAxis = d3.svg.axis()
-			    .scale(x)
-			    .orient('bottom');
-
-
-			var yAxis = d3.svg.axis()
-			    .scale(y)
-			    .orient('left');
-
-			var tipLocal = tip()
-		  			.attr('class', 'd3-tip')
-					.html(function(d) {
-			    		return '<strong>Sample:</strong> <span style="color:white">' + d.group + '</span>';
-			  		});
-
-			var svg = d3.select('.chart-line')
-			    	.attr('width', width + margin.left + margin.right)
-				    .attr('height', height + margin.top + margin.bottom)
-				    .append('g')
-				    .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
-
-			svg.call(tipLocal);
-
-			svg.append('g')
-				.attr('class', 'x axis')
-				.attr('transform', 'translate(0,' + height + ')')
-				.call(xAxis)
-				.append('text')
-				.attr('y', -12)
-				.attr('x', width)
-				.attr('dy', '.71em')
-				.style('text-anchor', 'end')
-				.text('no of active threads');
-
-			svg.append('g')
-				.attr('class', 'y axis')
-				.call(yAxis)
-				.append('text')
-				.attr('transform', 'rotate(-90)')
-				.attr('y', 6)
-				.attr('dy', '.71em')
-				.style('text-anchor', 'end')
-				.text('response time in ms');
-
-			var line = d3.svg.line()
-				.interpolate('bundle')
-				.x(function(d) {
-					return x(d.activeThread);
-				})
-				.y(function(d) {
-					return y(d.ms);
-				});
-
-			var lineContainer = svg.selectAll('.container')
-				.data(dataLineGroup)
-				.enter().append('g')
-				.attr('class', 'container');
-
-			lineContainer.append('path')
-				.attr('class', 'line')
-				.attr('d', function(d) {
-					var newArray = d.dataLine.map(function (d) {
-						return d;
-					});
-					var data = newArray.sort(function (a, b) {
-						return a.activeThread-b.activeThread;
-					});
-					return line(data);
-				})
-				.attr('data-legend',function(d) {
-					return d.group;
-				})
-				.style('stroke', function() {
-				  return p(Math.floor(Math.random() * 20) + 1);
-				});
-
-			/*var legend = svg.append('g')
-						  .attr('class','legend')
-						  .attr('transform','translate(50,30)')
-						  .style('font-size','12px')
-						  .call(d3.legend);
-			*/
-
-
-			/*// Append marker
-			var marker =
-			svg.append('g')
-			.append('rect')
-			  .attr('height', 20)
-			  .attr('width', 100)
-			  .style('display', 'none')
-			  .style('fill', '#FFFFFF')
-			  .style('pointer-events', 'none')
-			  .style('stroke', '#FB5050')
-			  .style('stroke-width', '3px');
-
-			// Add event listeners/handlers
-			lineContainer.on('mouseover', function() {
-			  marker.style('display', 'inherit');
-			}).on('mouseout', function() {
-			  marker.style('display', 'none');
-			}).on('mousemove', function(d) {
-			  var mouse = d3.mouse(this);
-			  marker.attr('x', mouse[0]);
-			  marker.attr('y', mouse[1]);
-			  var group = d3.select(this).datum().group;
-			});*/
-
-			// lineContainer.append('text')
-			// 	.datum(function(d) { return {name: d.group, value: d.dataLine[d.dataLine.length - 1]}; })
-			// 	.attr('transform', function(d) { return 'translate(' + x(d.value.ms) + ',' + y(d.value.activeThread) + ')'; })
-			// 	.attr('x', 3)
-			// 	.attr('dy', '.35em')
-			// 	.text(function(d) { return d.name; });
-	}
-
-	/**
-	 * Generates a line chart
-	 * @param  {Object} d3            [description]
-	 * @param  {Object} lineDomian    [description]
-	 * @param  {Object} dataLineGroup [description]
-	 * @return {this}               [description]
-	 */
-	function lineChartNTvsTime(d3, lineDomian, dataLineGroup) {
-
-		  var margin = {top: 20, right: 80, bottom: 30, left: 50},
-		    width = 960 - margin.left - margin.right,
-		    height = 500 - margin.top - margin.bottom;
-		   var p=d3.scale.category20();
-
-			var max1 = d3.max(lineDomian, function (d) {
-				return +d.time;
-			});
-
-			var max2 = d3.max(lineDomian, function (d) {
-				return +d.activeThread;
-			});
-
-			var min1 = d3.min(lineDomian, function (d) {
-				return +d.time;
-			});
-
-			var min2 = d3.min(lineDomian, function (d) {
-				return +d.activeThread;
-			});
-
-			var x = d3.time.scale()
-			    .range([0, width])
-			    .domain([min1,max1])
-			    .nice();
-
-			var y = d3.scale.linear()
-			    .range([height, 0])
-			    .domain([min2,max2])
-			    .nice();
-
-			var xAxis = d3.svg.axis()
-			    .scale(x)
-			    .orient('bottom');
-
-
-			var yAxis = d3.svg.axis()
-			    .scale(y)
-			    .tickFormat(d3.format('d'))
-			    .orient('left');
-
-
-			var svg = d3.select('.chart-line-2')
-			    	.attr('width', width + margin.left + margin.right)
-				    .attr('height', height + margin.top + margin.bottom)
-				    .append('g')
-				    .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
-
-			svg.append('g')
-				.attr('class', 'x axis')
-				.attr('transform', 'translate(0,' + height + ')')
-				.call(xAxis)
-				.append('text')
-				.attr('y', -12)
-				.attr('x', width)
-				.attr('dy', '.71em')
-				.style('text-anchor', 'end')
-				.text('time in seconds');
-
-			svg.append('g')
-				.attr('class', 'y axis')
-				.call(yAxis)
-				.append('text')
-				.attr('transform', 'rotate(-90)')
-				.attr('y', 6)
-				.attr('dy', '.71em')
-				.style('text-anchor', 'end')
-				.text('no of active threads');
-
-			var line = d3.svg.line()
-				.interpolate(interpolateSankey)
-				.x(function(d) {
-					return x(d.time);
-				})
-				.y(function(d) {
-					return y(d.activeThread);
-				});
-
-			var lineContainer = svg.selectAll('.container')
-				.data(dataLineGroup)
-				.enter().append('g')
-				.attr('class', 'container');
-
-			lineContainer.append('path')
-				.attr('class', 'line')
-				.attr('d', function(d) {
-					return line(d.dataLine);
-				})
-				.style('stroke', function() {
-				  return p(Math.floor(Math.random() * 20) + 1);
-				});
-
-			lineContainer.append('text')
-				.datum(function(d) { return {name: d.group, value: d.dataLine[d.dataLine.length - 1]}; })
-				.attr('transform', function(d) { return 'translate(' + x(d.value.ms) + ',' + y(d.value.activeThread) + ')'; })
-				.attr('x', 3)
-				.attr('dy', '.35em')
-				.text(function(d) { return d.name; });
-
-			function interpolateSankey(points) {
-			  var x0 = points[0][0], y0 = points[0][1], x1, y1, x2,
-			      path = [x0, ',', y0],
-			      i = 0,
-			      n = points.length;
-			  while (++i < n) {
-			    x1 = points[i][0], y1 = points[i][1], x2 = (x0 + x1) / 2;
-			    path.push('C', x2, ',', y0, ' ', x2, ',', y1, ' ', x1, ',', y1);
-			    x0 = x1, y0 = y1;
-			  }
-			  return path.join('');
-			}
-	}
-
 
 
 	/**
@@ -619,7 +149,7 @@ require(['require','jquery', 'jquery.bootstrap', 'plugins/metisMenu/metisMenu','
 				});
 				$(event.target).unbind('click.fetch');
 				$('#side-menu').metisMenu();
-				$('.page-header').text('Version: ' + $(e.target).text());
+				fetchProjectTemplate(event.target.text, data);
 			});
 		}
 
@@ -640,17 +170,103 @@ require(['require','jquery', 'jquery.bootstrap', 'plugins/metisMenu/metisMenu','
 			var version = $($(event.target).parent().parent().parent()).children()[0].text;
 			var build = event.target.text;
 			rest.fetchReport(projectName, version, build,function (data) {
-				require(['mustache'], function (Mustache) {
+				require(['mustache', 'chart'], function (Mustache, Chart) {
 					$.get('/jc/templates/chart.html', function(template) {
 			    	var rendered = Mustache.render(template);
 			    	$('.dynamic-template').html(rendered);
 			    	$('.page-header').text('Build: ' + build);
-			    	renderCharts(data);
+			    	Chart.renderCharts(data);
 				});
 			});
 
 			});
 			$('#side-menu').metisMenu();
+		}
+
+		function fetchProjectTemplate(project, versions) {
+			require(['mustache', 'Chart'], function (Mustache, Chart) {
+					$.get('/jc/templates/project.html', function(template) {
+						rest.fetchSamples(project, function (samples) {
+					    	var rendered = Mustache.render(template, {
+					    		project: project,
+					    		versions: versions,
+					    		samples: samples[0].name
+					    	});
+
+					    	// render the projects template
+					    	$('.dynamic-template').html(rendered);
+					    	var selectedVersions = [];
+					    	// set the compare event
+					    	$('.history-container .compare').click(function () {
+
+					    		$(this).toggleClass('fa-square-o').toggleClass('fa-check-square-o');
+					    		var versionText = $($(this).closest('.panel')).find('.version').text();
+
+					    		// select the panel
+								if($(this).hasClass('fa-check-square-o')) {
+									$('.selection-panel').append('<span class="label label-primary '+ versionText +'">'+ 'version:' + versionText+'</span>&nbsp;');
+									selectedVersions.push(versionText);
+								} else {
+									$('.selection-panel').find('.label.label-primary.'+versionText).remove();
+									selectedVersions.splice($.inArray(versionText, selectedVersions), 1);
+								}
+								console.log(selectedVersions);
+					    	});
+
+					    	$('.dynamic-template .compare-button').click(function () {
+					    		rest.fetchComparisionData(selectedVersions, project, true, function () {
+					  				var chartData = [];
+					  				$.each(arguments, function (index, value){
+					  					chartData.push(value[0][0]);
+					  				});
+					    			Chart.comparisionBarChart(chartData, '.chart-bar');
+					    		});
+					    	});
+
+							$('.history-container').scrollTo('100%', 0, {axis:'x'});
+
+					    	$('.right.carousel-control').click(function() {
+					    		$('.history-container').scrollTo('+=150px', 500, {axis:'x'});
+					    	});
+					    	$('.left.carousel-control').click(function () {
+					    		$('.history-container').scrollTo('-=150px', 500, {axis:'x'});
+					    	});
+					    	$('.search-version').click(function() {
+					    		var versionNo = $('.version-search-text').val();
+					    		$('.history-container').scrollTo($('.version:contains('+versionNo+')'), 500, {axis:'x'});
+					    	});
+
+					    	$('.history-scroll-box .panel-footer').click(function () {
+					    		var version = $($(this).closest('.panel')).find('.version').text(),
+					    			dataBar = [];
+								rest.fetchLatestBuildforVersion(project, version, function (data) {
+									$.get('/jc/templates/versionTable.html', function(template) {
+								    	var rendered = Mustache.render(template, {
+								    		data: data[0].report.jsondata
+								    	});
+								    	$.each(data[0].report.jsondata, function (index, threadGroup) {
+											dataBar.push({
+												name: threadGroup.threadgroup.name,
+												value: threadGroup.threadgroup.averageTime
+											});
+										});
+
+										Chart.comparisionBarChart(dataBar, '.chart-bar');
+								    	$('.version-table').html(rendered);
+									});
+								});
+						    });
+
+						    $('#myTab a').click(function (e) {
+						      	e.preventDefault();
+							  	$(this).tab('show');
+							});
+						});
+				});
+
+
+
+			});
 		}
 
 
@@ -789,6 +405,7 @@ require(['require','jquery', 'jquery.bootstrap', 'plugins/metisMenu/metisMenu','
 	    			fileSection.parent().find('.alert-info').html('Uploaded failed');
 	    			fileSection.parent().find('.alert-info').removeClass('alert-info').addClass('alert-dangers');
 		    	});
+		    	$('.error-template').text(data);
 		    }
 
 		 // Add events
