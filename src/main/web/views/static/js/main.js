@@ -87,7 +87,7 @@ require(['require','jquery', 'jquery.bootstrap', 'plugins/metisMenu/metisMenu','
 	 */
 	$(function() {
 		require(['mustache'], function (Mustache) {
-			$.get('/jc/templates/dashboard.html', function(template) {
+			$.get('/jc/templates/upload.html', function(template) {
 			    var rendered = Mustache.render(template);
 			    $('.dynamic-template').html(rendered);
 			    	setup();
@@ -190,12 +190,24 @@ require(['require','jquery', 'jquery.bootstrap', 'plugins/metisMenu/metisMenu','
 
 		function fetchProjectTemplate(project, versions) {
 			require(['mustache', 'Chart'], function (Mustache, Chart) {
-					$.get('/jc/templates/project.html', function(template) {
+					var projectTemaplate,
+						compareTemplate;
+					$.when(
+						$.get('/jc/templates/project.html', function(template) {
+							projectTemaplate = template;
+						}),
+						$.get('/jc/templates/compare.html', function(template) {
+							compareTemplate = template;
+						})
+					).done(function(){
 						rest.fetchSamples(project, function (samples) {
-					    	var rendered = Mustache.render(template, {
+					    	var rendered = Mustache.render(projectTemaplate, {
 					    		project: project,
 					    		versions: versions,
 					    		samples: samples[0].name
+					    	},
+					    	{
+					    		compare: compareTemplate
 					    	});
 
 					    	// render the projects template
