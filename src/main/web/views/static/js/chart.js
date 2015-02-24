@@ -453,7 +453,6 @@
 						  return color(d.group);
 						});
 
-
 					var sampleNames = [];
 
 					sampleNames = dataLineGroup.map(function (d) {

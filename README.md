@@ -10,7 +10,7 @@ The front end is built using JQuery and uses REST API to communicate with the No
 
 A REST server is created to accept *.jtl/*.xml files and use an existing xsl stylesheet to populate data in mongodb. This data will be used to display charts in the frontend /html page.
 
-The following Charts are generated using d3.js
+<h1>The following Charts are generated using d3.js</h1>h1>
 
 1) Average Response times vs Samples (Bar Chart).
 
