@@ -4,6 +4,8 @@
  * For details, see http://www.apache.org/licenses/LICENSE-2.0.
  */
 
+.top-buffer { margin-top:20px; }
+
 body {
     background-color: #f8f8f8;
 }

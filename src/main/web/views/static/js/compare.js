@@ -99,6 +99,8 @@
 		    	// set the compare event
 		    	require(['mustache', 'chart'], function (Mustache, Chart) {
 		    		// select the term
+
+		    		$('.compare-panel').hide();
 			    	$('.history-container .compare').click(function () {
 
 			    		$(this).toggleClass('fa-square-o').toggleClass('fa-check-square-o');
@@ -113,6 +115,9 @@
 							selectedTerm.splice($.inArray(termText, selectedTerm), 1);
 						}
 						console.log(selectedTerm);
+						if(selectedTerm.length > 0) {
+							$('.compare-panel').show();
+						}
 			    	});
 
 			    	// compare the terms

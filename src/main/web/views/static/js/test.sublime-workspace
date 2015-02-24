@@ -4,6 +4,14 @@
 		"selected_items":
 		[
 			[
+				"selec",
+				"selectedTerm"
+			],
+			[
+				"ver",
+				"version"
+			],
+			[
 				"Upl",
 				"Upload"
 			],
@@ -211,14 +219,6 @@
 	},
 	"buffers":
 	[
-		{
-			"file": "upload.js",
-			"settings":
-			{
-				"buffer_size": 11483,
-				"line_ending": "Unix"
-			}
-		}
 	],
 	"build_system": "Packages/User/advk.sublime-build",
 	"command_palette":
@@ -287,25 +287,33 @@
 		"/Users/pradeepv/personal/git/JMeter-Charts/src/main/web/views/dynamic",
 		"/Users/pradeepv/personal/git/JMeter-Charts/src/main/web/views/dynamic/dashboard",
 		"/Users/pradeepv/personal/git/JMeter-Charts/src/main/web/views/static",
+		"/Users/pradeepv/personal/git/JMeter-Charts/src/main/web/views/static/css",
 		"/Users/pradeepv/personal/git/JMeter-Charts/src/main/web/views/static/js"
 	],
 	"file_history":
 	[
+		"/Users/pradeepv/personal/git/JMeter-Charts/src/main/web/views/dynamic/dashboard/project.html",
+		"/Users/pradeepv/personal/git/JMeter-Charts/src/main/web/views/static/css/main.css",
+		"/Users/pradeepv/personal/git/JMeter-Charts/src/main/web/views/dynamic/dashboard/compare.html",
+		"/Users/pradeepv/personal/git/JMeter-Charts/src/main/web/views/static/js/compare.js",
+		"/Users/pradeepv/personal/git/JMeter-Charts/src/main/web/views/dynamic/dashboard/version.html",
 		"/Users/pradeepv/personal/git/JMeter-Charts/src/main/web/views/static/js/main.js",
 		"/Users/pradeepv/personal/git/JMeter-Charts/src/main/web/views/static/js/chart.js",
+		"/Users/pradeepv/personal/git/JMeter-Charts/src/main/web/views/dynamic/dashboard/chart.html",
+		"/Users/pradeepv/personal/git/JMeter-Charts/src/main/web/views/static/js/rest.js",
+		"/Users/pradeepv/personal/git/JMeter-Charts/src/main/web/views/dynamic/dashboard/versions.html",
+		"/Users/pradeepv/personal/git/JMeter-Charts/src/main/web/views/static/js/comparison1",
+		"/Users/pradeepv/Library/Application Support/Sublime Text 3/Packages/JSHint Gutter/.jshintrc",
+		"/Users/pradeepv/Library/Application Support/Sublime Text 3/Packages/User/SublimeLinter.sublime-settings",
+		"/Users/pradeepv/personal/git/JMeter-Charts/src/main/web/views/dynamic/dashboard/index.html",
 		"/Users/pradeepv/personal/git/JMeter-Charts/src/main/web/views/static/js/upload.js",
-		"/Users/pradeepv/personal/git/JMeter-Charts/src/main/web/views/static/css/main.css",
 		"/Users/pradeepv/personal/git/JMeter-Charts/node_modules/unit.js/node_modules/noder.io/browser/main.js",
 		"/Users/pradeepv/personal/git/JMeter-Charts/node_modules/multer/node_modules/busboy/lib/main.js",
 		"/Users/pradeepv/personal/git/JMeter-Charts/node_modules/connect-busboy/node_modules/busboy/lib/main.js",
 		"/Users/pradeepv/personal/git/JMeter-Charts/node_modules/handlebars/node_modules/uglify-js/lib/mozilla-ast.js",
 		"/Users/pradeepv/personal/git/JMeter-Charts/manifest.webapp",
-		"/Users/pradeepv/personal/git/JMeter-Charts/src/main/web/views/dynamic/dashboard/chart.html",
 		"/Users/pradeepv/personal/git/JMeter-Charts/README.md",
-		"/Users/pradeepv/personal/git/JMeter-Charts/src/main/web/views/dynamic/dashboard/project.html",
-		"/Users/pradeepv/personal/git/JMeter-Charts/src/main/web/views/static/js/rest.js",
 		"/Users/pradeepv/personal/git/JMeter-Charts/src/main/charts-server.js",
-		"/Users/pradeepv/personal/git/JMeter-Charts/src/main/web/views/dynamic/dashboard/index.html",
 		"/Users/pradeepv/personal/git/JMeter-Charts/node_modules/.bin/mocha",
 		"/Users/pradeepv/personal/git/JMeter-Charts/Apache-License-2.0.txt",
 		"/Users/pradeepv/personal/git/JMeter-Charts/src/main/web/views/dynamic/dashboard/dashboard.html",
@@ -411,14 +419,7 @@
 		"/Users/pradeepv/git/medman/com.orchestral.medman.web/META-INF/com.yahoo.yui3/medman-header.json",
 		"/Users/pradeepv/git/medman/com.orchestral.medman.web/MedMan.launch",
 		"/Users/pradeepv/git/medman/com.orchestral.medman.web/src/main/web/medman-common-templates/meta/medman-common-templates.json",
-		"/Users/pradeepv/git/medman/com.orchestral.medman.web/web/medman-edit-page-view/medman-edit-page-view.js",
-		"/Users/pradeepv/git/medman/com.orchestral.medman.web/.sass-cache/6b3078293ef79bad83088eb0cd5e267fa3cfd770/medman-edit-page-view.scssc",
-		"/Users/pradeepv/git/medman/com.orchestral.medman.web/.sass-cache/1960866b74500eaa2a065666a3ce03e455ea2c69/medman-edit-field-plugin.scssc",
-		"/Users/pradeepv/git/medman/com.orchestral.medman.web/src/test/yuitest/medman-full-review-test.js",
-		"/Users/pradeepv/git/medman/com.orchestral.medman.web/src/test/yuitest/medman-medication-prescription-view-test.js",
-		"/Users/pradeepv/git/medman/com.orchestral.medman.web/src/main/web/medman-full-review/meta/medman-full-review.json",
-		"/Users/pradeepv/git/acceptance-tests/src/test/java/com/orchestral/medman/acceptance/collaborator/ScriptMedicationList.java",
-		"/Users/pradeepv/git/acceptance-tests/src/test/resources/com/orchestral/medman/acceptance/full_review/save_and_complete_full_review.feature"
+		"/Users/pradeepv/git/medman/com.orchestral.medman.web/web/medman-edit-page-view/medman-edit-page-view.js"
 	],
 	"find":
 	{
@@ -437,6 +438,32 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"term",
+			"fa-",
+			"morris",
+			"container",
+			"append",
+			"barChart",
+			"comparisionBarChart",
+			"compare",
+			"version",
+			"versionNo",
+			"version",
+			"term",
+			"version",
+			"versionText",
+			"selectedVersions",
+			"project",
+			"click.fetch",
+			"require",
+			"fetchProjectTemplate",
+			"addMenu",
+			"versions",
+			"version",
+			"dashboard",
+			"onSuccess",
+			"_startUpload",
+			"listGroup",
 			"_fetchProjectDropDown",
 			"chart",
 			"upload",
@@ -538,33 +565,7 @@
 			"var promises = [];",
 			"handleCurrentListOfMedications",
 			"Y.Promise.all",
-			"return",
-			"		/**\n		* Fetches\n		*	1) latestFinalFullReview\n		*	2) LatestMedPresTx\n		*\n\n		*\n		* @private\n		* @method _fetchMetaData\n		*\n		*/\n		_fetchMetaData: function () {\n			var _this = this;\n			return new Y.Promise(function (resolve) {\n\n					// if empty return an empty promise which is resolved\n					if(_this.activeListOfMedications && _this.activeListOfMedications.isEmpty()) {\n						resolve(_this.fetchLatestFinalFullReview());\n					} else {\n						resolve();\n					}\n				}).then(function () {\n					return _this.fetchLatestMedPresTx();\n				});\n\n		},",
-			"var _this = this,",
-			"computeMetaData",
-			"	    	// initialize data\n	    	activeListOfMedications = data[0];\n	    	latestFinalFullReview = data[1];\n	    	latestMedPresTx = data[2];",
-			"}\n",
-			"draft",
-			"/**\n		 * The patient id set from the frontend should be used to .\n		 *\n		 * @attribute patientId\n		 * @type {object}\n		 */",
-			"appWorker.fetchActiveMedication",
-			"	Y.Mock.expect(mockFullReview, {\n				method: 'set',\n				args: [Y.Mock.Value.String, Y.Mock.Value.Any],\n				run: function() {\n					return;\n				}\n			});",
-			"response",
-			"fullReviewList",
-			"Fetch latest final full review",
-			"					var statementData = _this.appWorker.statementData;\n",
-			" Fetch latest final full revie",
-			" Fetch latest final full review",
-			"FullRview",
-			"set('patientId'",
-			"			\n",
-			"\n	_fetchDraftFullReview",
-			"		\n",
-			"default",
-			"		 \n",
-			"* @readOnly",
-			" \n",
-			"		 \n",
-			"\n		 "
+			"return"
 		],
 		"highlight": true,
 		"in_selection": false,
@@ -590,97 +591,8 @@
 	"groups":
 	[
 		{
-			"selected": 0,
 			"sheets":
 			[
-				{
-					"buffer": 0,
-					"file": "upload.js",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 11483,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								6154,
-								6154
-							]
-						],
-						"settings":
-						{
-							"BracketHighlighterBusy": false,
-							"bh_regions":
-							[
-								"bh_angle",
-								"bh_angle_center",
-								"bh_angle_open",
-								"bh_angle_close",
-								"bh_angle_content",
-								"bh_square",
-								"bh_square_center",
-								"bh_square_open",
-								"bh_square_close",
-								"bh_square_content",
-								"bh_default",
-								"bh_default_center",
-								"bh_default_open",
-								"bh_default_close",
-								"bh_default_content",
-								"bh_single_quote",
-								"bh_single_quote_center",
-								"bh_single_quote_open",
-								"bh_single_quote_close",
-								"bh_single_quote_content",
-								"bh_c_define",
-								"bh_c_define_center",
-								"bh_c_define_open",
-								"bh_c_define_close",
-								"bh_c_define_content",
-								"bh_round",
-								"bh_round_center",
-								"bh_round_open",
-								"bh_round_close",
-								"bh_round_content",
-								"bh_tag",
-								"bh_tag_center",
-								"bh_tag_open",
-								"bh_tag_close",
-								"bh_tag_content",
-								"bh_regex",
-								"bh_regex_center",
-								"bh_regex_open",
-								"bh_regex_close",
-								"bh_regex_content",
-								"bh_curly",
-								"bh_curly_center",
-								"bh_curly_open",
-								"bh_curly_close",
-								"bh_curly_content",
-								"bh_double_quote",
-								"bh_double_quote_center",
-								"bh_double_quote_open",
-								"bh_double_quote_close",
-								"bh_double_quote_content",
-								"bh_unmatched",
-								"bh_unmatched_center",
-								"bh_unmatched_open",
-								"bh_unmatched_close",
-								"bh_unmatched_content"
-							],
-							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
-							"translate_tabs_to_spaces": false
-						},
-						"translation.x": 0.0,
-						"translation.y": 2607.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 0,
-					"type": "text"
-				}
 			]
 		}
 	],
