@@ -31,15 +31,19 @@ define(['jquery'], function($) {
             $.when($.getJSON('/jc/project/'+ project +'/samples')).done(callback);
         },
 
-        fetchComparisionData: function (compareArray, project, isVersion, callback) {
+        fetchComparisionData: function (compareArray, project, version, callback) {
             var deferends = [];
-            if(isVersion) {
+            if(!version) {
                 $.each(compareArray, function (index, value) {
                     deferends.push($.getJSON('/jc/project/'+project+'/version/'+ value +'/latest/build'));
                 });
                 $.when.apply($, deferends).done(callback);
+            } else {
+                $.each(compareArray, function (index, value) {
+                    deferends.push($.getJSON('/jc/project/'+ project +'/version/'+ version +'/build/' + value));
+                });
+                $.when.apply($, deferends).done(callback);
             }
         }
-
     };
 });

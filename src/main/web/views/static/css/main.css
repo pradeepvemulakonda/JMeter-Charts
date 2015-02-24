@@ -296,25 +296,25 @@ table.dataTable thead .sorting:after {
 }
 
 .huge {
-    font-size: 40px;
+    font-size: 20px;
 }
 
 .panel-green {
-    border-color: #5cb85c;
+    border-color: #375163;
 }
 
 .panel-green .panel-heading {
-    border-color: #5cb85c;
+    border-color: #4f738e;
     color: #fff;
-    background-color: #5cb85c;
+    background-color: #4f738e;
 }
 
 .panel-green a {
-    color: #5cb85c;
+    color: #4f738e;
 }
 
 .panel-green a:hover {
-    color: #3d8b3d;
+    color: #375163;
 }
 
 .panel-red {

@@ -41,14 +41,14 @@
 						});
 
 						// render a bar chart
-						Chart.barChart(dataBar, '#morris-bar-chart');
+						Chart.barChart(dataBar, '.bar-chart');
 						// render a bar chart
-						Chart.lineChart(lineDomian, dataLineGroup);
+						Chart.lineChart(lineDomian, dataLineGroup, '.line-chart');
 						//render at vs time
-						Chart.lineChartNTvsTime(lineDomian, dataLineGroup);
+						Chart.lineChartNTvsTime(lineDomian, dataLineGroup, '.line-chart-2');
 			},
 
-			comparisionBarChart: function (chartData) {
+			comparisionBarChart: function (chartData, version, container) {
 				var data = {
 					version: [],
 					sample: []
@@ -57,24 +57,29 @@
 
 
 				$.each(chartData, function(index, result){
-					data.version.push(result.version);
-						$.each(result.report.jsondata, function(index, json) {
-							if(sample[json.threadgroup.name]){
-								sample[json.threadgroup.name].push(json.threadgroup.averageTime);
-							} else{
-								sample[json.threadgroup.name] = [];
-					 			sample[json.threadgroup.name].push(json.threadgroup.averageTime);
-							}
-						});
+					if(!version) {
+						data.version.push(result.version);
+					} else {
+						data.version.push(result.build);
+					}
 
-						for(var key in sample) {
-							if(sample.hasOwnProperty(key)) {
-								data.sample.push({
-									name: key,
-									value: sample[key]
-								});
-							}
+					$.each(result.report.jsondata, function(index, json) {
+						if(sample[json.threadgroup.name]){
+							sample[json.threadgroup.name].push(json.threadgroup.averageTime);
+						} else{
+							sample[json.threadgroup.name] = [];
+				 			sample[json.threadgroup.name].push(json.threadgroup.averageTime);
 						}
+					});
+
+					for(var key in sample) {
+						if(sample.hasOwnProperty(key)) {
+							data.sample.push({
+								name: key,
+								value: sample[key]
+							});
+						}
+					}
 				});
 
 				require(['d3', 'tip'], function (d3, tip) {
@@ -101,7 +106,8 @@
 					    .orient('left')
 					    .tickFormat(d3.format('.2s'));
 
-					var svg = d3.select('.chart-bar')
+					var svg = d3.select(container)
+						.append('svg')
 					    .attr('width', width + margin.left + margin.right)
 					    .attr('height', height + margin.top + margin.bottom)
 					  .append('g')
@@ -222,7 +228,8 @@
 					    return '<strong>Sample:</strong> <span style="color:white">' + d.name + '</span>';
 					  });
 
-					var chart = d3.select('.chart-bar')
+					var chart = d3.select(container)
+						.append('svg')
 					    .attr('width', width + margin.left + margin.right)
 					    .attr('height', height + margin.top + margin.bottom)
 					    .append('g')
@@ -286,7 +293,7 @@
 
 					  bar.append('text')
 					      .attr('x', function(d) {
-					    	  return x(d.name) + barWidth/2;
+					    	  return x(d.name) + barWidth/2 -12;
 					      })
 					      .attr('y', function(d) { return y(d.value) + 3; })
 					      .attr('dy', '.75em')
@@ -340,7 +347,7 @@
 			 * @param  {Object} dataLineGroup [description]
 			 * @return {this}               [description]
 			 */
-			lineChart: function(lineDomian, dataLineGroup) {
+			lineChart: function(lineDomian, dataLineGroup, container) {
 
 				require(['d3', 'tip'], function (d3, tip) {
 					var color = d3.scale.ordinal()
@@ -392,7 +399,8 @@
 					    		return '<strong>Sample:</strong> <span style="color:white">' + d.group + '</span>';
 					  		});
 
-					var svg = d3.select('.chart-line')
+					var svg = d3.select(container)
+							.append('svg')
 					    	.attr('width', width + margin.left + margin.right)
 						    .attr('height', height + margin.top + margin.bottom)
 						    .append('g')
@@ -509,7 +517,7 @@
 			 * @param  {Object} dataLineGroup [description]
 			 * @return {this}               [description]
 			 */
-			lineChartNTvsTime: function (lineDomian, dataLineGroup) {
+			lineChartNTvsTime: function (lineDomian, dataLineGroup, container) {
 				require(['d3', 'tip'], function (d3, tip) {
 				var color = d3.scale.ordinal()
 					    .range(['darkcyan', 'darkgoldenrod', 'darkorange', 'blueviolet', 'greenyellow', 'indianred', 'thistle', 'steelblue', 'skyblue', 'teal', 'wheat', 'purple', 'peru', 'lightpink', 'lavender', 'dimgray', 'chocolate', 'cadetblue', 'mediumturquoise', 'olive', 'papayawhip', 'rosybrown']);
@@ -570,7 +578,8 @@
 					    .orient('left');
 
 
-					var svg = d3.select('.chart-line-2')
+					var svg = d3.select(container)
+							.append('svg')
 					    	.attr('width', width + margin.left + margin.right)
 						    .attr('height', height + margin.top + margin.bottom)
 						    .append('g')

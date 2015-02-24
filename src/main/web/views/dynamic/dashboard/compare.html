@@ -1,61 +1,62 @@
-<div class="row version-search-container">
+<div class="row term-search-container">
     <div class="col-lg-3">
       <div class="input-group">
         <span class="input-group-btn">
-          <button class="search-version btn btn-default" type="button">Go!</button>
+          <button class="search-term btn btn-default" type="button">Go!</button>
         </span>
-        <input type="text" class="version-search-text form-control" placeholder="Search for...">
+        <input type="text" class="term-search-text form-control" placeholder="Search for...">
       </div><!-- /input-group -->
     </div><!-- /.col-lg-3 -->
+</div>
+<div class="row">
+  <nav class="history-scroll-box carousel">
+    <div class="history-container">
+        <ol class="list-inline">
+          {{#terms}}
+              <li>
+                <div class="panel panel-green">
+                    <div class="panel-heading">
+                        <div class="row">
+                            <div class="col-xs-4">
+                                <div class="huge">{{type}}</div>
+                            </div>
+                            <div class="col-xs-4 text-right">
+                                <div class="term huge">{{.}}</div>
+                            </div>
+                           <div class="col-xs-4 text-right">
+                                <i class="fa fa-square-o compare"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <a>
+                        <div class="panel-footer">
+                            <span class="pull-left">View Details</span>
+                            <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                            <div class="clearfix"></div>
+                        </div>
+                    </a>
+                </div>
+              </li>
+          {{/terms}}
+        </ol>
+    </div>
+    {{#show}}
+      <a class="left carousel-control" href="#carousel-example-generic" role="button" data-slide="prev">
+        <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+        <span class="sr-only">Previous</span>
+      </a>
+      <a class="right carousel-control" href="#carousel-example-generic" role="button" data-slide="next">
+        <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+        <span class="sr-only">Next</span>
+      </a>
+    {{/show}}
+  </nav>
 </div>
 <div class="row">
   <div class="panel panel-info">
     <div class="panel-heading"><h3 class="panel-title">Reviews being compared</h3></div>
       <div class="panel-body">
         <div class="selection-panel">
-          <div class="row">
-            <nav class="history-scroll-box carousel">
-              <div class="history-container">
-                  <ol class="list-inline">
-                    {{#versions}}
-                        <li>
-                          <div class="panel panel-green">
-                              <div class="panel-heading">
-                                  <div class="row">
-                                      <div class="col-xs-3">
-                                          <i class="fa fa-check fa-5x"></i>
-                                      </div>
-                                      <div class="col-xs-7 text-right">
-                                          <div class="version huge">{{.}}</div>
-                                          <div>Success %</div>
-                                      </div>
-                                     <div class="col-xs-2 text-right">
-                                          <i class="fa fa-square-o fa-2x compare"></i>
-                                      </div>
-                                  </div>
-                              </div>
-                              <a>
-                                  <div class="panel-footer">
-                                      <span class="pull-left">View Details</span>
-                                      <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
-                                      <div class="clearfix"></div>
-                                  </div>
-                              </a>
-                          </div>
-                        </li>
-                    {{/versions}}
-                  </ol>
-              </div>
-              <a class="left carousel-control" href="#carousel-example-generic" role="button" data-slide="prev">
-                <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
-                <span class="sr-only">Previous</span>
-              </a>
-              <a class="right carousel-control" href="#carousel-example-generic" role="button" data-slide="next">
-                <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
-                <span class="sr-only">Next</span>
-              </a>
-            </nav>
-          </div>
         </div>
       </div>
   <div class="panel-footer">
@@ -64,7 +65,6 @@
   </div>
 </div>
 <div class="row">
-  <div class="bar-chart-version">
-    <svg class="chart-bar"></svg>
+  <div class="bar-chart-term">
   </div>
 </div>
