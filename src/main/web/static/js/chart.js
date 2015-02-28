@@ -244,9 +244,6 @@
 						 sampleNames.push(data.name);
 					 });
 
-					 var p=d3.scale.category20();
-
-
 					  x.domain(dataBar.map(function(d) { return d.name; }));
 					  y.domain([0, d3.max(dataBarValue)]);
 
@@ -299,6 +296,11 @@
 					      .attr('dy', '.75em')
 					      .attr('class', 'bar-text')
 					      .text(function(d) { return Math.floor(d.value); });
+					  d3.select('.bar-chart .clear').
+						on('click', function () {
+							d3.select('.bar-chart').selectAll('g rect').style('opacity', '0');
+							d3.select('.bar-chart').selectAll('g text').style('opacity', '0');
+						});
 
 
 					  var legendSVG = d3.select('.chart-bar-legend')
@@ -315,11 +317,12 @@
 					      .on('click', function(d){
 						        // Determine if current line is visible
 						        // Hide or show the elements
-						        d3.select('.chart-bar').selectAll('g rect').each(function(h){
+						        d3.select('.bar-chart').selectAll('g rect').each(function(h){
 						        	if(h.name === d) {
 						        		var rect = d3.select(this);
 						        		rect.transition()
   										.style('opacity', rect.style('opacity') === '0'? '1' : '0');
+  										$(this).next().toggle();
 						        	}
 						        });
 						   });
@@ -469,7 +472,7 @@
 
 					d3.select('.line-chart .clear').
 					on('click', function () {
-						d3.select('.chart-line').selectAll('g path').style('opacity', '0');
+						d3.select('.line-chart').selectAll('g path').style('opacity', '0');
 					});
 
 					var legendSVG = d3.select('.chart-line-legend')
@@ -486,7 +489,7 @@
 					      .on('click', function(d){
 						        // Determine if current line is visible
 						        // Hide or show the elements
-						        d3.select('.chart-line').selectAll('g path').each(function(){
+						        d3.select('.line-chart').selectAll('g path').each(function(){
 						        	if($(this).data('legend') === d) {
 						        		var rect = d3.select(this);
 						        		rect.transition()
@@ -647,7 +650,7 @@
 
 					d3.select('.line-chart-2 .clear').
 					on('click', function () {
-						d3.select('.chart-line-2').selectAll('g path').style('opacity', '0');
+						d3.select('.line-chart-2').selectAll('g path').style('opacity', '0');
 					});
 
 					var legendSVG = d3.select('.chart-line-2-legend')
@@ -664,7 +667,7 @@
 					      .on('click', function(d){
 						        // Determine if current line is visible
 						        // Hide or show the elements
-						        d3.select('.chart-line-2').selectAll('g path').each(function(){
+						        d3.select('.line-chart-2').selectAll('g path').each(function(){
 						        	if($(this).data('legend') === d) {
 						        		var rect = d3.select(this);
 						        		rect.transition()

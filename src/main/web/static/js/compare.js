@@ -114,9 +114,10 @@
 							$('.selection-panel').find('.label.label-primary.'+termText).remove();
 							selectedTerm.splice($.inArray(termText, selectedTerm), 1);
 						}
-						console.log(selectedTerm);
 						if(selectedTerm.length > 0) {
 							$('.compare-panel').show();
+						} else {
+							$('.compare-panel').hide();
 						}
 			    	});
 

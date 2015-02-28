@@ -148,6 +148,9 @@ require(['require','jquery', 'jquery.bootstrap', 'plugins/metisMenu/metisMenu','
 			Upload.init();
 		});
 
+		// hide the error
+		$('error-template').hide();
+
 		rest.fetchProjects(function( data) {
 			var node = $(document.createDocumentFragment());
 			data = data.sort();

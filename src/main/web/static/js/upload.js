@@ -57,6 +57,7 @@
 		    		listGroup = uploadFileSection.find('.list-group');
 			        listGroup.empty();
 			        listGroup.append('<em>nothing selected</em>');
+			        $('.error-template').hide();
 			    });
 
 			    // setup typeahead
@@ -179,8 +180,9 @@
 		            error: function(jqXHR, textStatus, errorThrown)
 		            {
 		            	// Handle errors here
+		            	var err = jqXHR.responseText;
 		            	console.log(errorThrown);
-		            	self._onFailedUpload(null, textStatus);
+		            	self._onFailedUpload(null, err);
 		            	// STOP LOADING SPINNER
 		            }
 		        });
@@ -198,6 +200,7 @@
 				var uploadFileSection = $('.js-upload-files'),
 				listGroup = uploadFileSection.find('.list-group'),
 				listFiles = $(listGroup).find('.file-name');
+				$('.error-template').hide();
 				$.each(listFiles, function (index, fileSection) {
 					fileSection = $(fileSection);
 						$.each(data, function (index2, fileStatus) {
@@ -235,6 +238,7 @@
 	    			fileSection.parent().find('.alert-info').removeClass('alert-info').addClass('alert-dangers');
 		    	});
 		    	$('.error-template').text(data);
+		    	$('.error-template').show();
 		    },
 
 		    _createBloodHoundProvider: function (url) {
