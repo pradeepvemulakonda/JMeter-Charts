@@ -12,23 +12,24 @@ A REST server is created to accept *.jtl/*.xml files and use an existing xsl sty
 
 <h1>The following Charts are generated using d3.js</h1>h1>
 
-1) Average Response times vs Samples (Bar Chart).
+<ol>
+<li>Average Response times vs Samples (Bar Chart).</li>
 
-2) Average Response times vs No of Active Threads (Line Chart).
+<li>Average Response times vs No of Active Threads (Line Chart).</li>
 
-3) Average Number of Active Threads vs Execution time(Line Chart).
+<li>Average Number of Active Threads vs Execution time(Line Chart).</li>
 
-4) Compare Versions : - Average Response times vs Samples.
+<li>Compare Versions : - Average Response times vs Samples.</li>
 
-5) In all Charts selecting the legend(Sample) will toggle the chart element(bar or line) display(show or hide).
-
+<li>In all Charts selecting the legend(Sample) will toggle the chart element(bar or line) display(show or hide).</li>
+</ol>
 Display the latest build and project on login.
-
+<p>
 * Provide support to Upload JTL/XML files from frontend.
 * Drag and drop result files(JTL/XML) and upload.
 * Using Requirejs for dependancy management.
 * Following AMD module structure for js files.
-
+</p>
 Nodejs server uses Express and MongodDB driver.
 
 * Transaformation of XML works only on Unix/Linux as it requires XSLT libraries.
