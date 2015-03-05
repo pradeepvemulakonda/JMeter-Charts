@@ -98,6 +98,7 @@ require(['require','jquery', 'jquery.bootstrap', 'plugins/metisMenu/metisMenu','
 			    $('.dynamic-template').html(rendered);
 			    	setup();
 			    	addEvents();
+
 			});
 		});
 	});
@@ -149,7 +150,7 @@ require(['require','jquery', 'jquery.bootstrap', 'plugins/metisMenu/metisMenu','
 		});
 
 		// hide the error
-		$('error-template').hide();
+		$('.error-template').hide();
 
 		rest.fetchProjects(function( data) {
 			var node = $(document.createDocumentFragment());

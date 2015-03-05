@@ -70,6 +70,7 @@ router.get('/project/:project/samples', function(req, res) {
    	var project = req.params.project;
    	var query = [
 			        { $match : { name : project}},
+              { $sort: {created_at: -1}},
 			        { $project :
 			            { _id: 0,
 			              name: '$report.jsondata.threadgroup.name'}

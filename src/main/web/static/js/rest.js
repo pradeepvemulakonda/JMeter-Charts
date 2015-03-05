@@ -31,6 +31,48 @@ define(['jquery'], function($) {
             $.when($.getJSON('/jc/project/'+ project +'/samples')).done(callback);
         },
 
+        fetchSelectedSamples: function (project, callback) {
+            $.when($.getJSON('/jc/project/'+ project +'/samples/selected')).done(callback);
+        },
+
+        setSamples: function (project, samples, callback) {
+            var data = new FormData();
+            data.append('project', project);
+            data.append('samples', samples);
+            $.ajax({
+                    url: 'jc/project/'+project+'/samples/selected',
+                    type: 'POST',
+                    data: data,
+                    cache: false,
+                    dataType: 'json',
+                    processData: false, // Don't process the files
+                    contentType: false, // Set content type to false as jQuery will
+                                        // tell the server its a query string
+                                        // request
+                    success: function(data)
+                    {
+                        if(typeof data.error === 'undefined')
+                        {
+                            // Success so call function to process the form
+                            callback(null, data);
+                        }
+                        else
+                        {
+                            // Handle errors here
+                            callback(null, data);
+                        }
+                    },
+                    error: function(jqXHR, textStatus, errorThrown)
+                    {
+                        // Handle errors here
+                        var err = jqXHR.responseText;
+                        console.log(errorThrown);
+                        callback(err);
+                        // STOP LOADING SPINNER
+                    }
+                });
+        },
+
         fetchComparisionData: function (compareArray, project, version, callback) {
             var deferends = [];
             if(!version) {

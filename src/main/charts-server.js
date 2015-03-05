@@ -26,7 +26,8 @@ var express = require('express'),
   config,
   templateRouter = require('./routes/template.js'),
   projectRouter = require('./routes/project.js'),
-  uploadRouter = require('./routes/upload.js');
+  uploadRouter = require('./routes/upload.js'),
+  samplesRouter = require('./routes/samples.js');
 
 /**
  * Chart server class used to create a chart server
@@ -89,6 +90,9 @@ ChartsServer = function(conf) {
 	app.use('/jc/', projectRouter);
 	// set router for file uploads
 	app.use('/jc/', uploadRouter);
+	// set router for file uploads
+	app.use('/jc/', samplesRouter);
+
 
 	/**
 	 * Default method that is called if no other route handled the request.

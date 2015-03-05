@@ -164,8 +164,9 @@
 		            contentType: false, // Set content type to false as jQuery will
 										// tell the server its a query string
 										// request
-		            success: function(data)
+		            success: function(data,  textStatus, jqXHR)
 		            {
+
 		            	if(typeof data.error === 'undefined')
 		            	{
 		            		// Success so call function to process the form
@@ -237,7 +238,7 @@
 	    			fileSection.parent().find('.alert-info').html('Uploaded failed');
 	    			fileSection.parent().find('.alert-info').removeClass('alert-info').addClass('alert-dangers');
 		    	});
-		    	$('.error-template').text(data);
+		    	$('.error-template').text(data? data: 'upload failed because of invalid xml result file');
 		    	$('.error-template').show();
 		    },
 

@@ -13,24 +13,43 @@
 			 * @public
 			 */
 			fetchAndRenderProjectTemplate: function (project, versions) {
-				var self = this;
+				var self = this,
+					samplesProcessed = [],
+					selectedSamples;
 				require(['mustache'], function (Mustache) {
 					var projectTemaplate,
 						compareTemplate;
 					$.when(
-						$.get('/jc/templates/version.html', function(template) {
+						$.get('/jc/templates/project.html', function(template) {
 							projectTemaplate = template;
 						}),
 						$.get('/jc/templates/compare.html', function(template) {
 							compareTemplate = template;
+						}),
+						$.get('jc/project/'+project+'/samples/selected', function(selectedSampleObject) {
+							selectedSamples = selectedSampleObject;
 						})
 					).done(function(){
 						rest.fetchSamples(project, function (samples) {
+							samples = samples[0].name;
+							samplesProcessed = samples.map(function (name) {
+								return {
+									name: name
+								};
+							});
+							var samplesSelected = selectedSamples.samples ? selectedSamples.samples.slice(1, -1).replace(/"/g,'').split(',') : [];
+							$.each(samplesProcessed, function (index, psample) {
+								$.each(samplesSelected, function (index, ssample) {
+									if(psample.name === ssample) {
+										psample.checked = 'checked';
+									}
+								});
+							});
 					    	var rendered = Mustache.render(projectTemaplate, {
 					    		project: project,
 					    		terms: versions,
 					    		type: 'version',
-					    		samples: samples[0].name,
+					    		samples: samplesProcessed,
 					    		show: (versions.length > 8)
 					    	},
 					    	{
@@ -40,6 +59,7 @@
 					    	// render the projects template
 					    	$('.dynamic-template').html(rendered);
 					    	self._registerEventsAfterLoad(project);
+					    	self.setupSamples(project);
 						});
 					});
 				});
@@ -58,32 +78,43 @@
 			fetchAndRenderVersionTemplate: function (project, version, builds) {
 				var self = this;
 				require(['mustache'], function (Mustache) {
-					var projectTemaplate,
+					var versionTemplate,
 						compareTemplate;
 					$.when(
 						$.get('/jc/templates/version.html', function(template) {
-							projectTemaplate = template;
+							versionTemplate = template;
 						}),
 						$.get('/jc/templates/compare.html', function(template) {
 							compareTemplate = template;
 						})
 					).done(function(){
-						rest.fetchSamples(project, function (samples) {
-					    	var rendered = Mustache.render(projectTemaplate, {
-					    		project: project,
-					    		terms: builds,
-					    		type: 'build',
-					    		samples: samples[0].name,
-					    		show: (builds.length > 8)
-					    	},
-					    	{
-					    		// partial tempalate
-					    		compare: compareTemplate
-					    	});
-					    	// render the projects template
-					    	$('.dynamic-template').html(rendered);
-					    	self._registerEventsAfterLoad(project, version);
-						});
+				    	var rendered = Mustache.render(versionTemplate, {
+				    		project: project,
+				    		terms: builds,
+				    		type: 'build',
+				    		show: (builds.length > 8)
+				    	},
+				    	{
+				    		// partial tempalate
+				    		compare: compareTemplate
+				    	});
+				    	// render the projects template
+				    	$('.dynamic-template').html(rendered);
+				    	self._registerEventsAfterLoad(project, version);
+					});
+				});
+			},
+
+			setupSamples: function (project) {
+				var setSamples = [];
+				$('.set-samples').click(function () {
+					$('.samples input:checked').each(function () {
+						setSamples.push($(this).attr('value'));
+					});
+					rest.setSamples(project, JSON.stringify(setSamples), function (error) {
+						if(error) {
+							$('error-template').html(error);
+						}
 					});
 				});
 			},
@@ -172,23 +203,43 @@
 
 			    		if(version) {
 							rest.fetchReport(project, version, term, function (data) {
-								require(['mustache', 'chart'], function (Mustache, Chart) {
-									$.get('/jc/templates/chart.html', function(template) {
-							    		var rendered = Mustache.render(template);
-							    		$('.perf-charts').html(rendered);
-							    		$('.page-header').text('Build: ' + term);
-							    		Chart.renderCharts(data);
+								rest.fetchSelectedSamples(project, function (selectedSamples) {
+									var samplesSelected = selectedSamples.samples ? selectedSamples.samples.slice(1, -1).replace(/"/g,'').split(',') : [];
+									require(['mustache', 'chart'], function (Mustache, Chart) {
+										$.get('/jc/templates/chart.html', function(template) {
+								    		var rendered = Mustache.render(template);
+								    		$('.perf-charts').html(rendered);
+								    		$('.page-header').text('Build: ' + term);
+								    		var localData = [];
+								    		$.each(data[0].report.jsondata, function (index, value) {
+								    			if($.inArray(value.threadgroup.name, samplesSelected) !== -1) {
+								  					localData.push(value);
+								    			}
+								    		});
+								    		data[0].report.jsondata = localData;
+								    		Chart.renderCharts(data);
+										});
 									});
 								});
 							});
 						} else {
 							rest.fetchLatestBuildforVersion(project, term, function (data) {
-								require(['mustache', 'chart'], function (Mustache, Chart) {
-									$.get('/jc/templates/chart.html', function(template) {
-							    		var rendered = Mustache.render(template);
-							    		$('.perf-charts').html(rendered);
-							    		$('.page-header').text('Version: ' + term);
-							    		Chart.renderCharts(data);
+								rest.fetchSelectedSamples(project, function (selectedSamples) {
+									var samplesSelected = selectedSamples.samples ? selectedSamples.samples.slice(1, -1).replace(/"/g,'').split(',') : [];
+									require(['mustache', 'chart'], function (Mustache, Chart) {
+										$.get('/jc/templates/chart.html', function(template) {
+								    		var rendered = Mustache.render(template);
+								    		$('.perf-charts').html(rendered);
+								    		$('.page-header').text('Version: ' + term);
+								    		var localData = [];
+								    		$.each(data[0].report.jsondata, function (index, value) {
+								    			if($.inArray(value.threadgroup.name, samplesSelected) !== -1) {
+								  					localData.push(value);
+								    			}
+								    		});
+								    		data[0].report.jsondata = localData;
+								    		Chart.renderCharts(data);
+										});
 									});
 								});
 							});
