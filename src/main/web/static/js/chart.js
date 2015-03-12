@@ -134,6 +134,15 @@
 					   	return +d3.max(d.value);
 					 })]);
 
+					var tipLocal = tip()
+					  .attr('class', 'd3-tip')
+					  .offset([-10, 0])
+					  .html(function(d) {
+					    return '<strong>Sample:</strong> <span style="color:white">' + d.name + '</span>';
+					  });
+
+					  svg.call(tipLocal);
+
 					  svg.append('g')
 					      .attr('class', 'x axis')
 					      .attr('transform', 'translate(0,' + height + ')')
@@ -153,6 +162,8 @@
 					      .data(data.sample)
 					      .enter().append('g')
 					      .attr('class', 'g')
+					      .on('mouseover', tipLocal.show)
+					      .on('mouseout', tipLocal.hide)
 					      .attr('transform', function(d) {
 					      	return 'translate(' + x0(d.name) + ',0)';
 					     });
@@ -252,7 +263,7 @@
 					      .attr('transform', 'translate(0,' + height + ')')
 					      .call(xAxis)
 					      .selectAll('text')
-				            .style('text-anchor', 'end')
+				            .style('display', 'none')
 				            .attr('dx', '-.8em')
 				            .attr('dy', '.15em')
 				            .attr('transform', function() {

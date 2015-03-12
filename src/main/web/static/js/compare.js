@@ -147,9 +147,14 @@
 						}
 						if(selectedTerm.length > 0) {
 							$('.compare-panel').show();
+							$('.chart-area').show();
 						} else {
 							$('.compare-panel').hide();
+							$('.chart-area').hide();
 						}
+						if($('.chart-report')) {
+			    			$('.chart-report').hide();
+			    		}
 			    	});
 
 			    	// compare the terms
@@ -167,11 +172,26 @@
 			    		}
 
 			    		rest.fetchComparisionData(selectedTerm, project, version, function () {
-			  				var chartData = [];
-			  				$.each(arguments, function (index, value){
-			  					chartData.push(value[0][0]);
-			  				});
-			    			Chart.comparisionBarChart(chartData, version, '.bar-chart-term');
+			    			var comparisonData = arguments;
+			    			rest.fetchSelectedSamples(project, function (selectedSamples) {
+								var samplesSelected = selectedSamples.samples ? selectedSamples.samples.slice(1, -1).replace(/"/g,'').split(',') : [];
+				  				var chartData = [];
+				  				$.each(comparisonData, function (index, value){
+				  					chartData.push(value[0][0]);
+				  				});
+
+				  				$.each(chartData, function (indexData, data) {
+				  					var localData = [];
+					  				$.each(data.report.jsondata, function (index, value) {
+						    			if($.inArray(value.threadgroup.name, samplesSelected) !== -1) {
+						  					localData.push(value);
+						    			}
+						    		});
+						    		data.report.jsondata = localData;
+					  			});
+
+				    			Chart.comparisionBarChart(chartData, version, '.bar-chart-term');
+				    		});
 			    		});
 			    	});
 
@@ -199,6 +219,9 @@
 			    		}
 			    		if($('.perf-charts')) {
 			    			$('.perf-charts').empty();
+			    		}
+			    		if($('.chart-report')) {
+			    			$('.chart-report').show();
 			    		}
 
 			    		if(version) {

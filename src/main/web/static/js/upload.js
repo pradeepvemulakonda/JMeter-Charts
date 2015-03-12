@@ -60,6 +60,9 @@
 			        $('.error-template').hide();
 			    });
 
+			    $(".typeahead").prop('disabled', true);
+
+
 			    // setup typeahead
 			    this._fetchProjectDropDown();
 
@@ -286,6 +289,18 @@
 					 	source: projects.ttAdapter()
 					}
 				);
+
+				$('.typeahead.project').prop('disabled', false);
+
+				// "select"-button
+				$(".project-btn").click(function(event) {
+				    var input = $('.typeahead.project');
+				    input.focus();
+				    var e = jQuery.Event("keydown");
+				    e.keyCode = 40;                     
+				    input.trigger(e);
+				});
+
 				$('.typeahead.project').on('typeahead:selected typeahead:autocompleted', function (event, suggestion) {
 			 		if($('.typeahead.version').size() > 1) {
 			 			$('.typeahead.version').typeahead('destroy');
@@ -314,6 +329,15 @@
 					source: versions.ttAdapter()
 				});
 
+				$('.typeahead.version').prop('disabled', false);
+
+				$(".version-btn").click(function(event) {
+				    var input = $('.typeahead.version');
+				    input.focus();
+				    var e = jQuery.Event("keydown");
+				    e.keyCode = 40;                     
+				    input.trigger(e);
+				});
 				$('.typeahead.version').on('typeahead:selected typeahead:autocompleted', function (event, suggestion) {
 	 				if($('.typeahead.build').size() > 1) {
 			 			$('.typeahead.build').typeahead('destroy');
@@ -340,6 +364,15 @@
 	 	             displayKey: 'value',
 	 	             source: builds.ttAdapter()
 	 	         });
+
+	 			$('.typeahead.build').prop('disabled', false);
+	 			$(".build-btn").click(function(event) {
+				    var input = $('.typeahead.build');
+				    input.focus();
+				    var e = jQuery.Event("keydown");
+				    e.keyCode = 40;                     
+				    input.trigger(e);
+				});
 	 		}
 	 	};
 	return Upload;

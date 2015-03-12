@@ -104,8 +104,8 @@ body {
     background-color: #eee;
 }
 
-.sidebar .arrow {
-    float: right;
+.sidebar .fa-code-fork {
+    float: left;
 }
 
 .sidebar .fa.arrow:before {
@@ -562,6 +562,16 @@ table.dataTable thead .sorting:after {
 .version-search-container {
   margin-left: -25px;
   margin-bottom: 15px;
+}
+
+.compare-select-box {
+  z-index: 2;
+}
+
+.divider{
+    width:5px;
+    height:auto;
+    display:inline-block;
 }
 
 /* Side notes for calling out things

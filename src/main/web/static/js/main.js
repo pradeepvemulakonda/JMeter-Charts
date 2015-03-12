@@ -115,6 +115,7 @@ require(['require','jquery', 'jquery.bootstrap', 'plugins/metisMenu/metisMenu','
 							});
 					    	$('.dynamic-template').html(rendered);
 							$('.page-header').text('Select a Project to view detailed performance charts');
+							$('.breadcrumb').empty().append('<li>Select Project</li>');
 						});
 					});
 			});
@@ -131,7 +132,13 @@ require(['require','jquery', 'jquery.bootstrap', 'plugins/metisMenu/metisMenu','
 	 * @private
 	 */
 	function _addMenu(node, text, clazz, callback) {
-		var anchor = $('<a>'+text + '<span class="fa arrow"></span>'+'</a>');
+		var anchor;
+		if(clazz == 'version-nav') {
+			anchor = $('<a><i class="fa fa-code-fork" title="Version"></i><span class="divider"></span>'+text + '<span class="fa arrow"></span>'+'</a>');
+		} else {
+			anchor = $('<a><i class="fa fa-cube" title="Project"></i><span class="divider"></span>'+text + '<span class="fa arrow"></span>'+'</a>');
+		}
+		
 		anchor.bind('click', callback);
 		var liNode = $('<li class = "active ' + clazz + '"></li>');
 		liNode.append(anchor);
@@ -168,22 +175,26 @@ require(['require','jquery', 'jquery.bootstrap', 'plugins/metisMenu/metisMenu','
 	 * @return {[type]}       [description]
 	 */
 	function fetchVersion(event) {
-		rest.fetchVersions(event.target.text, function (data) {
-			data = data.sort();
-			var currentMenu = $(event.target);
-			if(currentMenu.closest('.project-nav').find('.nav-third-level')) {
-				currentMenu.closest('.project-nav').find('.nav-third-level').remove();
-			}
-			$('<ul class="nav nav-third-level">').appendTo(event.target.parentNode);
-			$.each(data, function (index, version) {
-				_addMenu($(event.target.parentNode).find('ul'), version, 'version-nav', fetchBuild);
-			});
-			$('#side-menu').metisMenu();
+		if($(event.target).is('a')) {
+			rest.fetchVersions(event.target.text, function (data) {
+				data = data.sort();
+				var currentMenu = $(event.target);
+				if(currentMenu.closest('.project-nav').find('.nav-third-level')) {
+					currentMenu.closest('.project-nav').find('.nav-third-level').remove();
+				}
+				$('<ul class="nav nav-third-level">').appendTo(event.target.parentNode);
+				$.each(data, function (index, version) {
+					_addMenu($(event.target.parentNode).find('ul'), version, 'version-nav', fetchBuild);
+				});
+				$('#side-menu').metisMenu();
 
-			require(['compare'], function (Compare) {
-				Compare.fetchAndRenderProjectTemplate(event.target.text , data);
+				require(['compare'], function (Compare) {
+					Compare.fetchAndRenderProjectTemplate(event.target.text , data);
+				});
+				$('.page-header').html('Displaying charts for Project: ' + event.target.text);
+				$('.breadcrumb').empty().append('<li>Select Project</li>').append('<li>Project: "'+ event.target.text +'"</li>');
 			});
-		});
+		}
 	}
 
 	/**
@@ -192,11 +203,16 @@ require(['require','jquery', 'jquery.bootstrap', 'plugins/metisMenu/metisMenu','
 	 * @return {[type]}       [description]
 	 */
 	function fetchBuild(event) {
-		rest.fetchBuilds($($(event.target).parent().parent().parent()).children()[0].text, event.target.text, function (data) {
-			data = data.sort();
-			require(['compare'], function (Compare) {
-				Compare.fetchAndRenderVersionTemplate($(event.target).closest('.project-nav').children()[0].text, event.target.text, data);
+		if($(event.target).is('a')) {
+			rest.fetchBuilds($($(event.target).parent().parent().parent()).children()[0].text, event.target.text, function (data) {
+				data = data.sort();
+				var projectName = $(event.target).closest('.project-nav').children()[0].text;
+				require(['compare'], function (Compare) {
+					Compare.fetchAndRenderVersionTemplate(projectName, event.target.text, data);
+				});
+				$('.page-header').html('Displaying charts for Version: ' + event.target.text);
+				$('.breadcrumb').empty().append('<li>Select Project</li>').append('<li>Project: "'+ projectName +'"</li>').append('<li>Version: "'+ event.target.text +'"</li>');
 			});
-		});
+		}
 	}
 });
