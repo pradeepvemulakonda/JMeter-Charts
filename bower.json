@@ -22,11 +22,11 @@
     "**/.*",
     "node_modules",
     "bower_components",
-    "src/main/web/views/static/js",
+    "src/main/web/views/static/js/",
     "test",
     "tests"
   ],
   "dependencies": {
-    "chartjs": "~0.2.0"
+    "bootstrap": null
   }
 }

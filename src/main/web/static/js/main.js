@@ -20,10 +20,6 @@ requirejs.config({
             exports: 'jQuery.fn.metisMenu'
         },
 
-        'plugins/morris/morris': {
-        	deps: [ 'jquery', 'plugins/morris/raphael.min' ]
-        },
-
         'plugins/combobox/bootstrap-combobox': {
         	deps: [ 'jquery']
         },
@@ -54,7 +50,7 @@ requirejs.config({
     }
 });
 
-require(['require','jquery', 'jquery.bootstrap', 'plugins/metisMenu/metisMenu','plugins/scrollTo/scrollTo','plugins/typeahead/typeahead', 'plugins/morris/morris', 'rest', 'mustache', 'compare', 'plugins/combobox/bootstrap-combobox'], function (require, $) {
+require(['require','jquery', 'jquery.bootstrap', 'plugins/metisMenu/metisMenu','plugins/scrollTo/scrollTo','plugins/typeahead/typeahead', 'rest', 'mustache', 'compare', 'plugins/combobox/bootstrap-combobox'], function (require, $) {
 	var rest = require('rest');
 
 	// set the die menu
@@ -138,7 +134,7 @@ require(['require','jquery', 'jquery.bootstrap', 'plugins/metisMenu/metisMenu','
 		} else {
 			anchor = $('<a><i class="fa fa-cube" title="Project"></i><span class="divider"></span>'+text + '<span class="fa arrow"></span>'+'</a>');
 		}
-		
+
 		anchor.bind('click', callback);
 		var liNode = $('<li class = "active ' + clazz + '"></li>');
 		liNode.append(anchor);
