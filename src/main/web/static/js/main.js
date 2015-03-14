@@ -1,56 +1,13 @@
-requirejs.config({
-    paths: {
-        'jquery': 'jquery',
-        'jquery.bootstrap': 'bootstrap',
-        'rest': 'rest',
-        'd3': 'd3/d3',
-        'tip': 'd3/tip',
-        'mustache': 'mustache',
-        'chart': 'chart',
-        'upload': 'upload',
-        'compare': 'compare'
-    },
-    shim: {
-        'jquery.bootstrap': {
-            deps: ['jquery']
-        },
-
-        'plugins/metisMenu/metisMenu': {
-        	deps: [ 'jquery' ],
-            exports: 'jQuery.fn.metisMenu'
-        },
-
-        'plugins/combobox/bootstrap-combobox': {
-        	deps: [ 'jquery']
-        },
-
-        'plugins/typeahead/typeahead': {
-        	deps: [ 'jquery']
-        },
-
-		'plugins/scrollTo/scrollTo': {
-        	deps: [ 'jquery']
-        },
-
-        d3 : {
-            exports : 'd3'
-        },
-
-        tip : {
-        	deps: ['d3']
-        },
-
-        'mustache': {
-            exports: 'Mustache'
-        },
-
-        'compare': {
-        	exports: 'Compare'
-        }
-    }
-});
-
-require(['require','jquery', 'jquery.bootstrap', 'plugins/metisMenu/metisMenu','plugins/scrollTo/scrollTo','plugins/typeahead/typeahead', 'rest', 'mustache', 'compare', 'plugins/combobox/bootstrap-combobox'], function (require, $) {
+require(['require',
+		 'jquery',
+		 'jquery.bootstrap',
+		 'lib/metisMenu/dist/metisMenu',
+		 'lib/Scroll-To/scrollTo',
+		 'lib/typeahead.js/dist/typeahead.bundle.min',
+		 'rest',
+		 'mustache',
+		 'compare',
+		 'lib/bootstrap-combobox/js/bootstrap-combobox'], function (require, $) {
 	var rest = require('rest');
 
 	// set the die menu

@@ -22,11 +22,20 @@
     "**/.*",
     "node_modules",
     "bower_components",
-    "src/main/web/views/static/js/",
+    "src/main/web/views/static/js",
     "test",
     "tests"
   ],
   "dependencies": {
-    "bootstrap": null
+    "bootstrap": null,
+    "d3": null,
+    "typeahead.js": null,
+    "bootstrap-combobox": null,
+    "metisMenu": null,
+    "d3-tip": null,
+    "Scroll-To": null,
+    "mustache": null,
+    "requirejs": null,
+    "font-awesome": null
   }
 }
