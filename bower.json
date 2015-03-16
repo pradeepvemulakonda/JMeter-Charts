@@ -36,6 +36,10 @@
     "Scroll-To": null,
     "mustache": null,
     "requirejs": null,
-    "font-awesome": null
+    "font-awesome": null,
+    "angular": null,
+    "angular-route": null,
+    "angular-mocks": null,
+    "angular-loader": null
   }
 }

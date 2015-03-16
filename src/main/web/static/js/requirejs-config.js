@@ -9,7 +9,11 @@ requirejs.config({
         'mustache': 'lib/mustache/mustache',
         'chart': 'chart',
         'upload': 'upload',
-        'compare': 'compare'
+        'compare': 'compare',
+        'angular': 'lib/angular/angular',
+        'angularRoute': 'lib/angular-route/angular-route',
+        'angularMocks': 'lib/angular-mocks/angular-mocks',
+        'text': 'lib/requirejs-text/text'
     },
     shim: {
         'jquery.bootstrap': {
@@ -47,8 +51,27 @@ requirejs.config({
 
         'compare': {
         	exports: 'Compare'
+        },
+
+        'angular' : {'exports' : 'angular'},
+
+        'angularRoute': ['angular'],
+
+        'angularMocks': {
+            deps:['angular'],
+            'exports':'angular.mock'
         }
-    }
+    },
+
+    priority: [
+        'angular'
+    ]
 });
 // load the main js file
-require(['main']);
+require(['angular','app', 'main', 'controller/controllers'], function(angular, app, main) {
+        var $html = angular.element(document.getElementsByTagName('html')[0]);
+        angular.element().ready(function() {
+            // bootstrap the app manually
+            angular.bootstrap(document, ['JMeterCharts', 'MainController']);
+        });
+    });
