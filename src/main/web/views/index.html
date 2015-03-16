@@ -11,12 +11,6 @@
 
     <title>JMeter Charts v0.1</title>
 
-    <!--<script data-main="js/requirejs-config" src="js/lib/requirejs/require.js"></script>-->
-
-    <script src="js/lib/angular/angular.js"></script>
-    <script src="js/controller/controllers.js"></script>
-
-
     <!-- Bootstrap Core CSS -->
     <link href="js/lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
 
@@ -73,7 +67,7 @@
             </ul>
             <!-- /.navbar-top-links -->
 
-            <div class="navbar-default sidebar" role="navigation">
+            <div class="navbar-default sidebar" metismenu role="navigation">
                 <div class="sidebar-nav navbar-collapse">
                     <ul class="nav" id="side-menu">
                         <li>
@@ -90,14 +84,14 @@
                                 <span class="fa arrow"></span>
                             </a>
                             <ul class="nav nav-second-level project-nav">
-                                  <li ng-repeat="project in projects | filter:queryProject">
+                                  <li ng-repeat="project in projects | filter:queryProject" ng-controller="VersionController">
                                     <a ng-click="fetchVersions(project)">
                                         <i class="fa fa-cube" title="Project"></i>
                                         <span class="divider"></span>
                                         {{project}}
                                         <span class="fa arrow"></span>
                                     </a>
-                                    <ul class="nav nav-third-level version-nav">
+                                    <ul class="nav nav-third-level version-nav" >
                                           <li ng-repeat="version in versions | filter:queryProject">
                                             <a>
                                                 <i class="fa fa-code-fork" title="Version"></i>
@@ -156,5 +150,14 @@
     </div>
     <!-- /#wrapper -->
 </body>
+
+<!--<script data-main="js/requirejs-config" src="js/lib/requirejs/require.js"></script>-->
+<script src="js/lib/jquery/jquery.js"></script>
+<script src="js/lib/angular/angular.js"></script>
+<script src="js/controller/controllers.js"></script>
+<script src="js/directives/directive.js"></script>
+<script src="js/lib/metisMenu/dist/metisMenu.js"></script>
+<script src="js/lib/bootstrap/dist/js/bootstrap.js"></script>
+
 
 </html>
