@@ -17,6 +17,7 @@
     "handlebars": "*",
     "node_xslt": "*",
     "connect-busboy": "*",
-    "multer": "*"
+    "multer": "*",
+    "xslt4node": "*"
   }
 }
