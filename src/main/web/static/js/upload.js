@@ -60,7 +60,7 @@
 			        $('.error-template').hide();
 			    });
 
-			    $(".typeahead").prop('disabled', true);
+			   // $(".typeahead").prop('disabled', true);
 
 
 			    // setup typeahead
@@ -290,7 +290,7 @@
 					}
 				);
 
-				$('.typeahead.project').prop('disabled', false);
+				//$('.typeahead.project').prop('disabled', false);
 
 				// "select"-button
 				$(".project-btn").click(function(event) {
@@ -329,7 +329,7 @@
 					source: versions.ttAdapter()
 				});
 
-				$('.typeahead.version').prop('disabled', false);
+				//$('.typeahead.version').prop('disabled', false);
 
 				$(".version-btn").click(function(event) {
 				    var input = $('.typeahead.version');

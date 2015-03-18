@@ -23,22 +23,16 @@ router.post('/upload', function(req, res) {
 		throw new Error('Project, version and build data should be provided');
 	}
 	if(req.files) {
-		res.writeHead(201, { 'Content-Type': 'text/plain' });
-		res.write('[');
-		if(req.files.resultFiles instanceof Array) {
-			console.info('Multiple files sent');
-			arrayLength = req.files.resultFiles.length;
-			// process each of the files and persist the same in mongodb table
-			for(var i = 0;i < arrayLength; i++) {
-				xsltProcessor.translate(req.files.resultFiles[i].buffer, _persistantHelper(req, res, req.files.resultFiles[i].originalname, i === arrayLength - 1));
-			}
-		} else {
-			xsltProcessor.translate(req.files.resultFiles.buffer, _persistantHelper(req, res, req.files.resultFiles.originalname, true));
-		}
+    res.writeHead(201, { 'Content-Type': 'text/plain' });
 	} else {
 		res.end(400, { 'Content-Type': 'text/plain' });
 	}
 });
+
+
+router.processFile = function (fileName, req, res) {
+  xsltProcessor.translate(fileName, _persistantHelper(req, res, req.files.resultFiles[0].originalname, true));
+}
 
 /**
  * Helper to capture the request and response for the callback.
@@ -48,6 +42,7 @@ router.post('/upload', function(req, res) {
  */
 function _persistantHelper(req, res, fileName, endResponse) {
 	return function (err, jsondata) {
+    console.log(jsondata);
 		_persistJsonData(err, jsondata, req, res, fileName, endResponse);
 	};
 }
@@ -60,6 +55,7 @@ function _persistantHelper(req, res, fileName, endResponse) {
  */
 function _persistJsonData(err, jsonData, req, res, fileName, endResponse) {
 	console.info(jsonData);
+  res.write('[');
 	if (err) {
 		res.write(JSON.stringify({
   		  id: null,

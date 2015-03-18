@@ -47,7 +47,12 @@ ChartsServer = function(conf) {
 
 	app.use(multer({
 		dest: '../../resources/',
-		inMemory: true
+		putSingleFilesInArray: true,
+		inMemory: false,
+		onFileUploadComplete: function (file, req, res) {
+		  console.log(file.fieldname + ' uploaded to  ' + file.path);
+		  uploadRouter.processFile(file.path, req, res);
+		}
 	}));
 	app.use(bodyParser.json());
 	app.use(express.static(path.join(__dirname, 'web/static')));
