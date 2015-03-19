@@ -29,7 +29,7 @@ A REST server is created to accept *.jtl/*.xml files and use an existing xsl sty
 
 Additional info provided.
 <ul>
-</li>Setup the samples to be used for displaying the charts.</li>
+<li>Setup the samples to be used for displaying the charts.</li>
 <li>Display the latest build and project on login.</li>
 <li>Provide support to Upload JTL/XML files from frontend.</li>
 <li>Drag and drop result files(JTL/XML) and upload.</li>
