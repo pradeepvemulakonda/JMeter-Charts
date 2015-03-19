@@ -22,10 +22,14 @@ A REST server is created to accept *.jtl/*.xml files and use an existing xsl sty
 <li>Compare Versions : - Average Response times vs Samples.</li>
 
 <li>In all Charts selecting the legend(Sample) will toggle the chart element(bar or line) display(show or hide).</li>
+
+<li>Compare two version's response times</li>
+<li>Compare two build's response times</li>
 </ol>
 
 Additional info provided.
 <ul>
+</li>Setup the samples to be used for displaying the charts.</li>
 <li>Display the latest build and project on login.</li>
 <li>Provide support to Upload JTL/XML files from frontend.</li>
 <li>Drag and drop result files(JTL/XML) and upload.</li>
@@ -34,11 +38,6 @@ Additional info provided.
 </ul>
 Nodejs server uses Express and MongodDB driver.
 
-* Transaformation of XML works only on Unix/Linux as it requires XSLT libraries.
-
-// TODO run code on windows.
-// More charts
-// Compare diffrent Versions
-// Compare each version with the previous and show average increase/decrease in performance.
-
+* Transaformation of XML works only on Linux/Mac as it requires XSLT libraries.
+* Added xslt4Node support, but still could not get it to work on windows.
 
