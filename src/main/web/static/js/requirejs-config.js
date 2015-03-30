@@ -9,7 +9,8 @@ requirejs.config({
         'mustache': 'lib/mustache/mustache',
         'chart': 'chart',
         'upload': 'upload',
-        'compare': 'compare'
+        'compare': 'compare',
+        'canvg': 'lib/canvg/dist/canvg'
     },
     shim: {
         'jquery.bootstrap': {
@@ -47,6 +48,10 @@ requirejs.config({
 
         'compare': {
         	exports: 'Compare'
+        },
+
+        'canvg': {
+            exports: 'canvg'
         }
     }
 });

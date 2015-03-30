@@ -241,6 +241,17 @@
 								    		});
 								    		data[0].report.jsondata = localData;
 								    		Chart.renderCharts(data);
+								    		$('.dropdown-menu .print').click(function (event) {
+									    		require(['print'], function (print) {
+									    			var svg = $(event.target).closest('.panel').find('svg')[0];
+									    			var serializer = new XMLSerializer();
+													var str = serializer.serializeToString(svg);
+									    			var img = print.printChart(str);
+													$('.print-image').click(function () {
+													    event.target.href = img; //this may not work in the future..
+													});
+									    		});
+									    	});
 										});
 									});
 								});
@@ -262,6 +273,18 @@
 								    		});
 								    		data[0].report.jsondata = localData;
 								    		Chart.renderCharts(data);
+								    		$('.dropdown-menu .print').click(function (event) {
+									    		require(['print'], function (print) {
+									    			var svg = $(event.target).closest('.panel').find('svg')[0];
+									    			var serializer = new XMLSerializer();
+													var str = serializer.serializeToString(svg);
+									    			var img = print.printChart(str);
+													$('.print-image').click(function () {
+														this.href = img.replace(/^data:image\/[^;]/, 'data:application/octet-stream');
+													    this.download = 'save.png';
+													});
+									    		});
+									    	});
 										});
 									});
 								});

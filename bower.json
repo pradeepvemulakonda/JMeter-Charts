@@ -36,6 +36,7 @@
     "Scroll-To": null,
     "mustache": null,
     "requirejs": null,
-    "font-awesome": null
+    "font-awesome": null,
+    "canvg": null
   }
 }
