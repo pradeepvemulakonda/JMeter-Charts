@@ -19,18 +19,31 @@ XSLTProcessor = function(stylesheetFileName) {
 		translate: function (filePath, callback) {
 			console.log('XML ----'+filePath);
 			console.log('xslt----'+stylesheetFileName);
-			var config = {
-			    xsltPath: stylesheetFileName,
-			    sourcePath: filePath,
-			    result: String,
-			    props: {
-			        indent: 'yes'
-			    }
-			};
+			fs.readFile(filePath,{encoding: 'UTF-8'}, function (err, data) {
+				if (err) {
+					throw err;
+				}
+				var config = {
+				    xsltPath: stylesheetFileName,
+				    source: data,
+				    result: String,
+				    props: {
+				        indent: 'yes'
+				    }
+				};
+				console.log('Calling transform');
+				xslt4node.transform(config, callback);
+				// delete the file asynchronously
+				fs.unlink(filePath, function (err) {
+					if(err) {
+						console.log(err);
+					}
 
-			xslt4node.transform(config, callback);
+				});
+			});
+
 		}
-	};	
+	};
 };
 
 exports.XSLTProcessor = XSLTProcessor;

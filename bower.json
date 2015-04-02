@@ -37,6 +37,7 @@
     "mustache": null,
     "requirejs": null,
     "font-awesome": null,
-    "canvg": null
+    "canvg": null,
+    "jspdf": null
   }
 }

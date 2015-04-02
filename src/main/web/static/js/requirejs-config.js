@@ -10,7 +10,8 @@ requirejs.config({
         'chart': 'chart',
         'upload': 'upload',
         'compare': 'compare',
-        'canvg': 'lib/canvg/dist/canvg'
+        'canvg': 'lib/canvg/dist/canvg',
+        'jspdf': 'lib/jspdf/dist/jspdf.debug'
     },
     shim: {
         'jquery.bootstrap': {
@@ -52,6 +53,10 @@ requirejs.config({
 
         'canvg': {
             exports: 'canvg'
+        },
+
+        'jspdf': {
+            exports: 'jsPDF'
         }
     }
 });

@@ -212,7 +212,7 @@
 						$.each(data, function (index2, fileStatus) {
 							if(fileSection.text() === fileStatus.fileName) {
 				    			if (!fileStatus.error) {
-					    			fileSection.parent().removeClass('list-group-item-info').addClass('list-group-item-success');
+					    			fileSection.parent().removeClass('list-group-item-info list-group-item-danger').addClass('list-group-item-success');
 					    			fileSection.parent().find('.alert-info').html('Uploaded successfully');
 					    			fileSection.parent().find('.alert-info').removeClass('alert-info').addClass('alert-success');
 				    			} else {

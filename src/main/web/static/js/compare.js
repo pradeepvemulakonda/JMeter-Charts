@@ -260,7 +260,7 @@
 							rest.fetchLatestBuildforVersion(project, term, function (data) {
 								rest.fetchSelectedSamples(project, function (selectedSamples) {
 									var samplesSelected = selectedSamples.samples ? selectedSamples.samples.slice(1, -1).replace(/"/g,'').split(',') : [];
-									require(['mustache', 'chart'], function (Mustache, Chart) {
+									require(['mustache', 'chart', 'jspdf'], function (Mustache, Chart, jsPDF) {
 										$.get('/jc/templates/chart.html', function(template) {
 								    		var rendered = Mustache.render(template);
 								    		$('.perf-charts').html(rendered);
@@ -281,7 +281,12 @@
 									    			var img = print.printChart(str);
 													$('.print-image').click(function () {
 														this.href = img.replace(/^data:image\/[^;]/, 'data:application/octet-stream');
-													    this.download = 'save.png';
+													    this.download = project+ '-report.png';
+													    var doc = new jsPDF();
+														doc.setFontSize(40);
+														doc.text(35, 25, 'Report for project: ' + project);
+														doc.addImage(img, 'png', 15, 40, 180, 180);
+														doc.save(project+ '-report.pdf');
 													});
 									    		});
 									    	});

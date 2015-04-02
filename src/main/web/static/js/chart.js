@@ -313,6 +313,14 @@
 							d3.select('.bar-chart').selectAll('g text').style('opacity', '0');
 						});
 
+					 d3.selectAll('.axis line')
+						 .style('fill', 'none')
+						 .style('stroke-width', '1px')
+						 .style('stroke', 'black');
+					 d3.selectAll('.axis path')
+						 .style('fill', 'none')
+						 .style('stroke-width', '1px')
+						 .style('stroke', 'black');
 
 					  var legendSVG = d3.select('.chart-bar-legend')
 					    .attr('width', width + margin.left + margin.right)

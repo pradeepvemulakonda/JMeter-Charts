@@ -46,7 +46,7 @@ ChartsServer = function(conf) {
 	var self = this;
 
 	app.use(multer({
-		dest: '../../resources/',
+		dest: '../../file_directory/',
 		putSingleFilesInArray: true,
 		inMemory: false,
 		onFileUploadComplete: function (file, req, res) {

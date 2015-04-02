@@ -7,6 +7,7 @@ var router = express.Router();
 var collectionDriver;
 var STYLESHEET = '../../resources/report-style.xsl';
 var xsltProcessor = require('../util/xslt-processor').XSLTProcessor(STYLESHEET);
+var fs = require('fs');
 
 // middleware specific to this router
 router.use(function timeLog(req, res, next) {
@@ -42,7 +43,6 @@ router.processFile = function (fileName, req, res) {
  */
 function _persistantHelper(req, res, fileName, endResponse) {
 	return function (err, jsondata) {
-    console.log(jsondata);
 		_persistJsonData(err, jsondata, req, res, fileName, endResponse);
 	};
 }
@@ -54,7 +54,7 @@ function _persistantHelper(req, res, fileName, endResponse) {
  * @param resp response from closure scope
  */
 function _persistJsonData(err, jsonData, req, res, fileName, endResponse) {
-	console.info(jsonData);
+console.log('call back being called');
   res.write('[');
 	if (err) {
 		res.write(JSON.stringify({
