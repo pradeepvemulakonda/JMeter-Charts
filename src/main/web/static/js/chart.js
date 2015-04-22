@@ -322,6 +322,7 @@
 						 .style('stroke-width', '1px')
 						 .style('stroke', 'black');
 
+
 					  var legendSVG = d3.select('.chart-bar-legend')
 					    .attr('width', width + margin.left + margin.right)
 					    .attr('height', height + margin.top + margin.bottom)
@@ -493,6 +494,18 @@
 					on('click', function () {
 						d3.select('.line-chart').selectAll('g path').style('opacity', '0');
 					});
+
+					d3.selectAll('.axis line')
+						 .style('fill', 'none')
+						 .style('stroke-width', '1px')
+						 .style('stroke', 'black');
+					d3.selectAll('.axis path')
+						 .style('fill', 'none')
+						 .style('stroke-width', '1px')
+						 .style('stroke', 'black');
+					d3.selectAll('.container path')
+						 .style('fill', 'none')
+						 .style('stroke-width', '1px');
 
 					var legendSVG = d3.select('.chart-line-legend')
 					    .attr('width', width + margin.left + margin.right)
@@ -671,6 +684,18 @@
 					on('click', function () {
 						d3.select('.line-chart-2').selectAll('g path').style('opacity', '0');
 					});
+
+					d3.selectAll('.axis line')
+						 .style('fill', 'none')
+						 .style('stroke-width', '1px')
+						 .style('stroke', 'black');
+					d3.selectAll('.axis path')
+						 .style('fill', 'none')
+						 .style('stroke-width', '1px')
+						 .style('stroke', 'black');
+					d3.selectAll('.container path')
+						 .style('fill', 'none')
+						 .style('stroke-width', '1px');
 
 					var legendSVG = d3.select('.chart-line-2-legend')
 					    .attr('width', width + margin.left + margin.right)

@@ -14,6 +14,7 @@
 <xsl:template name="build-json">
 	<xsl:for-each select="/testResults/*[not(@lb = preceding::*/@lb)]">
 		<!--Setup some variable to be used in creating the chart data-->
+
 			<xsl:variable name="label" select="@lb" />
 			<xsl:variable name="count" select="count(../*[@lb = current()/@lb])" />
 			<xsl:variable name="failureCount" select="count(../*[@lb = current()/@lb][attribute::s='false'])" />
@@ -22,6 +23,7 @@
 			<xsl:variable name="totalTime" select="round(sum(../*[@lb = current()/@lb]/@t))" />
 			<xsl:variable name="averageTime" select="round($totalTime div $count)" />
 			<xsl:variable name="avgActiveThreads" select="sum(../*[@lb = current()/@lb]/@ng) div $count" />
+			<xsl:variable name="startTimeStamp" select="../*[@lb = current()/@lb]" />
 			{
 				"threadgroup": {
 					"name": "<xsl:value-of select="$label"/>",
@@ -31,6 +33,7 @@
 					"totalCount": "<xsl:value-of select="$count"/>",
 					"successPercentage": "<xsl:value-of select="$successPercent"/>",
 					"averageActiveThreads": "<xsl:value-of select="round($avgActiveThreads)"/>",
+					"startTime": "<xsl:value-of select="$startTimeStamp"></xsl:value-of>",
 					"samples": [
 					<!--For each thread group collect data-->
 					<xsl:for-each select="../*[@lb = $label and @tn != $label]">

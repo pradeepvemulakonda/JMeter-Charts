@@ -119,6 +119,26 @@
 				});
 			},
 
+			onPrintSvg: function (event, project) {
+				require(['print'], function (print) {
+	    			var svg = $(event.target).closest('.panel').find('svg')[0];
+	    			var serializer = new XMLSerializer();
+					var str = serializer.serializeToString(svg);
+	    			var img = print.printChart(str);
+					$('.print-image').click(function () {
+					    this.href = img.replace(/^data:image\/[^;]/, 'data:application/octet-stream');
+				    	this.download = project+ '-report.png';
+					});
+	    		});
+			},
+
+			onReportDownload: function (event, project) {
+				require(['report'], function (report) {
+	    			var parent = $(event.target).closest('.panel');
+	    			report.generatePdf(parent, project);
+	    		});
+			},
+
 			/**
 			 * Register events on project template page
 			 * @param  {[type]} project [description]
@@ -126,7 +146,8 @@
 			 * @private
 			 */
 			_registerEventsAfterLoad: function (project, version) {
-				var selectedTerm = [];
+				var selectedTerm = [],
+					self = this;
 		    	// set the compare event
 		    	require(['mustache', 'chart'], function (Mustache, Chart) {
 		    		// select the term
@@ -242,15 +263,10 @@
 								    		data[0].report.jsondata = localData;
 								    		Chart.renderCharts(data);
 								    		$('.dropdown-menu .print').click(function (event) {
-									    		require(['print'], function (print) {
-									    			var svg = $(event.target).closest('.panel').find('svg')[0];
-									    			var serializer = new XMLSerializer();
-													var str = serializer.serializeToString(svg);
-									    			var img = print.printChart(str);
-													$('.print-image').click(function () {
-													    event.target.href = img; //this may not work in the future..
-													});
-									    		});
+								    			self.onPrintSvg(event, project);
+									    	});
+									    	$('.dropdown-menu .report').click(function (event) {
+								    			self.onReportDownload(event, project);
 									    	});
 										});
 									});
@@ -274,21 +290,10 @@
 								    		data[0].report.jsondata = localData;
 								    		Chart.renderCharts(data);
 								    		$('.dropdown-menu .print').click(function (event) {
-									    		require(['print'], function (print) {
-									    			var svg = $(event.target).closest('.panel').find('svg')[0];
-									    			var serializer = new XMLSerializer();
-													var str = serializer.serializeToString(svg);
-									    			var img = print.printChart(str);
-													$('.print-image').click(function () {
-														this.href = img.replace(/^data:image\/[^;]/, 'data:application/octet-stream');
-													    this.download = project+ '-report.png';
-													    var doc = new jsPDF();
-														doc.setFontSize(40);
-														doc.text(35, 25, 'Report for project: ' + project);
-														doc.addImage(img, 'png', 15, 40, 180, 180);
-														doc.save(project+ '-report.pdf');
-													});
-									    		});
+								    			self.onPrintSvg(event, project);
+									    	});
+									    	$('.dropdown-menu .report').click(function (event) {
+								    			self.onReportDownload(event, project);
 									    	});
 										});
 									});
