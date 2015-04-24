@@ -33,7 +33,6 @@
 					"totalCount": "<xsl:value-of select="$count"/>",
 					"successPercentage": "<xsl:value-of select="$successPercent"/>",
 					"averageActiveThreads": "<xsl:value-of select="round($avgActiveThreads)"/>",
-					"startTime": "<xsl:value-of select="$startTimeStamp"></xsl:value-of>",
 					"samples": [
 					<!--For each thread group collect data-->
 					<xsl:for-each select="../*[@lb = $label and @tn != $label]">

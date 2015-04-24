@@ -11,7 +11,8 @@ requirejs.config({
         'upload': 'upload',
         'compare': 'compare',
         'canvg': 'lib/canvg/dist/canvg',
-        'jspdf': 'lib/jspdf/dist/jspdf.debug'
+        'jspdf': 'lib/jspdf/dist/jspdf.debug',
+        'rasterize': 'lib/rasterizehtml/rasterizeHTML.allinone'
     },
     shim: {
         'jquery.bootstrap': {
@@ -57,6 +58,11 @@ requirejs.config({
 
         'jspdf': {
             exports: 'jsPDF'
+        },
+
+
+        'rasterize': {
+            exports: 'rasterizeHTML'
         }
     }
 });

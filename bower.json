@@ -38,6 +38,7 @@
     "requirejs": null,
     "font-awesome": null,
     "canvg": null,
-    "jspdf": null
+    "jspdf": null,
+    "rasterizehtml": null
   }
 }

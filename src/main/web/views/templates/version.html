@@ -27,7 +27,7 @@
                           <span class="caret"></span>
                       </button>
                       <ul class="dropdown-menu pull-right" role="menu">
-                          <li><a href="#" class="report" data-toggle="modal" data-target="#myModal"><i class="fa fa-print fa-fw"></i>&nbsp; Download Report</a>
+                          <li><a href="#" class="report"><i class="fa fa-print fa-fw"></i>&nbsp; Download Report</a>
                           </li>
                       </ul>
                   </div>
@@ -49,5 +49,100 @@
  </div>
 </div>
 
+<!-- Modal -->
+<div class="modal fade" id="envModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Environment</h4>
+      </div>
+      <div class="modal-body">
+        <form class="form-horizontal">
+          <div class="form-group">
+            <label for="cpu" class="col-sm-2 control-label">CPU</label>
+            <div class="col-sm-10">
+              <input type="text" name="cpu" class="form-control" id="cpu">
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="OS" class="col-sm-2 control-label">Operating System</label>
+            <div class="col-sm-10">
+              <input type="text" name="os" class="form-control" id="OS">
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="DB" class="col-sm-2 control-label">Database</label>
+            <div class="col-sm-10">
+              <input type="text" name="db"  class="form-control" id="DB">
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="Memory" class="col-sm-2 control-label">Memory</label>
+            <div class="col-sm-10">
+              <input type="text" name="memory" class="form-control" id="Memory">
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="Disk" class="col-sm-2 control-label">Disk</label>
+            <div class="col-sm-10">
+              <input type="text" name="disk" class="form-control" id="Disk">
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="CU" class="col-sm-2 control-label">Concurrent Users</label>
+            <div class="col-sm-10">
+              <input type="text" name="users" class="form-control" id="CU">
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="RD" class="col-sm-2 control-label">Records in DB</label>
+            <div class="col-sm-10">
+              <input type="text" name="records" class="form-control" id="RD">
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="radioGroup" class="col-sm-2 control-label">Network</label>
+              <div class="form-group" id="radioGroup">
+                <label class="inline btn btn-primary active">
+                  <input type="radio" name="network" id="option1" value="SS" autocomplete="off" checked> Same Subnet
+                </label>
+                <label class="inline btn btn-primary">
+                  <input type="radio" name="network" id="option2" value="lan" autocomplete="off"> LAN
+                </label>
+                <label class="inline btn btn-primary">
+                  <input type="radio" name="network" id="option3" value="cloud" autocomplete="off"> Cloud
+                </label>
+              </div>
+          </div>
+          <div class="form-group">
+            <label for="radioGroup" class="col-sm-2 control-label">Saturation</label>
+              <div class="form-group" id="radioGroup">
+                <label class="inline btn btn-primary active">
+                  <input type="radio" name="saturation" id="option1" value="ll" autocomplete="off" checked> Light Load
+                </label>
+                <label class="inline btn btn-primary">
+                  <input type="radio" name="saturation" id="option2" value="ml" autocomplete="off"> Medium Load
+                </label>
+                <label class="inline btn btn-primary">
+                  <input type="radio" name="saturation" id="option3" value="hl" autocomplete="off"> Heavy Load
+                </label>
+                 <label class="inline btn btn-primary">
+                  <input type="radio" name="saturation" id="option3" value="mpl" autocomplete="off"> Max Peak Load
+                </label>
+                 <label class="inline btn btn-primary">
+                  <input type="radio" name="saturation" id="option3" value="el" autocomplete="off"> Extreme Load
+                </label>
+              </div>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <a class="add-details btn btn-primary">Add Details</a>
+      </div>
+    </div>
+  </div>
+</div>
 
 

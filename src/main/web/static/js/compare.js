@@ -132,10 +132,12 @@
 	    		});
 			},
 
-			onReportDownload: function (event, project) {
+			onReportDownload: function (event, data, tableData, project) {
 				require(['report'], function (report) {
+					$('#envModal').modal('hide');
+					$('#loadingModal').modal('show');
 	    			var parent = $(event.target).closest('.panel');
-	    			report.generatePdf(parent, project);
+	    			report.generatePdf(parent, data, tableData, project);
 	    		});
 			},
 
@@ -261,12 +263,24 @@
 								    			}
 								    		});
 								    		data[0].report.jsondata = localData;
+								    		var entityId = data[0]._id;
 								    		Chart.renderCharts(data);
 								    		$('.dropdown-menu .print').click(function (event) {
 								    			self.onPrintSvg(event, project);
 									    	});
 									    	$('.dropdown-menu .report').click(function (event) {
-								    			self.onReportDownload(event, project);
+									    		$('#envModal').modal('show');
+								    			$('.add-details').click(function() {
+								    				var form = $(this).closest('.modal').find('form');
+									    			var sData = form.serializeArray();
+									    			var formData = new FormData();
+									    			$.each(sData, function (index, value) {
+									    				formData.append(value.name, value.value);
+									    			});
+									    			rest.setEnvDetails(entityId, formData, function(err, data) {
+								    					self.onReportDownload(event, sData, project);
+								    				});
+									    		});
 									    	});
 										});
 									});
@@ -276,7 +290,7 @@
 							rest.fetchLatestBuildforVersion(project, term, function (data) {
 								rest.fetchSelectedSamples(project, function (selectedSamples) {
 									var samplesSelected = selectedSamples.samples ? selectedSamples.samples.slice(1, -1).replace(/"/g,'').split(',') : [];
-									require(['mustache', 'chart', 'jspdf'], function (Mustache, Chart, jsPDF) {
+									require(['mustache', 'chart', 'jspdf', 'tables'], function (Mustache, Chart, jsPDF, Tables) {
 										$.get('/jc/templates/chart.html', function(template) {
 								    		var rendered = Mustache.render(template);
 								    		$('.perf-charts').html(rendered);
@@ -288,14 +302,32 @@
 								    			}
 								    		});
 								    		data[0].report.jsondata = localData;
+								    		var entityId = data[0]._id;
 								    		Chart.renderCharts(data);
-								    		$('.dropdown-menu .print').click(function (event) {
+								    		var tableData = Tables.generateTableHTML(data);
+								    		$.get('/jc/templates/data-table.html', function(template) {
+										    	var renderedTableHTML = Mustache.render(template, {
+										    		dataTable: tableData
+										    	});
+										    	$('.dropdown-menu .print').click(function (event) {
 								    			self.onPrintSvg(event, project);
-									    	});
-									    	$('.dropdown-menu .report').click(function (event) {
-								    			self.onReportDownload(event, project);
-									    	});
-										});
+										    	});
+										    	$('.dropdown-menu .report').click(function (event) {
+										    		$('#envModal').modal('show');
+										    		$('.add-details').click(function() {
+										    			var form = $(this).closest('.modal').find('form');
+										    			var sData = form.serializeArray();
+										    			var formData = new FormData();
+										    			$.each(sData, function (index, value) {
+										    				formData.append(value.name, value.value);
+										    			});
+										    			rest.setEnvDetails(entityId, formData, function(err, data) {
+									    					self.onReportDownload(event, sData, renderedTableHTML, project);
+									    				});
+										    		});
+										    	});
+											});
+										   });
 									});
 								});
 							});

@@ -1,0 +1,39 @@
+
+
+<html>
+<head>
+<style>
+table, th, td {
+    border: 1px solid black;
+    border-collapse: collapse;
+}
+th, td {
+    padding: 5px;
+    text-align: left;
+}
+
+th {
+  background-color: #4169E1;
+  color: white;
+}
+
+</style>
+</head>
+<body>
+
+<table style="width:100%">
+  <caption>Environment</caption>
+  <tr>
+    <th>Attribute</th>
+    <th>Value</th>
+  </tr>
+ {{#env}}
+    <tr>
+      <td>{{name}}</td>
+      <td>{{value}}</td>
+    </tr>
+  {{/env}}
+</table>
+
+</body>
+</html>

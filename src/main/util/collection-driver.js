@@ -197,20 +197,32 @@ CollectionDriver.prototype.save = function(collectionName, obj, callback) {
  * @param callback {function} this callback is aclled once the update is complete.
  * @access public
  */
-CollectionDriver.prototype.update = function(collectionName, obj, entityId, callback) {
+CollectionDriver.prototype.update = function(collectionName, data, entityId, callback) {
+    var self = this;
     this.getCollection(collectionName, function(error, the_collection) {
         if (error) {
         	callback(error);
         } else {
-            obj._id = ObjectID(entityId);
-            obj.updated_at = new Date();
-            the_collection.save(obj, function(error,doc) {
-                if (error) {
-                	callback(error);
-                }
-                else {
-                	callback(null, obj);
-                }
+            var _id = ObjectID(entityId);
+            var query = {
+              _id: _id
+            };
+            self.findData(collectionName, query, function(error, obj){
+              if ( error ) {
+                callback(error);
+              } else {
+                obj[0].updated_at = new Date();
+                obj[0].env = data;
+                the_collection.save(obj[0], function(error,obj) {
+                    if (error) {
+                      callback(error);
+                    }
+                    else {
+                      obj.env = data;
+                      callback(null, obj);
+                    }
+                });
+              }
             });
         }
     });
