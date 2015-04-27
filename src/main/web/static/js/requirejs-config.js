@@ -12,6 +12,7 @@ requirejs.config({
         'compare': 'compare',
         'canvg': 'lib/canvg/dist/canvg',
         'jspdf': 'lib/jspdf/dist/jspdf.debug',
+        'scrollTo': 'lib/jquery.scrollTo/jquery.scrollTo',
         'rasterize': 'lib/rasterizehtml/rasterizeHTML.allinone'
     },
     shim: {
@@ -32,7 +33,7 @@ requirejs.config({
         	deps: [ 'jquery']
         },
 
-		'lib/Scroll-To/scrollTo': {
+		'scrollTo': {
         	deps: [ 'jquery']
         },
 

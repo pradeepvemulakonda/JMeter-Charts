@@ -50,7 +50,7 @@
 					    		terms: versions,
 					    		type: 'version',
 					    		samples: samplesProcessed,
-					    		show: (versions.length > 8)
+					    		show: (versions.length > 5)
 					    	},
 					    	{
 					    		// partial tempalate
@@ -92,7 +92,7 @@
 				    		project: project,
 				    		terms: builds,
 				    		type: 'build',
-				    		show: (builds.length > 8)
+				    		show: (builds.length > 5)
 				    	},
 				    	{
 				    		// partial tempalate

@@ -33,12 +33,11 @@
     "bootstrap-combobox": null,
     "metisMenu": null,
     "d3-tip": null,
-    "Scroll-To": null,
+    "jquery.scrollTo": null,
     "mustache": null,
     "requirejs": null,
     "font-awesome": null,
     "canvg": null,
-    "jspdf": null,
-    "rasterizehtml": null
+    "jspdf": null
   }
 }
