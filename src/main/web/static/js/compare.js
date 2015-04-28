@@ -20,7 +20,7 @@
 					var projectTemaplate,
 						compareTemplate;
 					$.when(
-						$.get('/jc/templates/project.html', function(template) {
+						$.get('/jc/templates/report.html', function(template) {
 							projectTemaplate = template;
 						}),
 						$.get('/jc/templates/compare.html', function(template) {
@@ -83,7 +83,7 @@
 					var versionTemplate,
 						compareTemplate;
 					$.when(
-						$.get('/jc/templates/project.html', function(template) {
+						$.get('/jc/templates/report.html', function(template) {
 							versionTemplate = template;
 						}),
 						$.get('/jc/templates/compare.html', function(template) {
