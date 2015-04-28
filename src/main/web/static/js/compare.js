@@ -51,7 +51,7 @@
 					    		type: 'version',
 					    		samples: samplesProcessed,
 					    		show: (versions.length > 5),
-					    		showConfig: true
+					    		showConfig: true,
 					    	},
 					    	{
 					    		// partial tempalate

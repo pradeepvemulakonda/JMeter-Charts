@@ -12,7 +12,7 @@ define(['jquery', 'mustache'], function($, Mustache) {
 						data.push(threadGroup.threadgroup.successCount);
 						data.push(threadGroup.threadgroup.failureCount);
 						data.push(threadGroup.threadgroup.totalCount);
-						data.push(threadGroup.threadgroup.scuccessPercentage);
+						data.push(threadGroup.threadgroup.successPercentage);
 						data.push(threadGroup.threadgroup.averageActiveThreads);
 					tableData.push({
 						data: data
