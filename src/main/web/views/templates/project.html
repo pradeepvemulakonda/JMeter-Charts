@@ -3,7 +3,9 @@
   <!-- Nav tabs -->
   <ul id="myTab" class="nav nav-tabs" role="tablist">
     <li role="presentation" class="active"><a href="#home" aria-controls="home" role="tab" data-toggle="tab">Home</a></li>
+  {{#showConfig}}
   <li role="presentation"><a href="#config" aria-controls="config" role="tab" data-toggle="tab">Config</a></li>
+  {{/showConfig}}
   </ul>
 
   <!-- Tab panes -->
@@ -47,6 +49,7 @@
         </div>
       </div>
     </div>
+    {{#showConfig}}
     <div role="tabpanel" class="tab-pane" id="config">
       <form class="navbar-form navbar-left" role="search">
         <div class="form-group">
@@ -69,7 +72,8 @@
         </div>
         </div>
       </form>
-  </div>
+    </div>
+    {{/showConfig}}
 
 </div>
 

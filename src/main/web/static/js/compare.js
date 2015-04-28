@@ -50,7 +50,8 @@
 					    		terms: versions,
 					    		type: 'version',
 					    		samples: samplesProcessed,
-					    		show: (versions.length > 5)
+					    		show: (versions.length > 5),
+					    		showConfig: true
 					    	},
 					    	{
 					    		// partial tempalate
@@ -81,7 +82,7 @@
 					var versionTemplate,
 						compareTemplate;
 					$.when(
-						$.get('/jc/templates/version.html', function(template) {
+						$.get('/jc/templates/project.html', function(template) {
 							versionTemplate = template;
 						}),
 						$.get('/jc/templates/compare.html', function(template) {
@@ -139,6 +140,50 @@
 	    			var parent = $(event.target).closest('.panel');
 	    			report.generatePdf(parent, data, tableData, project);
 	    		});
+			},
+
+			processChartData: function(project, version, term, data, selectedSamples) {
+				var self = this;
+				var samplesSelected = selectedSamples.samples ? selectedSamples.samples.slice(1, -1).replace(/"/g,'').split(',') : [];
+				require(['mustache', 'chart', 'tables'], function (Mustache, Chart, Tables) {
+					$.get('/jc/templates/chart.html', function(template) {
+			    		var rendered = Mustache.render(template);
+			    		$('.perf-charts').html(rendered);
+			    		$('.page-header').text((version ? 'Build: ' : 'Version:' )+ term);
+			    		var localData = [];
+			    		$.each(data[0].report.jsondata, function (index, value) {
+			    			if($.inArray(value.threadgroup.name, samplesSelected) !== -1) {
+			  					localData.push(value);
+			    			}
+			    		});
+			    		data[0].report.jsondata = localData;
+			    		var entityId = data[0]._id;
+			    		Chart.renderCharts(data);
+			    		var tableData = Tables.generateTableHTML(data);
+			    		$.get('/jc/templates/data-table.html', function(template) {
+					    	var renderedTableHTML = Mustache.render(template, {
+					    		dataTable: tableData
+					    	});
+					    	$('.dropdown-menu .print').click(function (event) {
+			    			self.onPrintSvg(event, project);
+					    	});
+					    	$('.dropdown-menu .report').click(function (event) {
+					    		$('#envModal').modal('show');
+					    		$('.add-details').click(function() {
+					    			var form = $(this).closest('.modal').find('form');
+					    			var sData = form.serializeArray();
+					    			var formData = new FormData();
+					    			$.each(sData, function (index, value) {
+					    				formData.append(value.name, value.value);
+					    			});
+					    			rest.setEnvDetails(entityId, formData, function(err, data) {
+				    					self.onReportDownload(event, sData, renderedTableHTML, project);
+				    				});
+					    		});
+					    	});
+						});
+					});
+				});
 			},
 
 			/**
@@ -250,91 +295,13 @@
 			    		if(version) {
 							rest.fetchReport(project, version, term, function (data) {
 								rest.fetchSelectedSamples(project, function (selectedSamples) {
-									var samplesSelected = selectedSamples.samples ? selectedSamples.samples.slice(1, -1).replace(/"/g,'').split(',') : [];
-									require(['mustache', 'chart', 'tables'], function (Mustache, Chart, Tables) {
-										$.get('/jc/templates/chart.html', function(template) {
-								    		var rendered = Mustache.render(template);
-								    		$('.perf-charts').html(rendered);
-								    		$('.page-header').text('Build: ' + term);
-								    		var localData = [];
-								    		$.each(data[0].report.jsondata, function (index, value) {
-								    			if($.inArray(value.threadgroup.name, samplesSelected) !== -1) {
-								  					localData.push(value);
-								    			}
-								    		});
-								    		data[0].report.jsondata = localData;
-								    		var entityId = data[0]._id;
-								    		Chart.renderCharts(data);
-								    		var tableData = Tables.generateTableHTML(data);
-								    		$.get('/jc/templates/data-table.html', function(template) {
-										    	var renderedTableHTML = Mustache.render(template, {
-										    		dataTable: tableData
-										    	});
-										    	$('.dropdown-menu .print').click(function (event) {
-								    			self.onPrintSvg(event, project);
-										    	});
-										    	$('.dropdown-menu .report').click(function (event) {
-										    		$('#envModal').modal('show');
-										    		$('.add-details').click(function() {
-										    			var form = $(this).closest('.modal').find('form');
-										    			var sData = form.serializeArray();
-										    			var formData = new FormData();
-										    			$.each(sData, function (index, value) {
-										    				formData.append(value.name, value.value);
-										    			});
-										    			rest.setEnvDetails(entityId, formData, function(err, data) {
-									    					self.onReportDownload(event, sData, renderedTableHTML, project);
-									    				});
-										    		});
-										    	});
-											});
-										});
-									});
+									self.processChartData(project, version, term, data, selectedSamples);
 								});
 							});
 						} else {
 							rest.fetchLatestBuildforVersion(project, term, function (data) {
 								rest.fetchSelectedSamples(project, function (selectedSamples) {
-									var samplesSelected = selectedSamples.samples ? selectedSamples.samples.slice(1, -1).replace(/"/g,'').split(',') : [];
-									require(['mustache', 'chart', 'jspdf', 'tables'], function (Mustache, Chart, jsPDF, Tables) {
-										$.get('/jc/templates/chart.html', function(template) {
-								    		var rendered = Mustache.render(template);
-								    		$('.perf-charts').html(rendered);
-								    		$('.page-header').text('Version: ' + term);
-								    		var localData = [];
-								    		$.each(data[0].report.jsondata, function (index, value) {
-								    			if($.inArray(value.threadgroup.name, samplesSelected) !== -1) {
-								  					localData.push(value);
-								    			}
-								    		});
-								    		data[0].report.jsondata = localData;
-								    		var entityId = data[0]._id;
-								    		Chart.renderCharts(data);
-								    		var tableData = Tables.generateTableHTML(data);
-								    		$.get('/jc/templates/data-table.html', function(template) {
-										    	var renderedTableHTML = Mustache.render(template, {
-										    		dataTable: tableData
-										    	});
-										    	$('.dropdown-menu .print').click(function (event) {
-								    			self.onPrintSvg(event, project);
-										    	});
-										    	$('.dropdown-menu .report').click(function (event) {
-										    		$('#envModal').modal('show');
-										    		$('.add-details').click(function() {
-										    			var form = $(this).closest('.modal').find('form');
-										    			var sData = form.serializeArray();
-										    			var formData = new FormData();
-										    			$.each(sData, function (index, value) {
-										    				formData.append(value.name, value.value);
-										    			});
-										    			rest.setEnvDetails(entityId, formData, function(err, data) {
-									    					self.onReportDownload(event, sData, renderedTableHTML, project);
-									    				});
-										    		});
-										    	});
-											});
-										   });
-									});
+									self.processChartData(project, version, term, data, selectedSamples);
 								});
 							});
 						}
