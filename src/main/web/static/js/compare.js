@@ -135,12 +135,12 @@
 	    		});
 			},
 
-			onReportDownload: function (event, data, tableData, project) {
+			onReportDownload: function (event, env, tableData, project) {
 				require(['report'], function (report) {
 					$('#envModal').modal('hide');
 					$('#loadingModal').modal('show');
 	    			var parent = $(event.target).closest('.panel');
-	    			report.generatePdf(parent, data, tableData, project);
+	    			report.generatePdf(parent, env, tableData, project);
 	    		});
 			},
 
