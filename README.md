@@ -42,16 +42,19 @@ Nodejs server uses Express and MongodDB driver.
 * Could not get it to run on windows8.Need to test on windows 7.
 
 <h2> Installation </h2>
-<h3>Prerequisit</h3>
+<h3>Prerequisits</h3>
 * Install java 6/7/8
 * Works only on Firefox and Chrome
 </br>
-Step 1: bower install (all js components are copied to folder /src/main/web/static/js/lib) Note:rasterizehtml is not a bower                           dependancy
-Step 2: npm install
 
-Step 3: Install mongodb
+Step 1: bower install (all js components are copied to folder /src/main/web/static/js/lib) 
+        Note:rasterizehtml is not a bower dependancy.
 
-Step 4: provide the db details src/main/config.json
+Step 2: npm install.
+
+Step 3: Install mongodb.
+
+Step 4: provide the db details src/main/config.json.
 
 <h3>Running</h3>
 
