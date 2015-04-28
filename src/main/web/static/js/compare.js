@@ -59,6 +59,7 @@
 					    	});
 					    	// render the projects template
 					    	$('.dynamic-template').html(rendered);
+					    	$('.chart-report').hide();
 					    	self._registerEventsAfterLoad(project);
 					    	self.setupSamples(project);
 						});
@@ -101,6 +102,7 @@
 				    	});
 				    	// render the projects template
 				    	$('.dynamic-template').html(rendered);
+				    	$('.chart-report').hide();
 				    	self._registerEventsAfterLoad(project, version);
 					});
 				});
