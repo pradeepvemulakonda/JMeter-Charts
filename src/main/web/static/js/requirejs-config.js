@@ -8,8 +8,13 @@ requirejs.config({
         'tip': 'lib/d3-tip/index',
         'mustache': 'lib/mustache/mustache',
         'chart': 'chart',
+        'enum': 'enum',
         'upload': 'upload',
-        'compare': 'compare'
+        'compare': 'compare',
+        'canvg': 'lib/canvg/dist/canvg',
+        'jspdf': 'lib/jspdf/dist/jspdf.debug',
+        'scrollTo': 'lib/jquery.scrollTo/jquery.scrollTo',
+        'rasterize': 'lib/rasterizehtml/rasterizeHTML.allinone'
     },
     shim: {
         'jquery.bootstrap': {
@@ -29,7 +34,7 @@ requirejs.config({
         	deps: [ 'jquery']
         },
 
-		'lib/Scroll-To/scrollTo': {
+		'scrollTo': {
         	deps: [ 'jquery']
         },
 
@@ -47,6 +52,23 @@ requirejs.config({
 
         'compare': {
         	exports: 'Compare'
+        },
+
+        'enum': {
+            exports: 'Enum'
+        },
+
+        'canvg': {
+            exports: 'canvg'
+        },
+
+        'jspdf': {
+            exports: 'jsPDF'
+        },
+
+
+        'rasterize': {
+            exports: 'rasterizeHTML'
         }
     }
 });

@@ -610,6 +610,14 @@ table.dataTable thead .sorting:after {
 
 .top-buffer { margin-top:20px; }
 
+.modal-body {
+    position: relative;
+    padding: 15px;
+    width: 1040px;
+}
 
+.modal-content {
+    width: 1040px;
+ }
 
 

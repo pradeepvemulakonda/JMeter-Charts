@@ -1,5 +1,5 @@
 /**
- * Template processor router
+ * Router to process all project related REST calls
  * @module
  */
 var express = require('express');

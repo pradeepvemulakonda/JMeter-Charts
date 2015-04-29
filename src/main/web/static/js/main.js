@@ -1,18 +1,35 @@
+/**
+ * Main module which loads the left side navigation links
+ * Registers the Upload module with the menue
+ * Registers the project and version menu items with the Compare module.
+ * Sets the Page header and the brad crumb
+ * @module main
+ */
 require(['require',
 		 'jquery',
 		 'jquery.bootstrap',
 		 'lib/metisMenu/dist/metisMenu',
-		 'lib/Scroll-To/scrollTo',
+		 'scrollTo',
 		 'lib/typeahead.js/dist/typeahead.bundle.min',
 		 'rest',
 		 'mustache',
 		 'compare',
+		 'enum',
+		 'template-loader',
 		 'lib/bootstrap-combobox/js/bootstrap-combobox'], function (require, $) {
 	var rest = require('rest');
+	var Mustache = require('mustache');
+	var Compare = require('compare');
+	var Enum = require('enum');
+	var Loader = require('template-loader');
+	var menuTemplate = null;
 
-	// set the die menu
+	// fetch the menuTemplate
 	$(function() {
-	    $('#side-menu').metisMenu();
+		Loader.load(Enum.template.NAV, function(template) {
+			 menuTemplate = template;
+		});
+		$('#side-menu').metisMenu();
 	});
 
 	// Loads the correct sidebar on window load,
@@ -45,58 +62,13 @@ require(['require',
 	 * @return {[type]}   [description]
 	 */
 	$(function() {
-		require(['mustache'], function (Mustache) {
-			$.get('/jc/templates/upload.html', function(template) {
-			    var rendered = Mustache.render(template);
-			    $('.dynamic-template').html(rendered);
-			    	setup();
-			    	addEvents();
-
-			});
+		Loader.load(Enum.template.UPLOAD, function(template) {
+		    var rendered = Mustache.render(template);
+		    $('.dynamic-template').html(rendered);
+		    	setup();
+		    	fetchAndRenderLatestProject();
 		});
 	});
-
-	function addEvents() {
-		$('.main-project').click(function () {
-			require(['mustache'], function (Mustache) {
-					$.get('/jc/templates/latest-project.html', function(template) {
-						rest.fetchLatest(function (data) {
-							var rendered = Mustache.render(template, {
-								project: data.name,
-								version: data.version,
-								build: data.build
-							});
-					    	$('.dynamic-template').html(rendered);
-							$('.page-header').text('Select a Project to view detailed performance charts');
-							$('.breadcrumb').empty().append('<li>Select Project</li>');
-						});
-					});
-			});
-		});
-	}
-
-
-	/**
-	 * Adds a menu item
-	 * @param {[type]}   node     [description]
-	 * @param {[type]}   text     [description]
-	 * @param {[type]}   clazz    [description]
-	 * @param {Function} callback [description]
-	 * @private
-	 */
-	function _addMenu(node, text, clazz, callback) {
-		var anchor;
-		if(clazz == 'version-nav') {
-			anchor = $('<a><i class="fa fa-code-fork" title="Version"></i><span class="divider"></span>'+text + '<span class="fa arrow"></span>'+'</a>');
-		} else {
-			anchor = $('<a><i class="fa fa-cube" title="Project"></i><span class="divider"></span>'+text + '<span class="fa arrow"></span>'+'</a>');
-		}
-
-		anchor.bind('click', callback);
-		var liNode = $('<li class = "active ' + clazz + '"></li>');
-		liNode.append(anchor);
-		node.append(liNode);
-	}
 
 	/**
 	 * Set the navigation links on document ready
@@ -108,15 +80,85 @@ require(['require',
 		require(['upload'], function (Upload) {
 			Upload.init();
 		});
-
 		// hide the error
 		$('.error-template').hide();
+		fetchAndRenderProjectData();
+	}
 
+	/**
+	 * Fetch the latest project and render it on load
+	 * @private
+	 */
+	function fetchAndRenderLatestProject() {
+		$('.main-project').click(function () {
+			Loader.load(Enum.template.LATEST_PROJECT, function(template) {
+				rest.fetchLatest(function (data) {
+					var rendered = Mustache.render(template, {
+						project: data.name,
+						version: data.version,
+						build: data.build
+					});
+			    	$('.dynamic-template').html(rendered);
+					setPageHeader('Select a Project to view detailed performance charts');
+					setBreadCrumb(['Select Project']);
+				});
+			});
+		});
+	}
+
+
+	/**
+	 * Adds a menu item
+	 * @param {Node}   node  the node to which the newly created menu item should be appended to
+	 * @param {String}   versionOrBuildVersion
+	 * @param {String}   clazz    css class to set on the created menue item
+	 * @param {Function} callback the onclick callback to register
+	 * @private
+	 */
+	function _addMenu(node, versionOrBuildVersion, clazz, callback) {
+		var anchor = $(Mustache.render(menuTemplate, {
+		    	title: clazz === 'version-nav' ? 'version' : 'project',
+		    	text: versionOrBuildVersion
+		    }));
+		    anchor.bind('click', callback);
+			var liNode = $('<li class = "active ' + clazz + '"></li>');
+			liNode.append(anchor);
+			node.append(liNode);
+	}
+
+	/**
+	 * Sets the page header
+	 * @param {String}
+	 * @private
+	 */
+	function setPageHeader(headerText) {
+		$('.page-header').text(headerText);
+	}
+
+	/**
+	 * Sets the Bread crumbs
+	 * @param {Array} of bread crumbs
+	 * @private
+	 */
+	function setBreadCrumb(crumbs) {
+		var breadCrumbContainer = $('.breadcrumb');
+		breadCrumbContainer.empty();
+		$.each(crumbs, function (index, crumb){
+			breadCrumbContainer.append('<li>' + crumb + '</li>');
+		});
+	}
+
+
+	/**
+	 * Fetch a render the project details.
+	 * @private
+	 */
+	function fetchAndRenderProjectData() {
 		rest.fetchProjects(function( data) {
 			var node = $(document.createDocumentFragment());
 			data = data.sort();
 			$.each(data, function (index, projectName) {
-				_addMenu(node, projectName, 'project-nav', fetchVersion);
+				_addMenu(node, projectName, 'project-nav', fetchAndRenderVersionData);
 			});
 			$('.project-nav').append(node);
 		});
@@ -124,47 +166,47 @@ require(['require',
 
 	/**
 	 * Fetch the version data for the project
-	 * @param  {[type]} event [description]
-	 * @return {[type]}       [description]
+	 * @param  {Object} event the click event triggered when the menu item is clicked
+	 * @private
 	 */
-	function fetchVersion(event) {
+	function fetchAndRenderVersionData(event) {
 		if($(event.target).is('a')) {
-			rest.fetchVersions(event.target.text, function (data) {
+			var project = event.target.text;
+			var projectParentContainer = event.target.parentNode;
+			rest.fetchVersions(project, function (data) {
 				data = data.sort();
 				var currentMenu = $(event.target);
 				if(currentMenu.closest('.project-nav').find('.nav-third-level')) {
 					currentMenu.closest('.project-nav').find('.nav-third-level').remove();
 				}
-				$('<ul class="nav nav-third-level">').appendTo(event.target.parentNode);
+				$('<ul class="nav nav-third-level">').appendTo(projectParentContainer);
 				$.each(data, function (index, version) {
-					_addMenu($(event.target.parentNode).find('ul'), version, 'version-nav', fetchBuild);
+					_addMenu($(projectParentContainer).find('ul'), version, 'version-nav', fetchAndRenderBuildData);
 				});
-				$('#side-menu').metisMenu();
+				Compare.fetchAndRenderProjectTemplate(project , data);
+				setPageHeader('Displaying charts for Project: ' + project);
+				setBreadCrumb(['Select Project', 'Project: '+ project]);
 
-				require(['compare'], function (Compare) {
-					Compare.fetchAndRenderProjectTemplate(event.target.text , data);
-				});
-				$('.page-header').html('Displaying charts for Project: ' + event.target.text);
-				$('.breadcrumb').empty().append('<li>Select Project</li>').append('<li>Project: "'+ event.target.text +'"</li>');
+				// no idea why I need to do this.TODO replace metisMenu
+				$('#side-menu').metisMenu();
 			});
 		}
 	}
 
 	/**
-	 * Fetch the build data for the selected version
-	 * @param  {[type]} event [description]
-	 * @return {[type]}       [description]
+	 * Fetch the build data for the project
+	 * @param  {Object} event the click event triggered when the menu item is clicked
+	 * @private
 	 */
-	function fetchBuild(event) {
+	function fetchAndRenderBuildData(event) {
 		if($(event.target).is('a')) {
-			rest.fetchBuilds($($(event.target).parent().parent().parent()).children()[0].text, event.target.text, function (data) {
+			var project = $(event.target).closest('.project-nav').find('.selected-value.project').text();
+			var version = event.target.text;
+			rest.fetchBuilds(project, version, function (data) {
 				data = data.sort();
-				var projectName = $(event.target).closest('.project-nav').children()[0].text;
-				require(['compare'], function (Compare) {
-					Compare.fetchAndRenderVersionTemplate(projectName, event.target.text, data);
-				});
-				$('.page-header').html('Displaying charts for Version: ' + event.target.text);
-				$('.breadcrumb').empty().append('<li>Select Project</li>').append('<li>Project: "'+ projectName +'"</li>').append('<li>Version: "'+ event.target.text +'"</li>');
+				Compare.fetchAndRenderVersionTemplate(project, version, data);
+				setPageHeader('Displaying charts for Version: ' + version);
+				setBreadCrumb(['Select Project', 'Project: '+ project, 'Vesrion: '+ version]);
 			});
 		}
 	}

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testResults version="1.2">
+<httpSample t="2" lt="2" ts="1419214785262" s="true" lb="Get the data" rc="200" rm="OK" tn="google 1-1" dt="text" by="186" ng="1" na="1"/>
+<httpSample t="3" lt="3" ts="1419214785762" s="true" lb="Get the data" rc="200" rm="OK" tn="google 1-2" dt="text" by="186" ng="2" na="2"/>
+<httpSample t="1910" lt="841" ts="1419214785769" s="true" lb="Google" rc="200" rm="OK" tn="google 1-2" dt="text" by="19012" ng="2" na="2">
+  <httpSample t="841" lt="841" ts="1419214785769" s="true" lb="http://www.google.com/" rc="302" rm="Found" tn="" dt="text" by="532" ng="0" na="0"/>
+  <httpSample t="1064" lt="650" ts="1419214786615" s="true" lb="http://www.google.com.au/?gfe_rd=cr&amp;ei=gn-XVL-2JKWN8Qfh7YHYCQ" rc="200" rm="OK" tn="google 1-2" dt="text" by="18480" ng="0" na="0"/>
+</httpSample>
+<httpSample t="2674" lt="1145" ts="1419214785317" s="true" lb="Google" rc="200" rm="OK" tn="google 1-1" dt="text" by="18946" ng="1" na="1">
+  <httpSample t="1145" lt="1145" ts="1419214785317" s="true" lb="http://www.google.com/" rc="302" rm="Found" tn="" dt="text" by="532" ng="0" na="0"/>
+  <httpSample t="1524" lt="972" ts="1419214786467" s="true" lb="http://www.google.com.au/?gfe_rd=cr&amp;ei=gn-XVKm7GKeN8QeH14HABQ" rc="200" rm="OK" tn="google 1-1" dt="text" by="18414" ng="0" na="0"/>
+</httpSample>
+
+</testResults>

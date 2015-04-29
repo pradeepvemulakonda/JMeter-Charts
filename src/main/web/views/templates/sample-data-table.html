@@ -1,0 +1,43 @@
+
+
+<html>
+<head>
+<style>
+table, th, td {
+    border: 1px solid black;
+    border-collapse: collapse;
+}
+th, td {
+    padding: 5px;
+    text-align: left;
+}
+
+th {
+  background-color: #4169E1;
+  color: white;
+}
+</style>
+</head>
+<body>
+
+<table style="width:100%">
+  <caption>Average Sample Data</caption>
+    <tr>
+      <th>Sample Name</th>
+      <th>Average Time</th>
+      <th>Success Count</th>
+      <th>Failure Count</th>
+      <th>Total Count</th>
+      <th>Success Percentage</th>
+      <th>Average Active Threads</th>
+    </tr>
+   {{#dataTable}}
+      <tr>
+        {{#data}}
+        <td>{{.}}</td>
+        {{/data}}
+      </tr>
+    {{/dataTable}}
+</table>
+</body>
+</html>

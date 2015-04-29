@@ -10,10 +10,7 @@
                                     <span class="caret"></span>
                                 </button>
                                 <ul class="dropdown-menu pull-right" role="menu">
-                                    <li><a href="#"><i class="fa fa-columns fa-fw"></i>&nbsp; Compare with</a>
-                                    </li>
-                                    <li class="divider"></li>
-                                    <li><a href="#"><i class="fa fa-print fa-fw"></i>&nbsp; Print</a>
+                                    <li><a href="#" class="print" data-toggle="modal" data-target="#myModal"><i class="fa fa-print fa-fw"></i>&nbsp; Print</a>
                                     </li>
                                 </ul>
                             </div>
@@ -49,14 +46,7 @@
                                     <span class="caret"></span>
                                 </button>
                                 <ul class="dropdown-menu pull-right" role="menu">
-                                    <li><a href="#">Action</a>
-                                    </li>
-                                    <li><a href="#">Another action</a>
-                                    </li>
-                                    <li><a href="#">Something else here</a>
-                                    </li>
-                                    <li class="divider"></li>
-                                    <li><a href="#">Separated link</a>
+                                    <li><a href="#" class="print" data-toggle="modal" data-target="#myModal"><i class="fa fa-print fa-fw"></i>&nbsp; Print</a>
                                     </li>
                                 </ul>
                             </div>
@@ -91,14 +81,7 @@
                                     <span class="caret"></span>
                                 </button>
                                 <ul class="dropdown-menu pull-right" role="menu">
-                                    <li><a href="#">Action</a>
-                                    </li>
-                                    <li><a href="#">Another action</a>
-                                    </li>
-                                    <li><a href="#">Something else here</a>
-                                    </li>
-                                    <li class="divider"></li>
-                                    <li><a href="#">Separated link</a>
+                                   <li><a href="#" class="print" data-toggle="modal" data-target="#myModal"><i class="fa fa-print fa-fw"></i>&nbsp; Print</a>
                                     </li>
                                 </ul>
                             </div>
@@ -124,3 +107,22 @@
                 </div>
 			</div>
 	</div>
+
+<!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Print Preview</h4>
+      </div>
+      <div class="modal-body">
+        <canvas id="canvas"></canvas>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <a class="print-image btn btn-primary">Save Image</a>
+      </div>
+    </div>
+  </div>
+</div>

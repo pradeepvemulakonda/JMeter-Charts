@@ -1,5 +1,5 @@
 /**
- * Template processor router
+ * Processor use to upload xml files and process them to a json file in mongodb
  * @module
  */
 var express = require('express');
@@ -7,6 +7,7 @@ var router = express.Router();
 var collectionDriver;
 var STYLESHEET = '../../resources/report-style.xsl';
 var xsltProcessor = require('../util/xslt-processor').XSLTProcessor(STYLESHEET);
+var fs = require('fs');
 
 // middleware specific to this router
 router.use(function timeLog(req, res, next) {
@@ -23,22 +24,16 @@ router.post('/upload', function(req, res) {
 		throw new Error('Project, version and build data should be provided');
 	}
 	if(req.files) {
-		res.writeHead(201, { 'Content-Type': 'text/plain' });
-		res.write('[');
-		if(req.files.resultFiles instanceof Array) {
-			console.info('Multiple files sent');
-			arrayLength = req.files.resultFiles.length;
-			// process each of the files and persist the same in mongodb table
-			for(var i = 0;i < arrayLength; i++) {
-				xsltProcessor.translate(req.files.resultFiles[i].buffer, _persistantHelper(req, res, req.files.resultFiles[i].originalname, i === arrayLength - 1));
-			}
-		} else {
-			xsltProcessor.translate(req.files.resultFiles.buffer, _persistantHelper(req, res, req.files.resultFiles.originalname, true));
-		}
+    res.writeHead(201, { 'Content-Type': 'text/plain' });
 	} else {
 		res.end(400, { 'Content-Type': 'text/plain' });
 	}
 });
+
+
+router.processFile = function (fileName, req, res) {
+  xsltProcessor.translate(fileName, _persistantHelper(req, res, req.files.resultFiles[0].originalname, true));
+}
 
 /**
  * Helper to capture the request and response for the callback.
@@ -59,7 +54,8 @@ function _persistantHelper(req, res, fileName, endResponse) {
  * @param resp response from closure scope
  */
 function _persistJsonData(err, jsonData, req, res, fileName, endResponse) {
-	console.info(jsonData);
+console.log('call back being called');
+  res.write('[');
 	if (err) {
 		res.write(JSON.stringify({
   		  id: null,

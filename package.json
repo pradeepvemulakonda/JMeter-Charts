@@ -6,17 +6,18 @@
     "start": "node app.js"
   },
   "dependencies": {
-    "express": "~4.0",
+    "express": "~4.0.0",
     "ejs": "*",
-    "mongodb": "~2.0",
-    "angular": "*",
+    "mongodb": "~2.0.25",
+    "angular": "~1.3.15",
     "d3-chart": "*",
-    "body-parser": "*",
-    "unit.js": "*",
+    "body-parser": "~1.12.2",
+    "unit.js": "~1.1.3",
     "mocha": "*",
-    "handlebars": "*",
+    "handlebars": "~3.0.1",
     "node_xslt": "*",
     "connect-busboy": "*",
-    "multer": "*"
+    "multer": "~0.1.8",
+    "xslt4node": "*"
   }
 }

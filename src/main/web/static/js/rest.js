@@ -1,5 +1,5 @@
 /**
- * New node file
+ * REST clinet for fetching data from the backend server
  */
 define(['jquery'], function($) {
 	return {
@@ -35,6 +35,14 @@ define(['jquery'], function($) {
             $.when($.getJSON('/jc/project/'+ project +'/samples/selected')).done(callback);
         },
 
+        fetchSelectedSamplesAsync: function (project) {
+            var dfd = new $.Deferred();
+            $.get('/jc/project/'+ project +'/samples/selected', function (data){
+                dfd.resolve(data);
+            });
+            return dfd.promise();
+        },
+
         setSamples: function (project, samples, callback) {
             var data = new FormData();
             data.append('project', project);
@@ -43,6 +51,41 @@ define(['jquery'], function($) {
                     url: 'jc/project/'+project+'/samples/selected',
                     type: 'POST',
                     data: data,
+                    cache: false,
+                    dataType: 'json',
+                    processData: false, // Don't process the files
+                    contentType: false, // Set content type to false as jQuery will
+                                        // tell the server its a query string
+                                        // request
+                    success: function(data)
+                    {
+                        if(typeof data.error === 'undefined')
+                        {
+                            // Success so call function to process the form
+                            callback(null, data);
+                        }
+                        else
+                        {
+                            // Handle errors here
+                            callback(null, data);
+                        }
+                    },
+                    error: function(jqXHR, textStatus, errorThrown)
+                    {
+                        // Handle errors here
+                        var err = jqXHR.responseText;
+                        console.log(errorThrown);
+                        callback(err);
+                        // STOP LOADING SPINNER
+                    }
+                });
+        },
+
+        setEnvDetails: function (entity, envDetails, callback) {
+            $.ajax({
+                    url: 'jc/project/'+entity,
+                    type: 'PUT',
+                    data: envDetails,
                     cache: false,
                     dataType: 'json',
                     processData: false, // Don't process the files
