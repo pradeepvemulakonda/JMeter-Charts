@@ -9,7 +9,7 @@ return {
 	 	generatePdf: function (htmlParent, env, tableData, project) {
 	 		var images = [];
 	 		console.log(rasterizeHTML);
-	 		$.get('/jc/templates/table.html', function(template) {
+	 		$.get('/jc/templates/environment-data-table.html', function(template) {
 
 		    	var rendered = Mustache.render(template, {
 		    		env: env

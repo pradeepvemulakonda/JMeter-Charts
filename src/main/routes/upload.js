@@ -1,5 +1,5 @@
 /**
- * Template processor router
+ * Processor use to upload xml files and process them to a json file in mongodb
  * @module
  */
 var express = require('express');

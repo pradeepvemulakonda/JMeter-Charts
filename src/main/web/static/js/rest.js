@@ -1,5 +1,5 @@
 /**
- * New node file
+ * REST clinet for fetching data from the backend server
  */
 define(['jquery'], function($) {
 	return {
@@ -33,6 +33,14 @@ define(['jquery'], function($) {
 
         fetchSelectedSamples: function (project, callback) {
             $.when($.getJSON('/jc/project/'+ project +'/samples/selected')).done(callback);
+        },
+
+        fetchSelectedSamplesAsync: function (project) {
+            var dfd = new $.Deferred();
+            $.get('/jc/project/'+ project +'/samples/selected', function (data){
+                dfd.resolve(data);
+            });
+            return dfd.promise();
         },
 
         setSamples: function (project, samples, callback) {

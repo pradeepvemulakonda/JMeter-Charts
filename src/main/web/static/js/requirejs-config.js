@@ -8,6 +8,7 @@ requirejs.config({
         'tip': 'lib/d3-tip/index',
         'mustache': 'lib/mustache/mustache',
         'chart': 'chart',
+        'enum': 'enum',
         'upload': 'upload',
         'compare': 'compare',
         'canvg': 'lib/canvg/dist/canvg',
@@ -51,6 +52,10 @@ requirejs.config({
 
         'compare': {
         	exports: 'Compare'
+        },
+
+        'enum': {
+            exports: 'Enum'
         },
 
         'canvg': {
