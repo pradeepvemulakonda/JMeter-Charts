@@ -44,7 +44,7 @@ Nodejs server uses Express and MongodDB driver.
 <h2> Installation </h2>
 <h3>Prerequisits</h3>
 * Install java 6/7/8
-* Works only on Firefox and Chrome
+* Works only on Firefox and Chrome(on IE the report generation does not work, Promises in the code breaks the stuff).
 </br>
 
 Step 1: bower install (all js components are copied to folder /src/main/web/static/js/lib) 
