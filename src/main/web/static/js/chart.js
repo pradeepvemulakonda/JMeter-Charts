@@ -188,6 +188,15 @@
 				  .attr('height', function(d) { return height - y(d.value); })
 				  .style('fill', function(d) { return color(d.name); });
 
+				 d3.selectAll('.axis line')
+				 .style('fill', 'none')
+				 .style('stroke-width', '1px')
+				 .style('stroke', 'black');
+				d3.selectAll('.axis path')
+				 .style('fill', 'none')
+				 .style('stroke-width', '1px')
+				 .style('stroke', 'black');
+
 				var legend = svg.selectAll('.legend')
 				  .data(versionNames.slice().reverse())
 				.enter().append('g')

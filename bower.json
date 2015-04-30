@@ -38,6 +38,8 @@
     "requirejs": null,
     "font-awesome": null,
     "canvg": null,
-    "jspdf": null
+    "jspdf": null,
+    "rsvp": "~3.0.18",
+    "promise-polyfill": "~2.0.2"
   }
 }

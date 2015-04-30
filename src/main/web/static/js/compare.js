@@ -174,7 +174,7 @@
 					    		dataTable: tableData
 					    	});
 					    	$('.dropdown-menu .print').click(function (event) {
-			    			self.onPrintSvg(event, project);
+			    				self.onPrintSvg(event, project);
 					    	});
 					    	$('.dropdown-menu .report').click(function (event) {
 					    		$('#envModal').modal('show');
@@ -229,6 +229,9 @@
 					if($('.chart-report')) {
 		    			$('.chart-report').hide();
 		    		}
+		    		if($('.compare-chart')) {
+			    		$('.compare-chart').hide();
+			    	}
 		    	});
 
 		    	// compare the terms
@@ -244,6 +247,15 @@
 		    		if($('.bar-chart-term')) {
 		    			$('.bar-chart-term').empty();
 		    		}
+
+		    		if($('.compare-chart')) {
+			    		$('.compare-chart').show();
+			    	}
+
+		    		$('.dropdown-menu .print').click(function (event) {
+			    		self.onPrintSvg(event, selectedTerm.join());
+					});
+
 
 		    		rest.fetchComparisionData(selectedTerm, project, version, function () {
 		    			var comparisonData = arguments;
@@ -297,6 +309,10 @@
 		    		if($('.chart-report')) {
 		    			$('.chart-report').show();
 		    		}
+
+		    		if($('.compare-chart')) {
+			    		$('.compare-chart').hide();
+			    	}
 
 		    		if(version) {
 						rest.fetchReport(project, version, term, function (data) {

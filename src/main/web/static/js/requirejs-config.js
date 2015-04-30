@@ -1,7 +1,7 @@
 requirejs.config({
     baseUrl: 'js',
     paths: {
-        'jquery': 'lib/jquery/jquery',
+        'jquery': 'lib/jquery/dist/jquery',
         'jquery.bootstrap': 'lib/bootstrap/dist/js/bootstrap',
         'rest': 'rest',
         'd3': 'lib/d3/d3',
@@ -14,7 +14,9 @@ requirejs.config({
         'canvg': 'lib/canvg/dist/canvg',
         'jspdf': 'lib/jspdf/dist/jspdf.debug',
         'scrollTo': 'lib/jquery.scrollTo/jquery.scrollTo',
-        'rasterize': 'lib/rasterizehtml/rasterizeHTML.allinone'
+        'rasterize': 'lib/rasterizehtml/rasterizeHTML.allinone',
+        'rsvp': 'lib/rsvp/rsvp',
+        'promise-polyfill': 'lib/promise-polyfill/Promise'
     },
     shim: {
         'jquery.bootstrap': {

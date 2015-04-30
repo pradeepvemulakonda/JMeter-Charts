@@ -65,6 +65,46 @@
   </div>
 </div>
 <div class="row chart-area">
-  <div class="bar-chart-term">
+   <div class="panel panel-default">
+      <div class="panel-heading">
+          <i class="fa fa-bar-chart-o fa-fw"></i> <strong>Compare View</strong>
+          <div class="pull-right">
+              <div class="btn-group">
+                  <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown">
+                      Actions
+                      <span class="caret"></span>
+                  </button>
+                  <ul class="dropdown-menu pull-right" role="menu">
+                      <li><a href="#" class="print" data-toggle="modal" data-target="#myModal"><i class="fa fa-print fa-fw"></i>&nbsp; Print</a>
+                      </li>
+                  </ul>
+              </div>
+          </div>
+      </div>
+      <!-- /.panel-heading -->
+      <div class="panel-body compare-chart">
+          <div class="bar-chart-term"></div>
+      <!-- /.panel-body -->
+      </div>
+
+  </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Print Preview</h4>
+      </div>
+      <div class="modal-body">
+        <canvas id="canvas"></canvas>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <a class="print-image btn btn-primary">Save Image</a>
+      </div>
+    </div>
   </div>
 </div>

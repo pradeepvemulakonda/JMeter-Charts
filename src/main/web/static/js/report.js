@@ -3,7 +3,6 @@
  */
 
 define(['jquery', 'canvg', 'jspdf', 'rasterize', 'mustache'], function($, canvg, jsPDF, rasterizeHTML, Mustache) {
-
 return {
 		// chart-report
 	 	generatePdf: function (htmlParent, env, tableData, project) {
@@ -22,8 +21,9 @@ return {
 
 		    	var r1 = rasterizeHTML.drawHTML(rendered, envTable);
 		    	var r2 = rasterizeHTML.drawHTML(tableData, dataTable);
-		    	Promise.all([r1, r2]).then(function (result1, result2) {
+		    	Promise.all([r1, r2]).then(function (resultList) {
 		    		// TODO remove this logic
+		    		console.log(resultList);
 		    		var i = 0;
 					var end = htmlParent.find('svg').size();
 					// create a new instance of pdf
