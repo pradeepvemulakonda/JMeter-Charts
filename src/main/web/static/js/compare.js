@@ -24,8 +24,9 @@
 				$.when(
 					Loader.loadAsync(Enum.template.REPORT),
 					Loader.loadAsync(Enum.template.COMPARE),
+					Loader.loadAsync(Enum.template.CHART),
 					rest.fetchSelectedSamplesAsync(project)
-				).done(function(projectTemaplate, compareTemplate, selectedSamples){
+				).done(function(projectTemaplate, compareTemplate, chartTemplate, selectedSamples){
 					rest.fetchSamples(project, function (samples) {
 						samplesProcessed = self.processSelectedSamples(samples, selectedSamples);
 				    	var rendered = Mustache.render(projectTemaplate, {
@@ -38,12 +39,13 @@
 				    		},
 					    	{
 					    		// partial tempalate
-					    		compare: compareTemplate
+					    		compare: compareTemplate,
+					    		chart: chartTemplate
 					    	});
 				    	// render the projects template
 				    	$('.dynamic-template').html(rendered);
-				    	$('.chart-report').hide();
 				    	self._registerEventsAfterLoad(project);
+				    	self.hideReport();
 				    	self.setupSamples(project);
 					});
 				});
@@ -77,9 +79,43 @@
 			    	});
 			    	// render the projects template
 			    	$('.dynamic-template').html(rendered);
-			    	$('.chart-report').hide();
+			    	self.hideReport();
 			    	self._registerEventsAfterLoad(project, version);
 				});
+			},
+
+			showReport: function() {
+				$('.perf-test-report').show();
+			},
+
+			hideReport: function() {
+				$('.perf-test-report').hide();
+			},
+
+			showComparisonView: function () {
+				$('.perf-test-report').show();
+				$('.detailed-charts').hide();
+				$('.comparison-charts').show();
+
+			},
+
+			showDetailedView: function () {
+				$('.perf-test-report').show();
+				$('.detailed-charts').show();
+				$('.comparison-charts').hide();
+			},
+
+			clearCompareSelection: function () {
+				$('.compare-panel').hide();
+				$('.history-container .compare').each(function(index, node){
+					if($(node).hasClass('fa-check-square-o')) {
+						$(node).toggleClass('fa-check-square-o').toggleClass('fa-square-o');
+					}
+				});
+			},
+
+			showCompareSelection: function () {
+				$('.compare-panel').show();
 			},
 
 			processSelectedSamples: function(samples, selectedSamples) {
@@ -144,9 +180,6 @@
 				var self = this;
 				var samplesSelected = this.santizeSamples(selectedSamples);
 				require(['tables'], function (Tables) {
-					Loader.load(Enum.template.CHART,  function(template) {
-			    		var rendered = Mustache.render(template);
-			    		$('.perf-charts').html(rendered);
 			    		$('.page-header').text((version ? 'Build: ' : 'Version:' )+ term);
 			    		var localData = [];
 			    		$.each(data[0].report.jsondata, function (index, value) {
@@ -192,7 +225,6 @@
 					    	});
 						});
 					});
-				});
 			},
 
 			/**
@@ -207,6 +239,7 @@
 
 	    		$('.compare-panel').hide();
 		    	$('.history-container .compare').click(function () {
+		    		self.hideReport();
 
 		    		$(this).toggleClass('fa-square-o').toggleClass('fa-check-square-o');
 		    		var termText = $($(this).closest('.panel')).find('.term').text();
@@ -220,18 +253,10 @@
 						selectedTerm.splice($.inArray(termText, selectedTerm), 1);
 					}
 					if(selectedTerm.length > 0) {
-						$('.compare-panel').show();
-						$('.chart-area').show();
+						self.showCompareSelection();
 					} else {
-						$('.compare-panel').hide();
-						$('.chart-area').hide();
+						self.clearCompareSelection();
 					}
-					if($('.chart-report')) {
-		    			$('.chart-report').hide();
-		    		}
-		    		if($('.compare-chart')) {
-			    		$('.compare-chart').hide();
-			    	}
 		    	});
 
 		    	// compare the terms
@@ -240,22 +265,13 @@
 		    			alert('Select at least two items to compare');
 		    		}
 
-		    		if($('.perf-charts')) {
-		    			$('.perf-charts').empty();
-		    		}
+		    	    // display the report
+		    	    self.showComparisonView();
 
-		    		if($('.bar-chart-term')) {
-		    			$('.bar-chart-term').empty();
-		    		}
-
-		    		if($('.compare-chart')) {
-			    		$('.compare-chart').show();
-			    	}
 
 		    		$('.dropdown-menu .print').click(function (event) {
 			    		self.onPrintSvg(event, selectedTerm.join());
 					});
-
 
 		    		rest.fetchComparisionData(selectedTerm, project, version, function () {
 		    			var comparisonData = arguments;
@@ -279,7 +295,7 @@
 			    			Chart.comparisionBarChart(chartData, version, '.bar-chart-term');
 			    		});
 		    		});
-		    	});
+				});
 
 		    	// sroll initially to the latest term
 				$('.history-container').scrollTo('100%', 0, {axis:'x'});
@@ -299,21 +315,10 @@
 
 		    	// Select the data for a particlar term
 		    	$('.history-scroll-box .panel-footer').click(function () {
+		    		// display the report
+		    	    self.showDetailedView();
+		    	    self.clearCompareSelection();
 		    		var term = $($(this).closest('.panel')).find('.term').text();
-		    		if($('.bar-chart-term')) {
-		    			$('.bar-chart-term').empty();
-		    		}
-		    		if($('.perf-charts')) {
-		    			$('.perf-charts').empty();
-		    		}
-		    		if($('.chart-report')) {
-		    			$('.chart-report').show();
-		    		}
-
-		    		if($('.compare-chart')) {
-			    		$('.compare-chart').hide();
-			    	}
-
 		    		if(version) {
 						rest.fetchReport(project, version, term, function (data) {
 							rest.fetchSelectedSamples(project, function (selectedSamples) {

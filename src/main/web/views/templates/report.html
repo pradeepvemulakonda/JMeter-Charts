@@ -20,7 +20,7 @@
           {{> compare}}
           </div>
         </div>
-       <div class="row chart-report top-buffer">
+       <div class="row perf-test-report top-buffer">
         <div class="panel panel-default">
           <div class="panel-heading" role="tab" id="headingOne">
               <div class="pull-right">
@@ -43,7 +43,9 @@
           </div>
           <div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
             <div class="panel-body">
-             <div class="perf-charts"></div>
+             <div class="chart-body">
+               {{> chart}}
+             </div>
             </div>
           </div>
         </div>
