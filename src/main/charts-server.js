@@ -70,6 +70,7 @@ ChartsServer = function(conf) {
 	 * @param next next used to route the request to a view
 	 */
 	function errorHandler(err, req, res, next) {
+		debugger;
 		res.status(500);
 		res.render('error', { error: err });
 		next();

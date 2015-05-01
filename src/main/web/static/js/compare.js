@@ -28,7 +28,7 @@
 					rest.fetchSelectedSamplesAsync(project)
 				).done(function(projectTemaplate, compareTemplate, chartTemplate, selectedSamples){
 					rest.fetchSamples(project, function (samples) {
-						samplesProcessed = self.processSelectedSamples(samples, selectedSamples);
+						samplesProcessed = self.processSelectedSamples(samples, selectedSamples.sample);
 				    	var rendered = Mustache.render(projectTemaplate, {
 					    		project: project,
 					    		terms: versions,
@@ -65,8 +65,9 @@
 				var self = this;
 				$.when(
 					Loader.loadAsync(Enum.template.REPORT),
-					Loader.loadAsync(Enum.template.COMPARE)
-				).done(function(versionTemplate, compareTemplate){
+					Loader.loadAsync(Enum.template.COMPARE),
+					Loader.loadAsync(Enum.template.CHART)
+				).done(function(versionTemplate, compareTemplate, chartTemplate){
 			    	var rendered = Mustache.render(versionTemplate, {
 			    		project: project,
 			    		terms: builds,
@@ -75,7 +76,8 @@
 			    	},
 			    	{
 			    		// partial tempalate
-			    		compare: compareTemplate
+			    		compare: compareTemplate,
+			    		chart: chartTemplate
 			    	});
 			    	// render the projects template
 			    	$('.dynamic-template').html(rendered);
@@ -125,19 +127,18 @@
 						name: name
 					};
 				});
-				var samplesSelected = this.santizeSamples(selectedSamples);
+				if (!selectedSamples) {
+					selectedSamples = [];
+				}
+
 				$.each(samplesProcessed, function (index, psample) {
-					$.each(samplesSelected, function (index, ssample) {
+					$.each(selectedSamples, function (index, ssample) {
 						if(psample.name === ssample) {
 							psample.checked = 'checked';
 						}
 					});
 				});
 				return samplesProcessed;
-			},
-
-			santizeSamples: function (selectedSamples) {
-				return selectedSamples.samples ? selectedSamples.samples.slice(1, -1).replace(/"/g,'').split(',') : [];
 			},
 
 			setupSamples: function (project) {
@@ -178,12 +179,11 @@
 
 			processChartData: function(project, version, term, data, selectedSamples) {
 				var self = this;
-				var samplesSelected = this.santizeSamples(selectedSamples);
 				require(['tables'], function (Tables) {
 			    		$('.page-header').text((version ? 'Build: ' : 'Version:' )+ term);
 			    		var localData = [];
 			    		$.each(data[0].report.jsondata, function (index, value) {
-			    			if($.inArray(value.threadgroup.name, samplesSelected) !== -1) {
+			    			if($.inArray(value.threadgroup.name, selectedSamples.sample) !== -1) {
 			  					localData.push(value);
 			    			}
 			    		});
@@ -276,7 +276,6 @@
 		    		rest.fetchComparisionData(selectedTerm, project, version, function () {
 		    			var comparisonData = arguments;
 		    			rest.fetchSelectedSamples(project, function (selectedSamples) {
-							var samplesSelected = self.santizeSamples(selectedSamples);
 			  				var chartData = [];
 			  				$.each(comparisonData, function (index, value){
 			  					chartData.push(value[0][0]);
@@ -285,7 +284,7 @@
 			  				$.each(chartData, function (indexData, data) {
 			  					var localData = [];
 				  				$.each(data.report.jsondata, function (index, value) {
-					    			if($.inArray(value.threadgroup.name, samplesSelected) !== -1) {
+					    			if($.inArray(value.threadgroup.name, selectedSamples.sample) !== -1) {
 					  					localData.push(value);
 					    			}
 					    		});

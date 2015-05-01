@@ -15,18 +15,12 @@ router.use(function timeLog(req, res, next) {
   next();
 });
 
-router.post('/upload', function(req, res) {
-	var arrayLength,
-		project = req.param('project'),
+router.post('/upload', function(req, res, next) {
+	var project = req.param('project'),
 		version = req.param('version'),
 		build = req.param('build');
 	if(!(project && version && build)) {
 		throw new Error('Project, version and build data should be provided');
-	}
-	if(req.files) {
-    res.writeHead(201, { 'Content-Type': 'text/plain' });
-	} else {
-		res.end(400, { 'Content-Type': 'text/plain' });
 	}
 });
 
@@ -54,28 +48,26 @@ function _persistantHelper(req, res, fileName, endResponse) {
  * @param resp response from closure scope
  */
 function _persistJsonData(err, jsonData, req, res, fileName, endResponse) {
-console.log('call back being called');
-  res.write('[');
-	if (err) {
-		res.write(JSON.stringify({
-  		  id: null,
-  		  fileName: fileName,
-  		  error: err
-  	  }));
-  	  if(endResponse) {
-  		  res.write(']');
-  		  res.end();
-  	  } else {
-  		  res.write(',');
-  	  }
-  	  return;
-	}
-
+  console.log('Processing json data extracted from the xml file');
+  if (err) {
+      res.writeHead(500, { 'Content-Type': 'text/plain' });
+      res.end();
+      return;
+  }
 	var object = {};
 	object.name = req.param('project');
 	object.version = req.param('version');
 	object.build = req.param('build');
-	object.report = JSON.parse(jsonData);
+  try {
+	   object.report = JSON.parse(jsonData);
+  } catch(e) {
+    console.log('error');
+    res.writeHead(500, { 'Content-Type': 'text/plain' });
+    res.end();
+  }
+  // start writing to response
+  res.writeHead(201, { 'Content-Type': 'text/plain' });
+  res.write('[');
 	collectionDriver.save('project', object, function(err,docs) {
           if (err) {
         	  res.write(JSON.stringify({

@@ -15,9 +15,9 @@ router.use(function timeLog(req, res, next) {
 router.post('/project/:project/samples/selected', function(req, res) {
   var data = {};
   data.sample = JSON.parse(req.body.samples);
-  data.project = req.body.project;
+  data.project = req.params.project;
 
-	collectionDriver.save('samples', req.body, function (err, samples) {
+	collectionDriver.save('samples', data, function (err, samples) {
 		if (err) {
     	  res.send(400, err);
       }
