@@ -23,11 +23,12 @@
 			<xsl:variable name="totalTime" select="round(sum(../*[@lb = current()/@lb]/@t))" />
 			<xsl:variable name="averageTime" select="round($totalTime div $count)" />
 			<xsl:variable name="avgActiveThreads" select="sum(../*[@lb = current()/@lb]/@ng) div $count" />
-			<xsl:variable name="startTimeStamp" select="../*[@lb = current()/@lb]" />
 			{
 				"threadgroup": {
 					"name": "<xsl:value-of select="$label"/>",
 					"averageTime": <xsl:value-of select="$averageTime"/>,
+					"count": <xsl:value-of select="$count"/>,
+					"totalTime": <xsl:value-of select="$totalTime"/>,
 					"successCount": "<xsl:value-of select="$successCount"/>",
 					"failureCount": "<xsl:value-of select="$failureCount"/>",
 					"totalCount": "<xsl:value-of select="$count"/>",
@@ -42,7 +43,7 @@
 							"noOfBytes": "<xsl:value-of select="@by" />",
 							"success": "<xsl:value-of select="@s" />",
 							"activeThreads": "<xsl:value-of select="@ng" />",
-							"timestamp": <xsl:value-of select="@ts" />
+							"timestamp": "<xsl:value-of select="@ts" />"
 						}<xsl:if test="not(position()=last())">,</xsl:if>
 			        </xsl:for-each>
 			        ]

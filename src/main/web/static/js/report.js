@@ -14,7 +14,7 @@ return {
 		    		env: env
 		    	});
 		    	var dataTable = document.createElement('CANVAS');
-		    	dataTable.height = '400';
+		    	dataTable.height = '800';
 		    	dataTable.width = '600';
 		    	var envTable = document.createElement('CANVAS');
 		    	envTable.height = '400';
@@ -30,12 +30,12 @@ return {
 					var doc = new jsPDF('landscape');
 			 		doc.setFontSize(20);
 			 		// set the heading
-					doc.text(15, 25, 'Report for project: ' + project);
-					doc.setLineWidth(1).setFontSize(12);
+					doc.text(15, 15, 'Report for project: ' + project);
+					doc.setLineWidth(1).setFontSize(10);
 					// Add the environment table image
-					doc.addImage(envTable.toDataURL('image/png'), 'png', 15, 50);
+					doc.addImage(envTable.toDataURL('image/png'), 'png', 15, 25);
 					// Add the smaple details table image
-					doc.addImage(dataTable.toDataURL('image/png'), 'png', 100, 50);
+					doc.addImage(dataTable.toDataURL('image/png'), 'png', 100, 25);
 					// add new page to show charts
 					doc.addPage(null, 'l');
 					// render charts
@@ -51,7 +51,7 @@ return {
 						var canvas = document.getElementById('canvas');
 						var img = canvas.toDataURL('image/png');
 						images.push(img);
-						doc.addImage(img, 'png', 15, 40, 230, 120);
+						doc.addImage(img, 'png', 15, 40);
 						if(i%2 === 0 && i < end) {
 							doc.addPage(null, 'l');
 						}

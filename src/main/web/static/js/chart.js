@@ -61,14 +61,17 @@
 					version: [],
 					sample: []
 				},
+				legendData = [],
 				sample = {};
 
 
 				$.each(chartData, function(index, result){
 					if(!version) {
 						data.version.push(result.version);
+						legendData.push('Version : '+ result.version)
 					} else {
 						data.version.push(result.build);
+						legendData.push('Build : '+result.build)
 					}
 
 					$.each(result.report.jsondata, function(index, json) {
@@ -93,9 +96,9 @@
 				var color = d3.scale.ordinal()
 				    .range(Enum.colors);
 
-				var margin = {top: 20, right: 20, bottom: 30, left: 40},
-				    width = 960 - margin.left - margin.right,
-				    height = 500 - margin.top - margin.bottom;
+				var margin = {top: 20, right: 70, bottom: 170, left: 40},
+				    width = 1050 - margin.left - margin.right,
+				    height = 700 - margin.top - margin.bottom;
 
 				var x0 = d3.scale.ordinal().rangeRoundBands([0, width], 0.1);
 
@@ -111,7 +114,7 @@
 				var yAxis = d3.svg.axis()
 				    .scale(y)
 				    .orient('left')
-				    .tickFormat(d3.format('.2s'));
+				    .tickFormat(d3.format('d'));
 
 				var svg = d3.select(container)
 					.append('svg')
@@ -126,13 +129,13 @@
 				var versionNames = data.version;
 
 				data.sample.forEach(function(d) {
-				d.version = versionNames.map(
-					function(name, index) {
-					 return {
-					 	name: name,
-					 	value: +d.value[index]
-					 };
-				});
+					d.version = versionNames.map(
+						function(name, index) {
+						 return {
+						 	name: name,
+						 	value: +d.value[index]
+						 };
+					});
 				});
 
 				x0.domain(sampleNames);
@@ -153,7 +156,14 @@
 				svg.append('g')
 				  .attr('class', 'x axis')
 				  .attr('transform', 'translate(0,' + height + ')')
-				  .call(xAxis);
+				  .call(xAxis)
+				  .selectAll("text")
+		            .style("text-anchor", "end")
+		            .attr("dx", "-.8em")
+		            .attr("dy", ".15em")
+		            .attr("transform", function(d) {
+		                return "rotate(-45)"
+                });
 
 				svg.append('g')
 				  .attr('class', 'y axis')
@@ -197,24 +207,32 @@
 				 .style('stroke-width', '1px')
 				 .style('stroke', 'black');
 
+				legendData = versionNames.map(
+					function(name, index) {
+						return {
+							name: name,
+							value: legendData[index]
+						};
+				});
+
 				var legend = svg.selectAll('.legend')
-				  .data(versionNames.slice().reverse())
+				  .data(legendData.slice().reverse())
 				.enter().append('g')
 				  .attr('class', 'legend')
 				  .attr('transform', function(d, i) { return 'translate(0,' + i * 20 + ')'; });
 
 				legend.append('rect')
-				  .attr('x', width - 18)
+				  .attr('x', width - 18 + margin.right)
 				  .attr('width', 18)
 				  .attr('height', 18)
-				  .style('fill', color);
+				  .style('fill', function(d) { return color(d.name); });
 
 				legend.append('text')
-				  .attr('x', width - 24)
+				  .attr('x', width - 24 + margin.right)
 				  .attr('y', 9)
 				  .attr('dy', '.35em')
 				  .style('text-anchor', 'end')
-				  .text(function(d) { return d; });
+				  .text(function(d) { return d.value; });
 			},
 
 			/**
@@ -289,8 +307,16 @@
 				  });
 
 				chart.append('g')
-				  .attr('class', 'y axis')
-				  .call(yAxis);
+				    .attr('class', 'y axis')
+				    .call(yAxis)
+				    .append('text')
+					.attr('transform', 'rotate(-90)')
+					.attr('y', 6)
+					.attr('dx', '-.8em')
+					.attr('dy', '.1em')
+					.style('text-anchor', 'end')
+					.text('response time in ms');
+
 				var barWidth = width / dataBar.length;
 
 				var bar = chart.selectAll('.bar')
@@ -319,11 +345,13 @@
 
 				bar.append('text')
 				  .attr('x', function(d) {
-					  return x(d.name) + barWidth/2 -12;
+					  return x(d.name) + barWidth/2 -17;
 				  })
 				  .attr('y', function(d) { return y(d.value) + 3; })
-				  .attr('dy', '.75em')
+				  .attr('dy', '1.00em')
 				  .attr('class', 'bar-text')
+				  .style('stroke', 'white')
+				  .style('fill', 'white')
 				  .text(function(d) { return Math.floor(d.value); });
 				d3.select('.bar-chart .clear').
 				on('click', function () {
@@ -338,9 +366,10 @@
 				d3.selectAll('.axis path')
 				 .style('fill', 'none')
 				 .style('stroke-width', '1px')
-				 .style('stroke', 'black');
+				 .style('stroke', 'black')
 
 
+				width =  1024;
 				var legendSVG = d3.select('.chart-bar-legend')
 				.attr('width', width + margin.left + margin.right)
 				.attr('height', height + margin.top + margin.bottom)
@@ -521,6 +550,7 @@
 				 .style('fill', 'none')
 				 .style('stroke-width', '1px');
 
+				width =  1024;
 				var legendSVG = d3.select('.chart-line-legend')
 				.attr('width', width + margin.left + margin.right)
 				.attr('height', height + margin.top + margin.bottom)
@@ -708,6 +738,7 @@
 				 .style('fill', 'none')
 				 .style('stroke-width', '1px');
 
+				width =  1024;
 				var legendSVG = d3.select('.chart-line-2-legend')
 				.attr('width', width + margin.left + margin.right)
 				.attr('height', height + margin.top + margin.bottom)

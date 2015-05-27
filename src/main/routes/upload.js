@@ -61,7 +61,8 @@ function _persistJsonData(err, jsonData, req, res, fileName, endResponse) {
   try {
 	   object.report = JSON.parse(jsonData);
   } catch(e) {
-    console.log('error');
+    console.log(jsonData);
+    console.log('error' + e.name + e.message);
     res.writeHead(500, { 'Content-Type': 'text/plain' });
     res.end();
   }
