@@ -1,0 +1,19 @@
+{{#projects}}
+<div class="accordion-group list-group-item" data-id="{{.}}">
+    <div class="accordion-heading">
+        <a class="accordion-toggle" data-toggle="collapse" data-parent="#leftMenu" href="#{{concat}}">
+            <i class="fa fa-code-fork" title="{{title}}"></i>
+            <span class="divider"></span>
+            <span class="selected-value {{title}}">{{.}}</span>
+            <span class="divider"></span>
+            <span class="fa arrow"></span>
+        </a>
+    </div>
+    <div id="{{concat}}" class="accordion-body collapse" style="height: 0px; ">
+        <div class="accordion-inner">
+            <ul class="nav nav-pills nav-stacked versions">
+            </ul>
+        </div>
+    </div>
+</div>
+{{/projects}}
