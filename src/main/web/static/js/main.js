@@ -23,13 +23,16 @@ require(['require',
 	var Enum = require('enum');
 	var Loader = require('template-loader');
 	var menuTemplate = null;
+	var subMenuTemplate = null;
 
 	// fetch the menuTemplate
 	$(function() {
-		Loader.load(Enum.template.NAV, function(template) {
+		Loader.load(Enum.template.MENU, function(template) {
 			 menuTemplate = template;
 		});
-		$('#side-menu').metisMenu();
+		Loader.load(Enum.template.SUB_MENU, function(template) {
+			 subMenuTemplate = template;
+		});
 	});
 
 	// Loads the correct sidebar on window load,
@@ -108,22 +111,40 @@ require(['require',
 
 
 	/**
-	 * Adds a menu item
+	 * Adds a project menu items
 	 * @param {Node}   node  the node to which the newly created menu item should be appended to
-	 * @param {String}   versionOrBuildVersion
 	 * @param {String}   clazz    css class to set on the created menue item
 	 * @param {Function} callback the onclick callback to register
 	 * @private
 	 */
-	function _addMenu(node, versionOrBuildVersion, clazz, callback) {
-		var anchor = $(Mustache.render(menuTemplate, {
-		    	title: clazz === 'version-nav' ? 'version' : 'project',
-		    	text: versionOrBuildVersion
+	function _addProjects(node, projects, callback) {
+		node.empty();
+		var menu = $(Mustache.render(menuTemplate, {
+		    	title: 'project',
+		    	projects: projects,
+		    	concat: function () {
+						    return this.split(' ').join('-');
+						}
 		    }));
-		    anchor.bind('click', callback);
-			var liNode = $('<li class = "active ' + clazz + '"></li>');
-			liNode.append(anchor);
-			node.append(liNode);
+		    menu.find('.accordion-heading').bind('click', callback);
+			node.append(menu);
+	}
+
+	/**
+	 * Adds a project menu items
+	 * @param {Node}   node  the node to which the newly created menu item should be appended to
+	 * @param {String}   clazz    css class to set on the created menue item
+	 * @param {Function} callback the onclick callback to register
+	 * @private
+	 */
+	function _addVersions(node, versions, callback) {
+		node.empty();
+		var menu = $(Mustache.render(subMenuTemplate, {
+		    	title: 'version',
+		    	versions: versions
+		    }));
+		    menu.bind('click', callback);
+			node.append(menu);
 	}
 
 	/**
@@ -157,10 +178,8 @@ require(['require',
 		rest.fetchProjects(function( data) {
 			var node = $(document.createDocumentFragment());
 			data = data.sort();
-			$.each(data, function (index, projectName) {
-				_addMenu(node, projectName, 'project-nav', fetchAndRenderVersionData);
-			});
-			$('.project-nav').append(node);
+			_addProjects(node, data, fetchAndRenderVersionData);
+			$('.projects').append(node);
 		});
 	}
 
@@ -170,25 +189,17 @@ require(['require',
 	 * @private
 	 */
 	function fetchAndRenderVersionData(event) {
-		if($(event.target).is('a')) {
-			var project = event.target.text;
-			var projectParentContainer = event.target.parentNode;
+		var selectedProjectContainer = $(event.target);
+		if(selectedProjectContainer.is('span')) {
+			var project = selectedProjectContainer.text().trim();
+			var projectParentContainer = selectedProjectContainer.closest('.accordion-group');
 			rest.fetchVersions(project, function (data) {
 				data = data.sort();
-				var currentMenu = $(event.target);
-				if(currentMenu.closest('.project-nav').find('.nav-third-level')) {
-					currentMenu.closest('.project-nav').find('.nav-third-level').remove();
-				}
-				$('<ul class="nav nav-third-level">').appendTo(projectParentContainer);
-				$.each(data, function (index, version) {
-					_addMenu($(projectParentContainer).find('ul'), version, 'version-nav', fetchAndRenderBuildData);
-				});
+				var versionsContainer = projectParentContainer.find('.versions');
+				_addVersions(versionsContainer, data, fetchAndRenderBuildData);
 				Compare.fetchAndRenderProjectTemplate(project , data);
 				setPageHeader('Displaying charts for Project: ' + project);
 				setBreadCrumb(['Select Project', 'Project: '+ project]);
-
-				// no idea why I need to do this.TODO replace metisMenu
-				$('#side-menu').metisMenu();
 			});
 		}
 	}
@@ -199,14 +210,15 @@ require(['require',
 	 * @private
 	 */
 	function fetchAndRenderBuildData(event) {
-		if($(event.target).is('a')) {
-			var project = $(event.target).closest('.project-nav').find('.selected-value.project').text();
-			var version = event.target.text;
+		var selectedVersion = $(event.currentTarget);
+		if(selectedVersion.is('li')) {
+			var project = selectedVersion.closest('.accordion-group').find('.selected-value.project').text();
+			var version = selectedVersion.text();
 			rest.fetchBuilds(project, version, function (data) {
 				data = data.sort();
 				Compare.fetchAndRenderVersionTemplate(project, version, data);
 				setPageHeader('Displaying charts for Version: ' + version);
-				setBreadCrumb(['Select Project', 'Project: '+ project, 'Vesrion: '+ version]);
+				setBreadCrumb(['Select Project', 'Project: '+ project, 'Version: '+ version]);
 			});
 		}
 	}

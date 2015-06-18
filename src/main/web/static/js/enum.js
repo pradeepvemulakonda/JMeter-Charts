@@ -14,7 +14,9 @@ define(['jquery'], function($) {
 			NAV: 'navigation-template',
 			REPORT: 'report',
 			SAMPLE_DATA: 'sample-data-table',
-			UPLOAD: 'upload'
+			UPLOAD: 'upload',
+			MENU: 'menu',
+			SUB_MENU: 'sub-menu',
 		},
 
 		colors: [

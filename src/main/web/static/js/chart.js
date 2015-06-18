@@ -96,7 +96,7 @@
 				var color = d3.scale.ordinal()
 				    .range(Enum.colors);
 
-				var margin = {top: 20, right: 70, bottom: 170, left: 40},
+				var margin = {top: 100, right: 10, bottom: 170, left: 40},
 				    width = 1050 - margin.left - margin.right,
 				    height = 700 - margin.top - margin.bottom;
 
@@ -223,13 +223,14 @@
 
 				legend.append('rect')
 				  .attr('x', width - 18 + margin.right)
+				  .attr('y', -margin.top)
 				  .attr('width', 18)
 				  .attr('height', 18)
 				  .style('fill', function(d) { return color(d.name); });
 
 				legend.append('text')
 				  .attr('x', width - 24 + margin.right)
-				  .attr('y', 9)
+				  .attr('y', 9 - margin.top)
 				  .attr('dy', '.35em')
 				  .style('text-anchor', 'end')
 				  .text(function(d) { return d.value; });
