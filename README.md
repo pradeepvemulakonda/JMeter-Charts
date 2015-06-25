@@ -1,4 +1,4 @@
-<H2>JMeter Charts Application </H2>
+<H3>JMeter Charts Application </H3>
 
 This application is used to upload JMeter Jtl reports to automatically generate reports.
 
@@ -56,7 +56,7 @@ Step 3: Install mongodb.
 
 Step 4: provide the db details src/main/config.json.
 
-<h3>Running</h3>
+<h4>Running</h4>
 
 Step 1: node app.js in the src/main folder
 
