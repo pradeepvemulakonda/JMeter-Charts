@@ -12,7 +12,6 @@
 
 var express = require('express'),
   fs = require('fs'),
-  multer  = require('multer'),
   http = require('http'),
   path = require('path'),
   MongoClient = require('mongodb').MongoClient,
@@ -45,15 +44,6 @@ ChartsServer = function(conf) {
 	this.mongoUrl = 'mongodb://'+config.mongoHost+':'+config.mongoPort+'/'+config.mongoDB;
 	var self = this;
 
-	app.use(multer({
-		dest: '../../file_directory/',
-		putSingleFilesInArray: true,
-		inMemory: false,
-		onFileUploadComplete: function (file, req, res) {
-		  console.log(file.fieldname + ' uploaded to  ' + file.path);
-		  uploadRouter.processFile(file.path, req, res);
-		}
-	}));
 	app.use(bodyParser.json());
 	app.use(express.static(path.join(__dirname, 'web/static')));
 	app.set('port', process.env.PORT || config.httpPort);
@@ -70,14 +60,19 @@ ChartsServer = function(conf) {
 	 * @param next next used to route the request to a view
 	 */
 	function errorHandler(err, req, res, next) {
-		debugger;
 		res.status(500);
 		res.render('error', { error: err });
-		next();
+		next(err);
+	}
+
+	function logErrors(err, req, res, next) {
+		console.error(err.stack);
+		next(err);
 	}
 
     // set the error handler
 	app.use(errorHandler);
+	app.use(logErrors);
 
 	// set the res local variable with collectionDriver
 	app.use(function(req, res, next){

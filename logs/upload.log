@@ -1,0 +1,4 @@
+[2015-06-25 12:32:41.939] [DEBUG] upload - [Error: javax.xml.transform.TransformerException: com.sun.org.apache.xml.internal.utils.WrappedRuntimeException: Content is not allowed in prolog.]
+Error: javax.xml.transform.TransformerException: com.sun.org.apache.xml.internal.utils.WrappedRuntimeException: Content is not allowed in prolog.
+    at /Users/pradeepv/personal/git/JMeter-Charts/node_modules/xslt4node/lib/xslt4node.js:233:58
+    at taskCallback (/Users/pradeepv/personal/git/JMeter-Charts/node_modules/xslt4node/node_modules/async/lib/async.js:471:21)

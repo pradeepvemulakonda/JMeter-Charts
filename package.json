@@ -18,6 +18,7 @@
     "node_xslt": "*",
     "connect-busboy": "*",
     "multer": "~0.1.8",
-    "xslt4node": "*"
+    "xslt4node": "*",
+    "log4js": "*"
   }
 }
