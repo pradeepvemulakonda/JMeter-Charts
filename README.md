@@ -10,7 +10,7 @@ The front end is built using JQuery and uses REST API to communicate with the No
 
 A REST server is created to accept *.jtl/*.xml files and use an existing xsl stylesheet to populate data in mongodb. This data will be used to display charts in the frontend /html page.
 
-<h1>The following Charts are generated using d3.js</h1>
+<h4>The following Charts are generated using d3.js</h4>
 
 <ol>
 <li>Average Response times vs Samples (Bar Chart).</li>
@@ -41,7 +41,7 @@ Nodejs server uses Express and MongodDB driver.
 * Has a dependancy on https://www.npmjs.com/package/xslt4node
 * Could not get it to run on windows8.Need to test on windows 7.
 
-<h3> Installation </h3>
+<h4> Installation </h4>
 <h5>Prerequisits</h5>
 * Install java 6/7/8
 * Works only on Firefox and Chrome(on IE the report generation does not work, Promises in the code breaks the stuff).
