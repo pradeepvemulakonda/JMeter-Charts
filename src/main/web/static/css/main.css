@@ -620,4 +620,9 @@ table.dataTable thead .sorting:after {
     width: 1040px;
  }
 
+ /*----- -----*/
+ .nav.nav-pills.nav-stacked.versions {
+    cursor: pointer;
+ }
+
 

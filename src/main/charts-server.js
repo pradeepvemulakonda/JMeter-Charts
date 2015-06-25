@@ -60,8 +60,8 @@ ChartsServer = function(conf) {
 	 * @param next next used to route the request to a view
 	 */
 	function errorHandler(err, req, res, next) {
-		res.status(500);
-		res.render('error', { error: err });
+		res.status(400);
+		res.render('error', { error: err.message });
 		next(err);
 	}
 
@@ -69,10 +69,6 @@ ChartsServer = function(conf) {
 		console.error(err.stack);
 		next(err);
 	}
-
-    // set the error handler
-	app.use(errorHandler);
-	app.use(logErrors);
 
 	// set the res local variable with collectionDriver
 	app.use(function(req, res, next){
@@ -93,6 +89,11 @@ ChartsServer = function(conf) {
 	app.use('/jc/', uploadRouter);
 	// set router for file uploads
 	app.use('/jc/', samplesRouter);
+	// set the log handler
+	app.use(logErrors);
+	// set the error handler
+	app.use(errorHandler);
+
 
 
 	/**

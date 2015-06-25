@@ -209,19 +209,17 @@
 				$('.error-template').hide();
 				$.each(listFiles, function (index, fileSection) {
 					fileSection = $(fileSection);
-						$.each(data, function (index2, fileStatus) {
-							if(fileSection.text() === fileStatus.fileName) {
-				    			if (!fileStatus.error) {
-					    			fileSection.parent().removeClass('list-group-item-info list-group-item-danger').addClass('list-group-item-success');
-					    			fileSection.parent().find('.alert-info').html('Uploaded successfully');
-					    			fileSection.parent().find('.alert-info').removeClass('alert-info').addClass('alert-success');
-				    			} else {
-				    				fileSection.parent().removeClass('list-group-item-info').addClass('list-group-item-danger');
-					    			fileSection.parent().find('.alert-info').html('Uploaded failed');
-					    			fileSection.parent().find('.alert-info').removeClass('alert-info').addClass('alert-danger');
-				    			}
-							}
-						});
+					if(fileSection.text() === data.fileName) {
+		    			if (!data.error) {
+			    			fileSection.parent().removeClass('list-group-item-info list-group-item-danger').addClass('list-group-item-success');
+			    			fileSection.parent().find('.alert-info').html('Uploaded successfully');
+			    			fileSection.parent().find('.alert-info').removeClass('alert-info').addClass('alert-success');
+		    			} else {
+		    				fileSection.parent().removeClass('list-group-item-info').addClass('list-group-item-danger');
+			    			fileSection.parent().find('.alert-info').html('Uploaded failed');
+			    			fileSection.parent().find('.alert-info').removeClass('alert-info').addClass('alert-danger');
+		    			}
+					}
 				});
 			},
 
@@ -243,7 +241,7 @@
 	    			fileSection.parent().find('.alert-info').html('Uploaded failed');
 	    			fileSection.parent().find('.alert-info').removeClass('alert-info').addClass('alert-dangers');
 		    	});
-		    	$('.error-template').text(data? data: 'upload failed because of invalid xml result file');
+		    	$('.error-template').text(data? data : 'upload failed because of invalid xml result file');
 		    	$('.error-template').show();
 		    },
 
@@ -333,7 +331,7 @@
 
 				//$('.typeahead.version').prop('disabled', false);
 
-				$(".version-btn").click(function(event) {
+				$('.version-btn').click(function(event) {
 				    var input = $('.typeahead.version');
 				    input.focus();
 				    var e = jQuery.Event("keydown");
@@ -368,10 +366,10 @@
 	 	         });
 
 	 			$('.typeahead.build').prop('disabled', false);
-	 			$(".build-btn").click(function(event) {
+	 			$('.build-btn').click(function(event) {
 				    var input = $('.typeahead.build');
 				    input.focus();
-				    var e = jQuery.Event("keydown");
+				    var e = jQuery.Event('keydown');
 				    e.keyCode = 40;
 				    input.trigger(e);
 				});

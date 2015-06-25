@@ -52,6 +52,7 @@ function _persistJsonData(err, jsonData, req, res, fileName, next) {
                     id: docs._id,
                     fileName: fileName
                 }));
+                res.end();
             }
         });
     } catch (e) {
