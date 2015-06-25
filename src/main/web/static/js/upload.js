@@ -73,6 +73,7 @@
 			    this.dropZone.on('drop', function(e) {
 			        e.preventDefault();
 			        this.className = 'upload-drop-zone';
+			        var files = e.dataTransfer.files;
 			        self._renderFileItemsinList(e.dataTransfer.files);
 			    });
 
@@ -95,6 +96,16 @@
 			 * @chainable
 			 */
 			_renderFileItemsinList: function(files) {
+				if(files.length !== 1) {
+		        	alert('Only a single file can be selected at a time');
+		        	return;
+		    	}
+
+		    	if(this.filesToUpload.length > 0) {
+		    		alert('A file has already been selected for upload');
+		        	return;
+		    	}
+
 				var self = this;
 				// remove existing message
 				this.listGroup.find('em').remove();

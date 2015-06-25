@@ -12,6 +12,11 @@ router.use(function timeLog(req, res, next) {
   next();
 });
 
+/**
+ * Post samples selected for a project
+ * @param  {Request} req
+ * @param  {Response} res
+ */
 router.post('/project/:project/samples/selected', function(req, res) {
   var data = {};
   data.sample = JSON.parse(req.body.samples);
@@ -27,6 +32,11 @@ router.post('/project/:project/samples/selected', function(req, res) {
 	});
 });
 
+/**
+ * Get selected samples for a project
+ * @param  {Request} req
+ * @param  {Response} res
+ */
 router.get('/project/:project/samples/selected', function(req, res) {
   collectionDriver.getLatest('samples',{'project' : req.params.project}, {'created_at': -1}, function (err, samples) {
     if (err) {

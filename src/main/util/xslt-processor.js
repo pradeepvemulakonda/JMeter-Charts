@@ -10,15 +10,20 @@
 var nodeXslt = require('node_xslt');
 var fs = require('fs');
 var xslt4node = require('xslt4node');
+var log4js = require('log4js');
+log4js.loadAppender('file');
+//log4js.addAppender(log4js.appenders.console());
+log4js.addAppender(log4js.appenders.file('../../logs/upload.log'), 'xslt');
+var logger = log4js.getLogger('xslt');
 /**
  * Returns a XSLTProcessor which contains methods to parse xml and translate them as required.
  * @constructor
  */
-XSLTProcessor = function(stylesheetFileName) {
+var XSLTProcessor = function(stylesheetFileName) {
 	return {
 		translate: function (filePath, callback) {
-			console.log('XML ----'+filePath);
-			console.log('xslt----'+stylesheetFileName);
+			logger.debug('XML  ---->'+filePath);
+			logger.debug('xslt ---->'+stylesheetFileName);
 			fs.readFile(filePath,{encoding: 'UTF-8'}, function (err, data) {
 				if (err) {
 					throw err;
