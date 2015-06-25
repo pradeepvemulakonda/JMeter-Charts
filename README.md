@@ -68,4 +68,11 @@ Step 2: In the frontend if you want to see the report you need to select a proje
 * Use the Action menue on the right side of the report section to download report as pdf.
 * Use the Action menue on the right side of the chart section to download the image.
 * To compare two versions select both of the versions and select compare.(same for builds)
+* Only a single results file can be uploaded at a time.
+
+<h3>TODO</h3>
+* Validation around selecting multiple files.
+
+
+
 
