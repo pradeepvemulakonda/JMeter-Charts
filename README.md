@@ -1,4 +1,4 @@
-<H1>JMeter Charts Application </H1>
+<H2>JMeter Charts Application </H2>
 
 This application is used to upload JMeter Jtl reports to automatically generate reports.
 
@@ -41,8 +41,8 @@ Nodejs server uses Express and MongodDB driver.
 * Has a dependancy on https://www.npmjs.com/package/xslt4node
 * Could not get it to run on windows8.Need to test on windows 7.
 
-<h2> Installation </h2>
-<h3>Prerequisits</h3>
+<h3> Installation </h3>
+<h5>Prerequisits</h5>
 * Install java 6/7/8
 * Works only on Firefox and Chrome(on IE the report generation does not work, Promises in the code breaks the stuff).
 </br>
@@ -62,7 +62,7 @@ Step 1: node app.js in the src/main folder
 
 Step 2: In the frontend if you want to see the report you need to select a project >> And select config tab >> check all the smaples you want to include in your report >> save/set samples.
 
-<h3> Usage </h3>
+<h5> Usage </h5>
 * Use the upload report page to upload *.jtl/*.xml files
 * Use the navigation links to check reports
 * Use the Action menue on the right side of the report section to download report as pdf.
@@ -70,7 +70,7 @@ Step 2: In the frontend if you want to see the report you need to select a proje
 * To compare two versions select both of the versions and select compare.(same for builds)
 * Only a single results file can be uploaded at a time.
 
-<h3>TODO</h3>
+<h5>TODO</h5>
 * Validation around selecting multiple files.
 
 
