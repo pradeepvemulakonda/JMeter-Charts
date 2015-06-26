@@ -72,9 +72,10 @@ Step 2: In the frontend if you want to see the report you need to select a proje
 * Only a single results file can be uploaded at a time.
 
 <h5>TODO</h5>
-* Css to Less
+* Css to Less.
 * Unit tests ( Even though there is not much functionality in the backend).
-* Angualar port
+* Angualar port.
+* Display charts in mobile browsers.
 
 <h4>Detailed Usage:</h4>
 
