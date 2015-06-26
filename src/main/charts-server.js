@@ -45,6 +45,9 @@ ChartsServer = function(conf) {
 	var self = this;
 
 	app.use(bodyParser.json());
+	app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
+	  extended: true
+	}));
 	app.use(express.static(path.join(__dirname, 'web/static')));
 	app.set('port', process.env.PORT || config.httpPort);
 	app.set('views', path.join(__dirname, 'web/views'));

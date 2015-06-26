@@ -44,19 +44,15 @@ define(['jquery'], function($) {
         },
 
         setSamples: function (project, samples, callback) {
-            var data = new FormData();
-            data.append('project', project);
-            data.append('samples', samples);
             $.ajax({
                     url: 'jc/project/'+project+'/samples/selected',
                     type: 'POST',
-                    data: data,
+                    data: samples,
                     cache: false,
                     dataType: 'json',
                     processData: false, // Don't process the files
-                    contentType: false, // Set content type to false as jQuery will
-                                        // tell the server its a query string
-                                        // request
+                    contentType: 'application/json',
+
                     success: function(data)
                     {
                         if(typeof data.error === 'undefined')
