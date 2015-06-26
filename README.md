@@ -71,8 +71,16 @@ Step 2: In the frontend if you want to see the report you need to select a proje
 * Only a single results file can be uploaded at a time.
 
 <h5>TODO</h5>
-* Validation around selecting multiple files.
 * Css to Less
+
+<h4>Detailed Usage:</h4>
+
+Before you can generate reports using this tool you need to create JMeter results file in XML format.
+
+Sample Perfromance test for this application in JMeter
+
+
+
 
 
 
