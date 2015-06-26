@@ -76,11 +76,16 @@ Step 2: In the frontend if you want to see the report you need to select a proje
 <h4>Detailed Usage:</h4>
 
 Before you can generate reports using this tool you need to create JMeter results file in XML format.
+- To create a result file add an Aggregate Report listener.
+- Set the result file type to xml as shown in the screenshot below.
 
 Sample Perfromance test for this application in JMeter
 
 <h6>JMeter samples</h6>
-![JMeterCharts JMXe](https://github.com/pradeepvemulakonda/JMeter-Charts/blob/master/out/docs/Sample_JMeterCharts_jmx.png "JMeterCharts JMX")
+![JMeterCharts JMX](https://github.com/pradeepvemulakonda/JMeter-Charts/blob/master/out/docs/Sample_JMeterCharts_jmx.png "JMeterCharts JMX")
+
+<h6>Aggregate Report</h6>
+![JMeterCharts Result Config](https://github.com/pradeepvemulakonda/JMeter-Charts/blob/master/out/docs/Config_for_report.png "JMeterCharts Result Config")
 
 
 
