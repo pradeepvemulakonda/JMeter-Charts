@@ -197,6 +197,7 @@ For each version or build the application generates 3 types of charts
 - When you select <b> Add Details </b>, a pdf is generted and download to your local system.
 
 > A sample is attached for your reference [Sample Report] (https://github.com/pradeepvemulakonda/JMeter-Charts/blob/master/out/docs/JMeterReport-report.pdf)
+> Report generation does not work on IE, all other functionality works on IE.
 
 <h5> Compare two version or builds </h5>
 
