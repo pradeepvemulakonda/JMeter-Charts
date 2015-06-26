@@ -179,7 +179,7 @@ require(['require',
 			var node = $(document.createDocumentFragment());
 			data = data.sort();
 			_addProjects(node, data, fetchAndRenderVersionData);
-			$('.projects').append(node);
+			$('.projects').html(node);
 		});
 	}
 
