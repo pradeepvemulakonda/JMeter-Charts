@@ -79,7 +79,8 @@ Before you can generate reports using this tool you need to create JMeter result
 
 Sample Perfromance test for this application in JMeter
 
-
+<h6>JMeter samples</h6>
+![JMeterCharts JMXe](https://github.com/pradeepvemulakonda/JMeter-Charts/blob/master/out/docs/Sample_JMeterCharts_jmx.png "JMeterCharts JMX")
 
 
 
