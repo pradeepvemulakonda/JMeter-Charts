@@ -73,6 +73,8 @@ Step 2: In the frontend if you want to see the report you need to select a proje
 
 <h5>TODO</h5>
 * Css to Less
+* Unit tests ( Even though there is not much functionality in the backend).
+* Angualar port
 
 <h4>Detailed Usage:</h4>
 
