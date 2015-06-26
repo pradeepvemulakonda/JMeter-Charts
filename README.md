@@ -107,7 +107,7 @@ Sample Perfromance test for this application in JMeter
 	"httpPort": "30000" // node express port
 }
 ```
-<h5>JMeter Chart Application <h5>
+<h5>Using JMeter Chart Application </h5>
 - Once you open the application, if there are no existing projects you can create one by uploading a JMeter results file.
 ![JMeterCharts start page](https://github.com/pradeepvemulakonda/JMeter-Charts/blob/master/out/docs/initial.png "JMeterCharts start page")
 
@@ -120,6 +120,69 @@ Sample Perfromance test for this application in JMeter
 - Click <b>upload</b> and one the upload is successful the file color changes to green.
 
 ![Uploaded file](https://github.com/pradeepvemulakonda/JMeter-Charts/blob/master/out/docs/Upload_after_submit.png "Uploaded File")
+
+- Refreh page to load newly created project.
+
+![Project menu](https://github.com/pradeepvemulakonda/JMeter-Charts/blob/master/out/docs/Project_Menu.png "Project Menu")
+
+- Select the Project "JMeterCharts" to view the versions in the menu.
+- The details page on the right also shows the versions present in the project.
+
+![Version menu](https://github.com/pradeepvemulakonda/JMeter-Charts/blob/master/out/docs/Version_Menu.png "Version Menu")
+
+> To View reports you need to first select the <b>config</b> tab in in the project details view and select the samples.
+
+- Select the config tab to view the available samples for the project
+
+![View Samples](https://github.com/pradeepvemulakonda/JMeter-Charts/blob/master/out/docs/Set_Samples.png "View Samples")
+
+- Select the samples to display and select <b> Set Samples </b>
+
+![Update Samples](https://github.com/pradeepvemulakonda/JMeter-Charts/blob/master/out/docs/Selected_Samples.png "Update Samples")
+
+- Once the samples are set the application reloads to get the latest changes.
+- Now you can select any project and see detailed charts for a specific viersion.
+
+![View Version details](https://github.com/pradeepvemulakonda/JMeter-Charts/blob/master/out/docs/View_Version_Details.png "View Version Details")
+
+- To view build details => select a specific version
+
+![Version Menu](https://github.com/pradeepvemulakonda/JMeter-Charts/blob/master/out/docs/Version_Menu.png "Version Menu")
+
+- To view details of specific build click on <b>view details</b> on specific build
+
+![Build Details](https://github.com/pradeepvemulakonda/JMeter-Charts/blob/master/out/docs/View_Build_Details.png "Build Details")
+
+<h5> View and download Reports </h5>
+
+For each version or build the application generates 3 types of charts
+# Samples vs Response time
+# Sample Response Time vs Threads
+# Active threads vs run time
+
+<h6>Sample charts</h6>
+# Samples vs Response Time
+
+![Sample vs response](https://github.com/pradeepvemulakonda/JMeter-Charts/blob/master/out/docs/Sample_Response_ms.png "Sample vs response ms")
+
+# Samples Response ms vs No of Threads
+
+![Sample Response ms vs No of threads](https://github.com/pradeepvemulakonda/JMeter-Charts/blob/master/out/docs/Response_ms_vs_Threads.png "Sample Response ms vs No of Threads")
+
+# Active No of threads vs Run Time
+
+![Active No of Threads vs Time](https://github.com/pradeepvemulakonda/JMeter-Charts/blob/master/out/docs/Active%20threads.png "Active No of Threads vs Time")
+
+
+
+
+
+
+
+
+
+
+
 
 
 
