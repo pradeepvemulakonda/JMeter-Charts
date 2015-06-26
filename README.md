@@ -43,6 +43,7 @@ Nodejs server uses Express and MongodDB driver.
 
 <h4> Installation </h4>
 <h5>Prerequisits</h5>
+
 * Install java 6/7/8
 * Works only on Firefox and Chrome(on IE the report generation does not work, Promises in the code breaks the stuff).
 </br>
@@ -86,6 +87,43 @@ Sample Perfromance test for this application in JMeter
 
 <h6>Aggregate Report</h6>
 ![JMeterCharts Result Config](https://github.com/pradeepvemulakonda/JMeter-Charts/blob/master/out/docs/Config_for_report.png "JMeterCharts Result Config")
+
+<h6>Start JMeterCharts application</h6>
+- start mongodb using <b>mongod</b> command
+- start node application
+
+![JMeterCharts app start](https://github.com/pradeepvemulakonda/JMeter-Charts/blob/master/out/docs/run_jmeter_charts.png "JMeterCharts app start")
+
+<h6>Open browser at http://$host:$port/jc</h6>
+- The host and the port can be configured in src/config.json.
+- Once the changes are made the server needs to be restarted.
+
+<h6>Sample config json</h6>
+```javascript
+{
+	"mongoHost": "localhost", // mongodb host name
+	"mongoPort": "27017", // mongodb port
+	"mongoDB": "JMeterReportDB", // mongodb db name
+	"httpPort": "30000" // node express port
+}
+```
+<h5>JMeter Chart Application <h5>
+- Once you open the application, if there are no existing projects you can create one by uploading a JMeter results file.
+![JMeterCharts start page](https://github.com/pradeepvemulakonda/JMeter-Charts/blob/master/out/docs/initial.png "JMeterCharts start page")
+
+- Select a JMeter results file using the browse button.
+- Once the file is selected you should provide the <b>project</b>, <b>version</b> and <b>build</b> which are all mandatory.
+- Once you provide the required details click <b> upload </b>
+
+![Selected file](https://github.com/pradeepvemulakonda/JMeter-Charts/blob/master/out/docs/Upload-before-submit.png "Selected File")
+
+- Click <b>upload</b> and one the upload is successful the file color changes to green.
+
+![Uploaded file](https://github.com/pradeepvemulakonda/JMeter-Charts/blob/master/out/docs/Upload_after_submit.png "Uploaded File")
+
+
+
+
 
 
 
