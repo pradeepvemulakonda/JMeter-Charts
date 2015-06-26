@@ -163,17 +163,72 @@ For each version or build the application generates 3 types of charts
 
 <h6>Sample charts</h6>
 
-1. Samples vs Response Time
+1 Samples vs Response Time
 
 ![Sample vs response](https://github.com/pradeepvemulakonda/JMeter-Charts/blob/master/out/docs/Sample_Response_ms.png "Sample vs response ms")
 
-2. Samples Response ms vs No of Threads
+2 Samples Response ms vs No of Threads
 
 ![Sample Response ms vs No of threads](https://github.com/pradeepvemulakonda/JMeter-Charts/blob/master/out/docs/Response_ms_vs_Threads.png "Sample Response ms vs No of Threads")
 
-3. Active No of threads vs Run Time
+3 Active No of threads vs Run Time
 
 ![Active No of Threads vs Time](https://github.com/pradeepvemulakonda/JMeter-Charts/blob/master/out/docs/Active%20threads.png "Active No of Threads vs Time")
+
+<h6>Download Chart Images</h6>
+- To download chart images selected the context menu on the right side of the chart and click <b>Print</b>.
+
+![Download Chart](https://github.com/pradeepvemulakonda/JMeter-Charts/blob/master/out/docs/Print_Menu.png "Download Chart")
+
+- Once you click print a print preview is shown and once you click download the chart image is download to your local system.
+
+![Print Preview](https://github.com/pradeepvemulakonda/JMeter-Charts/blob/master/out/docs/Print_Preview.png "Print Preview")
+
+<h6>Download Detailed PDF report for selected Verison or Build</h6>
+
+- To download pdf report select a version/build and in the report section on the right hand side select "download Report" menu item.
+
+![Download Report](https://github.com/pradeepvemulakonda/JMeter-Charts/blob/master/out/docs/Download_Report.png "Download Report")
+
+- When you select downlod report a report form is show to capture test conditions an environment.
+
+![Report Form](https://github.com/pradeepvemulakonda/JMeter-Charts/blob/master/out/docs/Report-Form.png "Report Form")
+
+- When you select <b> Add Details </b>, a pdf is generted and download to your local system.
+
+> A sample is attached for your reference [Sample Report] (https://github.com/pradeepvemulakonda/JMeter-Charts/blob/master/out/docs/JMeterReport-report.pdf)
+
+<h5> Compare two version or builds </h5>
+
+> You can compare response times between two versions or build
+
+- Select a version which contains more than one build
+
+![View Builds](https://github.com/pradeepvemulakonda/JMeter-Charts/blob/master/out/docs/Multiple_Builds.png "View Builds")
+
+- select the builds to compare and select the <b>compare</b> button.
+
+![Compare Builds](https://github.com/pradeepvemulakonda/JMeter-Charts/blob/master/out/docs/Compare_Builds.png "Compare Builds")
+
+- Once you select compare a comparison chart is displayed.
+> In this example the comaprison is between builds 1 and 2. Build 1 is run with 1000 concurrent users and build 2 is run with 2000 concurrent users.
+
+![Compare Builds](https://github.com/pradeepvemulakonda/JMeter-Charts/blob/master/out/docs/Comparson_chart.png "Compare Builds")
+
+- you can downlod the chart as described above in the <b>Download charts</b> section.
+
+<h4> Application Performance </h4>
+
+JMeter charts perfromes well under load and the tests in the example are actual perfromance tets done on a local instance of the application with 1000 and 2000 concurrent users.
+
+<h4> Additional Info </h4>
+
+A sample jtl file is provided for your testing
+
+[Sample Jtl file for JMeter Charts](https://github.com/pradeepvemulakonda/JMeter-Charts/blob/master/resources/JMeterCharts.jtl)
+
+
+
 
 
 
