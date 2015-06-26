@@ -219,7 +219,7 @@ For each version or build the application generates 3 types of charts
 
 <h4> Application Performance </h4>
 
-JMeter charts perfromes well under load and the tests in the example are actual perfromance tets done on a local instance of the application with 1000 and 2000 concurrent users.
+JMeter charts performes well under load and the tests in the example are actual perfromance tets done on a local instance of the application with 1000 and 2000 concurrent users.
 
 <h4> Additional Info </h4>
 
