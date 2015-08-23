@@ -1,0 +1,202 @@
+<!-- Copyright 2015 Pradeep Vemulakonda
+
+Licensed under the Apache License, Version 2.0 (the "License"); you may not
+use this file except in compliance with the License. You may obtain a copy
+of the License at
+
+  http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+License for the specific language governing permissions and limitations
+under the License.
+ --><div role="tabpanel">
+
+  <!-- Nav tabs -->
+  <ul id="myTab" class="nav nav-tabs" role="tablist">
+    <li role="presentation" class="active"><a href="#home" aria-controls="home" role="tab" data-toggle="tab">Home</a></li>
+  {{#showConfig}}
+  <li role="presentation"><a href="#config" aria-controls="config" role="tab" data-toggle="tab">Config</a></li>
+  {{/showConfig}}
+  </ul>
+
+  <!-- Tab panes -->
+  <div class="tab-content">
+    <div role="tabpanel" class="tab-pane active" id="home">
+            <div class="bs-callout bs-callout-info" id="callout-help-text-accessibility">
+          <h4>Showing {{type}} for project : {{project}}</h4>
+          <p>Select one of the {{type}}'s to view details</p>
+        </div>
+        <div class="row">
+          <div class="compare-section col-lg-12">
+          {{> compare}}
+          </div>
+        </div>
+       <div class="row perf-test-report top-buffer">
+        <div class="panel panel-default">
+          <div class="panel-heading" role="tab" id="headingOne">
+              <div class="pull-right">
+                  <div class="btn-group">
+                      <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown">
+                          Actions
+                          <span class="caret"></span>
+                      </button>
+                      <ul class="dropdown-menu pull-right" role="menu">
+                          <li><a href="#" class="report"><i class="fa fa-print fa-fw"></i>&nbsp; Download Report</a>
+                          </li>
+                      </ul>
+                  </div>
+              </div>
+              <h4 class="panel-title">
+              <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                Reports
+              </a>
+            </h4>
+          </div>
+          <div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
+            <div class="panel-body">
+             <div class="chart-body">
+               {{> chart}}
+             </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    {{#showConfig}}
+    <div role="tabpanel" class="tab-pane" id="config">
+      <form class="navbar-form navbar-left" role="search">
+        <div class="form-group">
+          {{#samples}}
+            <div class="row samples">
+              <div class="col-lg-12">
+                <div class="input-group">
+                  <span class="input-group-addon">
+                    <input type="checkbox" aria-label="..." class="{{name}}" value="{{name}}" {{checked}}/>
+                  </span>
+                  <label class="form-control sample" for="{{name}}">{{name}}</label>
+                </div><!-- /input-group -->
+              </div><!-- /.col-lg-6 -->
+           </div><!-- /.row -->
+           {{/samples}}
+           <div class="row top-buffer">
+          <div class="col-lg-6">
+            <button type="submit" class="btn btn-default set-samples">Set Samples</button>
+          </div>
+        </div>
+        </div>
+      </form>
+    </div>
+    {{/showConfig}}
+
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="envModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Environment</h4>
+      </div>
+      <div class="modal-body">
+        <form class="form-horizontal">
+          <div class="form-group">
+            <label for="cpu" class="col-sm-2 control-label">CPU</label>
+            <div class="col-sm-10">
+              <input type="text" name="cpu" class="form-control" id="cpu">
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="OS" class="col-sm-2 control-label">Operating System</label>
+            <div class="col-sm-10">
+              <input type="text" name="os" class="form-control" id="OS">
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="DB" class="col-sm-2 control-label">Database</label>
+            <div class="col-sm-10">
+              <input type="text" name="db"  class="form-control" id="DB">
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="Memory" class="col-sm-2 control-label">Memory</label>
+            <div class="col-sm-10">
+              <input type="text" name="memory" class="form-control" id="Memory">
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="Disk" class="col-sm-2 control-label">Disk</label>
+            <div class="col-sm-10">
+              <input type="text" name="disk" class="form-control" id="Disk">
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="CU" class="col-sm-2 control-label">Concurrent Users</label>
+            <div class="col-sm-10">
+              <input type="text" name="users" class="form-control" id="CU">
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="RD" class="col-sm-2 control-label">Records in DB</label>
+            <div class="col-sm-10">
+              <input type="text" name="records" class="form-control" id="RD">
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="radioGroup" class="col-sm-2 control-label">Network</label>
+              <div class="form-group" id="radioGroup">
+                <label class="inline btn btn-primary active">
+                  <input type="radio" name="network" id="option1" value="same subnet" autocomplete="off" checked> Same Subnet
+                </label>
+                <label class="inline btn btn-primary">
+                  <input type="radio" name="network" id="option2" value="LAN" autocomplete="off"> LAN
+                </label>
+                <label class="inline btn btn-primary">
+                  <input type="radio" name="network" id="option3" value="cloud" autocomplete="off"> Cloud
+                </label>
+              </div>
+          </div>
+          <div class="form-group">
+            <label for="radioGroup" class="col-sm-2 control-label">Saturation</label>
+              <div class="form-group" id="radioGroup">
+                <label class="inline btn btn-primary active">
+                  <input type="radio" name="saturation" id="option1" value="light load" autocomplete="off" checked> Light Load
+                </label>
+                <label class="inline btn btn-primary">
+                  <input type="radio" name="saturation" id="option2" value="medium load" autocomplete="off"> Medium Load
+                </label>
+                <label class="inline btn btn-primary">
+                  <input type="radio" name="saturation" id="option3" value="heavy load" autocomplete="off"> Heavy Load
+                </label>
+                 <label class="inline btn btn-primary">
+                  <input type="radio" name="saturation" id="option3" value="max peak load" autocomplete="off"> Max Peak Load
+                </label>
+                 <label class="inline btn btn-primary">
+                  <input type="radio" name="saturation" id="option3" value="extreme load" autocomplete="off"> Extreme Load
+                </label>
+              </div>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <a class="add-details btn btn-primary">Add Details</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MOdal loading-->
+<div class="modal fade" id="loadingModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-body">
+        Generating report <i class="fa fa-spinner fa-pulse"></i>
+      </div>
+    </div>
+  </div>
+</div>
+
+

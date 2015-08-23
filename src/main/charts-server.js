@@ -1,3 +1,16 @@
+// Copyright 2015 Pradeep Vemulakonda
+
+// Licensed under the Apache License, Version 2.0 (the "License"); you may not
+// use this file except in compliance with the License. You may obtain a copy
+// of the License at
+
+//   http://www.apache.org/licenses/LICENSE-2.0
+
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+// WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+// License for the specific language governing permissions and limitations
+// under the License.
 /**
  * @fileoverview Class used to create a REST APi to persist and query project reports
  * @author Pradeep Vemulakonda
@@ -12,7 +25,6 @@
 
 var express = require('express'),
   fs = require('fs'),
-  multer  = require('multer'),
   http = require('http'),
   path = require('path'),
   MongoClient = require('mongodb').MongoClient,
@@ -45,11 +57,10 @@ ChartsServer = function(conf) {
 	this.mongoUrl = 'mongodb://'+config.mongoHost+':'+config.mongoPort+'/'+config.mongoDB;
 	var self = this;
 
-	app.use(multer({
-		dest: '../../resources/',
-		inMemory: true
-	}));
 	app.use(bodyParser.json());
+	app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
+	  extended: true
+	}));
 	app.use(express.static(path.join(__dirname, 'web/static')));
 	app.set('port', process.env.PORT || config.httpPort);
 	app.set('views', path.join(__dirname, 'web/views'));
@@ -65,13 +76,15 @@ ChartsServer = function(conf) {
 	 * @param next next used to route the request to a view
 	 */
 	function errorHandler(err, req, res, next) {
-		res.status(500);
-		res.render('error', { error: err });
-		next();
+		res.status(400);
+		res.render('error', { error: err.message });
+		next(err);
 	}
 
-    // set the error handler
-	app.use(errorHandler);
+	function logErrors(err, req, res, next) {
+		console.error(err.stack);
+		next(err);
+	}
 
 	// set the res local variable with collectionDriver
 	app.use(function(req, res, next){
@@ -92,6 +105,11 @@ ChartsServer = function(conf) {
 	app.use('/jc/', uploadRouter);
 	// set router for file uploads
 	app.use('/jc/', samplesRouter);
+	// set the log handler
+	app.use(logErrors);
+	// set the error handler
+	app.use(errorHandler);
+
 
 
 	/**

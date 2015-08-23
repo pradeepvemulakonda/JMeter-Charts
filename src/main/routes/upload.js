@@ -1,5 +1,18 @@
+// Copyright 2015 Pradeep Vemulakonda
+
+// Licensed under the Apache License, Version 2.0 (the "License"); you may not
+// use this file except in compliance with the License. You may obtain a copy
+// of the License at
+
+//   http://www.apache.org/licenses/LICENSE-2.0
+
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+// WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+// License for the specific language governing permissions and limitations
+// under the License.
 /**
- * Template processor router
+ * Route use to upload xml files and process them to a json file in mongodb
  * @module
  */
 var express = require('express');
@@ -7,50 +20,17 @@ var router = express.Router();
 var collectionDriver;
 var STYLESHEET = '../../resources/report-style.xsl';
 var xsltProcessor = require('../util/xslt-processor').XSLTProcessor(STYLESHEET);
-
+var multer = require('multer');
+var log4js = require('log4js');
+log4js.loadAppender('file');
+//log4js.addAppender(log4js.appenders.console());
+log4js.addAppender(log4js.appenders.file('../../logs/upload.log'), 'upload');
+var logger = log4js.getLogger('upload');
 // middleware specific to this router
 router.use(function timeLog(req, res, next) {
-  collectionDriver = res.locals.collectionDriver;
-  next();
+    collectionDriver = res.locals.collectionDriver;
+    next();
 });
-
-router.post('/upload', function(req, res) {
-	var arrayLength,
-		project = req.param('project'),
-		version = req.param('version'),
-		build = req.param('build');
-	if(!(project && version && build)) {
-		throw new Error('Project, version and build data should be provided');
-	}
-	if(req.files) {
-		res.writeHead(201, { 'Content-Type': 'text/plain' });
-		res.write('[');
-		if(req.files.resultFiles instanceof Array) {
-			console.info('Multiple files sent');
-			arrayLength = req.files.resultFiles.length;
-			// process each of the files and persist the same in mongodb table
-			for(var i = 0;i < arrayLength; i++) {
-				xsltProcessor.translate(req.files.resultFiles[i].buffer, _persistantHelper(req, res, req.files.resultFiles[i].originalname, i === arrayLength - 1));
-			}
-		} else {
-			xsltProcessor.translate(req.files.resultFiles.buffer, _persistantHelper(req, res, req.files.resultFiles.originalname, true));
-		}
-	} else {
-		res.end(400, { 'Content-Type': 'text/plain' });
-	}
-});
-
-/**
- * Helper to capture the request and response for the callback.
- * @param req current request
- * @param res current response
- * @access private
- */
-function _persistantHelper(req, res, fileName, endResponse) {
-	return function (err, jsondata) {
-		_persistJsonData(err, jsondata, req, res, fileName, endResponse);
-	};
-}
 
 /**
  * Persists passed in json data to Project collection in mongodb
@@ -58,56 +38,85 @@ function _persistantHelper(req, res, fileName, endResponse) {
  * @param req request from closure scope
  * @param resp response from closure scope
  */
-function _persistJsonData(err, jsonData, req, res, fileName, endResponse) {
-	console.info(jsonData);
-	if (err) {
-		res.write(JSON.stringify({
-  		  id: null,
-  		  fileName: fileName,
-  		  error: err
-  	  }));
-  	  if(endResponse) {
-  		  res.write(']');
-  		  res.end();
-  	  } else {
-  		  res.write(',');
-  	  }
-  	  return;
-	}
+function _persistJsonData(err, jsonData, req, res, fileName, next) {
+    console.log('Processing json data extracted from the xml file');
+    if (err) {
+      logger.debug(err);
+      return next(new Error("The passed in file is not a valid XML/jtl file"));
+    }
+    // catch any errors and hand it over to express for error handling
+    try {
+        // create the object to persist in mongo
+        var object = {};
+        object.name = req.param('project');
+        object.version = req.param('version');
+        object.build = req.param('build');
+        object.report = JSON.parse(jsonData);
 
-	var object = {};
-	object.name = req.param('project');
-	object.version = req.param('version');
-	object.build = req.param('build');
-	object.report = JSON.parse(jsonData);
-	collectionDriver.save('project', object, function(err,docs) {
-          if (err) {
-        	  res.write(JSON.stringify({
-        		  id: null,
-        		  fileName: fileName,
-        		  error: err
-        	  }));
-        	  if(endResponse) {
-        		  res.write(']');
-        		  res.end();
-        	  } else {
-        		  res.write(',');
-        	  }
-          }
-          else {
-        	  res.write(JSON.stringify({
-        		  id: docs._id,
-        		  fileName: fileName
-        	  }));
-
-
-        	  if(endResponse) {
-        		  res.write(']');
-        		  res.end();
-        	  } else {
-        		  res.write(',');
-        	  }
-          }
-     });
+        // start writing to response
+        collectionDriver.save('project', object, function(err, docs) {
+            if (err) {
+                return next(err);
+            } else {
+                res.writeHead(201, {
+                    'Content-Type': 'text/plain'
+                });
+                res.write(JSON.stringify({
+                    id: docs._id,
+                    fileName: fileName
+                }));
+                res.end();
+            }
+        });
+    } catch (e) {
+        logger.debug(e);
+        return next(new Error("Error while parsing passed in results file.Results file is not a valid JMeter jtl/xml file"));
+    }
 }
+
+/**
+ * Helper to capture the request and response for the callback.
+ * @param req current request
+ * @param res current response
+ * @access private
+ */
+function _persistantHelper(req, res, fileName, next) {
+    return function(err, jsondata) {
+        _persistJsonData(err, jsondata, req, res, fileName, next);
+    };
+}
+
+router.post('/upload', [multer({
+    dest: '../../file_directory/',
+    putSingleFilesInArray: true,
+    inMemory: false,
+    onFileUploadComplete: function(file, req, res) {
+        console.log(file.fieldname + ' uploaded to  ' + file.path);
+        req.query.filePath = file.path;
+    }
+}), function(req, res, next) {
+    var project = req.param('project'),
+        version = req.param('version'),
+        build = req.param('build');
+    if (!(project && version && build)) {
+        next(new Error('Project, version and build data should be provided'));
+    }
+    try {
+        router.processFile(req.query.filePath, req, res, next);
+    } catch (e) {
+        logger.debug(e);
+        next(e);
+    }
+}]);
+
+/**
+ * Processes one file at a time
+ * @param  {String} fileName the name of the uploaded file
+ * @param  {Request} req the request object
+ * @param  {Response} res the response object
+ * @param {Function} next used for routing
+ */
+router.processFile = function(fileName, req, res, next) {
+    xsltProcessor.translate(fileName, _persistantHelper(req, res, req.files.resultFiles[0].originalname, next));
+};
 module.exports = router;

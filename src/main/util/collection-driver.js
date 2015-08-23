@@ -1,3 +1,16 @@
+// Copyright 2015 Pradeep Vemulakonda
+
+// Licensed under the Apache License, Version 2.0 (the "License"); you may not
+// use this file except in compliance with the License. You may obtain a copy
+// of the License at
+
+//   http://www.apache.org/licenses/LICENSE-2.0
+
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+// WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+// License for the specific language governing permissions and limitations
+// under the License.
 /**
  * @fileoverview A facade to MongoDB API with error handling
  * @author Pradeep Vemulakonda
@@ -197,20 +210,32 @@ CollectionDriver.prototype.save = function(collectionName, obj, callback) {
  * @param callback {function} this callback is aclled once the update is complete.
  * @access public
  */
-CollectionDriver.prototype.update = function(collectionName, obj, entityId, callback) {
+CollectionDriver.prototype.update = function(collectionName, data, entityId, callback) {
+    var self = this;
     this.getCollection(collectionName, function(error, the_collection) {
         if (error) {
         	callback(error);
         } else {
-            obj._id = ObjectID(entityId);
-            obj.updated_at = new Date();
-            the_collection.save(obj, function(error,doc) {
-                if (error) {
-                	callback(error);
-                }
-                else {
-                	callback(null, obj);
-                }
+            var _id = ObjectID(entityId);
+            var query = {
+              _id: _id
+            };
+            self.findData(collectionName, query, function(error, obj){
+              if ( error ) {
+                callback(error);
+              } else {
+                obj[0].updated_at = new Date();
+                obj[0].env = data;
+                the_collection.save(obj[0], function(error,obj) {
+                    if (error) {
+                      callback(error);
+                    }
+                    else {
+                      obj.env = data;
+                      callback(null, obj);
+                    }
+                });
+              }
             });
         }
     });

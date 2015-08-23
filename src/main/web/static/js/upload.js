@@ -1,3 +1,16 @@
+// Copyright 2015 Pradeep Vemulakonda
+
+// Licensed under the Apache License, Version 2.0 (the "License"); you may not
+// use this file except in compliance with the License. You may obtain a copy
+// of the License at
+
+//   http://www.apache.org/licenses/LICENSE-2.0
+
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+// WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+// License for the specific language governing permissions and limitations
+// under the License.
 
 ;(function(define) {
 
@@ -60,7 +73,7 @@
 			        $('.error-template').hide();
 			    });
 
-			    $(".typeahead").prop('disabled', true);
+			   // $(".typeahead").prop('disabled', true);
 
 
 			    // setup typeahead
@@ -73,6 +86,7 @@
 			    this.dropZone.on('drop', function(e) {
 			        e.preventDefault();
 			        this.className = 'upload-drop-zone';
+			        var files = e.dataTransfer.files;
 			        self._renderFileItemsinList(e.dataTransfer.files);
 			    });
 
@@ -95,6 +109,16 @@
 			 * @chainable
 			 */
 			_renderFileItemsinList: function(files) {
+				if(files.length !== 1) {
+		        	alert('Only a single file can be selected at a time');
+		        	return;
+		    	}
+
+		    	if(this.filesToUpload.length > 0) {
+		    		alert('A file has already been selected for upload');
+		        	return;
+		    	}
+
 				var self = this;
 				// remove existing message
 				this.listGroup.find('em').remove();
@@ -145,51 +169,53 @@
 		        // START A LOADING SPINNER HERE
 
 		        // Create a formdata object and add the files
-		    	var data = new FormData(),
-		    		self = this;
+
+		    	var	self = this;
 		    	$.each(files, function(index, file)
 		    	{
+		    		var data = new FormData();
 		    		data.append('resultFiles', file.file);
 		    		console.info(file.name);
-		    	});
 
-		    	data.append('project', form.find('[name="project"]').val());
-		    	data.append('version', form.find('[name="version"]').val());
-		    	data.append('build', form.find('[name="build"]').val());
 
-		        $.ajax({
-		            url: 'jc/upload',
-		            type: 'POST',
-		            data: data,
-		            cache: false,
-		            dataType: 'json',
-		            processData: false, // Don't process the files
-		            contentType: false, // Set content type to false as jQuery will
-										// tell the server its a query string
-										// request
-		            success: function(data,  textStatus, jqXHR)
-		            {
+			    	data.append('project', form.find('[name="project"]').val());
+			    	data.append('version', form.find('[name="version"]').val());
+			    	data.append('build', form.find('[name="build"]').val());
 
-		            	if(typeof data.error === 'undefined')
-		            	{
-		            		// Success so call function to process the form
-		            		self._onSuccessfulUpload(null, data);
-		            	}
-		            	else
-		            	{
-		            		// Handle errors here
-		            		self._onFailedUpload(null, data);
-		            	}
-		            },
-		            error: function(jqXHR, textStatus, errorThrown)
-		            {
-		            	// Handle errors here
-		            	var err = jqXHR.responseText;
-		            	console.log(errorThrown);
-		            	self._onFailedUpload(null, err);
-		            	// STOP LOADING SPINNER
-		            }
-		        });
+			        $.ajax({
+			            url: 'jc/upload',
+			            type: 'POST',
+			            data: data,
+			            cache: false,
+			            dataType: 'json',
+			            processData: false, // Don't process the files
+			            contentType: false, // Set content type to false as jQuery will
+											// tell the server its a query string
+											// request
+			            success: function(data,  textStatus, jqXHR)
+			            {
+
+			            	if(typeof data.error === 'undefined')
+			            	{
+			            		// Success so call function to process the form
+			            		self._onSuccessfulUpload(null, data);
+			            	}
+			            	else
+			            	{
+			            		// Handle errors here
+			            		self._onFailedUpload(null, data);
+			            	}
+			            },
+			            error: function(jqXHR, textStatus, errorThrown)
+			            {
+			            	// Handle errors here
+			            	var err = jqXHR.responseText;
+			            	console.log(errorThrown);
+			            	self._onFailedUpload(null, err);
+			            	// STOP LOADING SPINNER
+			            }
+			        });
+				});
 		    },
 
 		    /**
@@ -207,19 +233,17 @@
 				$('.error-template').hide();
 				$.each(listFiles, function (index, fileSection) {
 					fileSection = $(fileSection);
-						$.each(data, function (index2, fileStatus) {
-							if(fileSection.text() === fileStatus.fileName) {
-				    			if (!fileStatus.error) {
-					    			fileSection.parent().removeClass('list-group-item-info').addClass('list-group-item-success');
-					    			fileSection.parent().find('.alert-info').html('Uploaded successfully');
-					    			fileSection.parent().find('.alert-info').removeClass('alert-info').addClass('alert-success');
-				    			} else {
-				    				fileSection.parent().removeClass('list-group-item-info').addClass('list-group-item-danger');
-					    			fileSection.parent().find('.alert-info').html('Uploaded failed');
-					    			fileSection.parent().find('.alert-info').removeClass('alert-info').addClass('alert-danger');
-				    			}
-							}
-						});
+					if(fileSection.text() === data.fileName) {
+		    			if (!data.error) {
+			    			fileSection.parent().removeClass('list-group-item-info list-group-item-danger').addClass('list-group-item-success');
+			    			fileSection.parent().find('.alert-info').html('Uploaded successfully');
+			    			fileSection.parent().find('.alert-info').removeClass('alert-info').addClass('alert-success');
+		    			} else {
+		    				fileSection.parent().removeClass('list-group-item-info').addClass('list-group-item-danger');
+			    			fileSection.parent().find('.alert-info').html('Uploaded failed');
+			    			fileSection.parent().find('.alert-info').removeClass('alert-info').addClass('alert-danger');
+		    			}
+					}
 				});
 			},
 
@@ -241,7 +265,7 @@
 	    			fileSection.parent().find('.alert-info').html('Uploaded failed');
 	    			fileSection.parent().find('.alert-info').removeClass('alert-info').addClass('alert-dangers');
 		    	});
-		    	$('.error-template').text(data? data: 'upload failed because of invalid xml result file');
+		    	$('.error-template').text(data? data : 'upload failed because of invalid xml result file');
 		    	$('.error-template').show();
 		    },
 
@@ -290,14 +314,14 @@
 					}
 				);
 
-				$('.typeahead.project').prop('disabled', false);
+				//$('.typeahead.project').prop('disabled', false);
 
 				// "select"-button
 				$(".project-btn").click(function(event) {
 				    var input = $('.typeahead.project');
 				    input.focus();
 				    var e = jQuery.Event("keydown");
-				    e.keyCode = 40;                     
+				    e.keyCode = 40;
 				    input.trigger(e);
 				});
 
@@ -329,13 +353,13 @@
 					source: versions.ttAdapter()
 				});
 
-				$('.typeahead.version').prop('disabled', false);
+				//$('.typeahead.version').prop('disabled', false);
 
-				$(".version-btn").click(function(event) {
+				$('.version-btn').click(function(event) {
 				    var input = $('.typeahead.version');
 				    input.focus();
 				    var e = jQuery.Event("keydown");
-				    e.keyCode = 40;                     
+				    e.keyCode = 40;
 				    input.trigger(e);
 				});
 				$('.typeahead.version').on('typeahead:selected typeahead:autocompleted', function (event, suggestion) {
@@ -366,11 +390,11 @@
 	 	         });
 
 	 			$('.typeahead.build').prop('disabled', false);
-	 			$(".build-btn").click(function(event) {
+	 			$('.build-btn').click(function(event) {
 				    var input = $('.typeahead.build');
 				    input.focus();
-				    var e = jQuery.Event("keydown");
-				    e.keyCode = 40;                     
+				    var e = jQuery.Event('keydown');
+				    e.keyCode = 40;
 				    input.trigger(e);
 				});
 	 		}
