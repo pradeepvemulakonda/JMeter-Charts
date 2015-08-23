@@ -28,7 +28,7 @@ return {
 		    	});
 		    	var dataTable = document.createElement('CANVAS');
 		    	dataTable.height = '800';
-		    	dataTable.width = '600';
+		    	dataTable.width = '700';
 		    	var envTable = document.createElement('CANVAS');
 		    	envTable.height = '400';
 

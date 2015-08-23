@@ -22,10 +22,7 @@ define(['jquery', 'mustache'], function($, Mustache) {
 		 			var data = [];
 						data.push(threadGroup.threadgroup.name);
 						data.push(threadGroup.threadgroup.averageTime);
-						data.push(threadGroup.threadgroup.successCount);
-						data.push(threadGroup.threadgroup.failureCount);
 						data.push(threadGroup.threadgroup.totalCount);
-						data.push(threadGroup.threadgroup.successPercentage);
 						data.push(threadGroup.threadgroup.averageActiveThreads);
 					tableData.push({
 						data: data
