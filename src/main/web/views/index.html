@@ -2,162 +2,74 @@
 <html lang="en" ng-app="JMeterCharts">
 
 <head>
-
+    <script src="js/lib/angular/angular.js"></script>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="">
     <meta name="author" content="">
-
     <title>JMeter Charts v0.1</title>
-
     <!-- Bootstrap Core CSS -->
     <link href="js/lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
-
     <!-- MetisMenu CSS -->
     <link href="js/lib/metisMenu/dist/metisMenu.min.css" rel="stylesheet">
-
     <!-- Custom CSS -->
     <link href="css/main.css" rel="stylesheet">
-
     <!-- combobox bootstrap -->
     <link href="js/lib/bootstrap-combobox/css/bootstrap-combobox.css" rel="stylesheet">
-
-
     <!-- Custom Fonts -->
     <link href="js/lib/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
-
 </head>
 
-<body ng-controller="MainController">
-
+<body>
     <div id="wrapper">
-
         <!-- Navigation -->
         <nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <a class="navbar-brand" href="./jc">JMeter Charts<span class="divider"></span><i class="fa fa-bar-chart"></i></a>
-            </div>
-            <!-- /.navbar-header -->
-
-            <ul class="nav navbar-top-links navbar-right">
-                <!-- /.dropdown -->
-                <li class="dropdown">
-                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                        <i class="fa fa-user fa-fw"></i>  <i class="fa fa-caret-down"></i>
-                    </a>
-                    <ul class="dropdown-menu dropdown-user">
-                        <li><a href="#"><i class="fa fa-user fa-fw"></i> User Profile</a>
-                        </li>
-                        <li><a href="#"><i class="fa fa-gear fa-fw"></i> Settings</a>
-                        </li>
-                        <li class="divider"></li>
-                        <li><a href="login.html"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
-                        </li>
-                    </ul>
-                    <!-- /.dropdown-user -->
-                </li>
-                <!-- /.dropdown -->
-            </ul>
-            <!-- /.navbar-top-links -->
-
-            <div class="navbar-default sidebar" metismenu role="navigation">
-                <div class="sidebar-nav navbar-collapse">
-                    <ul class="nav" id="side-menu">
-                        <li>
-                            Search: <input ng-model="queryProject">
-                        </li>
-
-                        <li>
-                            <a class="active" href="/jc"><i class="fa fa-upload fa-fw"></i> Upload file</a>
-                        </li>
-                        <li>
-                            <a class="main-project" href="#" ng-click="fetchProjects()">
-                                <i class="fa fa-sitemap fa-fw"></i>
-                                    Select Project
-                                <span class="fa arrow"></span>
-                            </a>
-                            <ul class="nav nav-second-level project-nav">
-                                  <li ng-repeat="project in projects | filter:queryProject" ng-controller="VersionController">
-                                    <a ng-click="fetchVersions(project)">
-                                        <i class="fa fa-cube" title="Project"></i>
-                                        <span class="divider"></span>
-                                        {{project}}
-                                        <span class="fa arrow"></span>
-                                    </a>
-                                    <ul class="nav nav-third-level version-nav" >
-                                          <li ng-repeat="version in versions | filter:queryProject">
-                                            <a>
-                                                <i class="fa fa-code-fork" title="Version"></i>
-                                                <span class="divider"></span>
-                                                {{version}}
-                                                <span class="fa arrow"></span>
-                                            </a>
-                                          </li>
-                                    </ul>
-                                  </li>
-                            </ul>
-                            <!-- /.nav-second-level -->
-                        </li>
-                        <li>
-                            <a href="#"><i class="fa fa-files-o fa-fw"></i> Help<span class="fa arrow"></span></a>
-                            <ul class="nav nav-second-level">
-                                <li>
-                                    <a href="https://github.com/pradeepvemulakonda/JMeter-Charts">Usage Guide</a>
-                                </li>
-                                <li>
-                                    <a href="https://github.com/pradeepvemulakonda/JMeter-Charts">About</a>
-                                </li>
-                            </ul>
-                            <!-- /.nav-second-level -->
-                        </li>
-                    </ul>
-                </div>
-                <!-- /.sidebar-collapse -->
-            </div>
             <!-- /.navbar-static-side -->
+            <div ng-controller="SearchController">
+                <h4>Asynchronous results</h4>
+                <pre>Model: {{asyncSelected | json}}</pre>
+                <input type="text" ng-model="asyncSelected" placeholder="Locations loaded via $http" typeahead="project for project in getProjects($viewValue)" typeahead-loading="loadingProjects" typeahead-no-results="noResults" class="form-control">
+                <i ng-show="loadingProjects" class="glyphicon glyphicon-refresh"></i>
+                <div ng-show="noResults">
+                    <i class="glyphicon glyphicon-remove"></i> No Results Found
+                </div>
+            </div>
         </nav>
-
         <div id="page-wrapper">
             <div class="row">
                 <div class="col-lg-12">
-                	<ol class="breadcrumb">
-					  <li><a href="#">Home</a></li>
-					</ol>
+                    <ol class="breadcrumb">
+                        <li><a href="#">Home</a></li>
+                    </ol>
                     <h1 class="page-header">Upload Results File</h1>
                 </div>
                 <!-- /.col-lg-12 -->
             </div>
             <div class="row">
                 <div class="col-lg-12">
-                    <div class="error-template list-group-item list-group-item-danger"><div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-lg-12">
-                    <div class="dynamic-template"> <i class="fa fa-refresh fa-spin fa-4x fa-fw"></i> <div>
-                </div>
-            </div>
-        </div>
-        <!-- /#page-wrapper -->
-
-    </div>
-    <!-- /#wrapper -->
+                    <div class="error-template list-group-item list-group-item-danger">
+                        <div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="dynamic-template">
+                                <div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- /#page-wrapper -->
+                    </div>
+                    <!-- /#wrapper -->
 </body>
-
 <!--<script data-main="js/requirejs-config" src="js/lib/requirejs/require.js"></script>-->
 <script src="js/lib/jquery/jquery.js"></script>
-<script src="js/lib/angular/angular.js"></script>
 <script src="js/controller/controllers.js"></script>
 <script src="js/directives/directive.js"></script>
 <script src="js/lib/metisMenu/dist/metisMenu.js"></script>
 <script src="js/lib/bootstrap/dist/js/bootstrap.js"></script>
-
+<script src="js/lib/angular-bootstrap/ui-bootstrap.js"></script>
+<script src="js/lib/angular-bootstrap/ui-bootstrap-tpls.js"></script>
 
 </html>

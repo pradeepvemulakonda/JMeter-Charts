@@ -1,4 +1,4 @@
-var jmeterChartsApp = angular.module('JMeterCharts', []);
+var jmeterChartsApp = angular.module('JMeterCharts', ['ui.bootstrap']);
 
 // Create a service
 
@@ -18,4 +18,17 @@ jmeterChartsApp.controller('MainController', function ($scope, $http, $rootScope
 			    $scope.versions = data;
 			});
 	  };
+})
+
+.controller('SearchController', function ($scope, $http) {
+	$scope.search = 'This is a search';
+	$scope.show_empty_search = true;
+
+	$scope.getProjects = function(val) {
+	    return $http.get('/jc/project').then(function(response){
+	      return response.data.map(function(item){
+	        return item;
+	      });
+	    });
+	};
 });

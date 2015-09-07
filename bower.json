@@ -40,6 +40,7 @@
     "angular": null,
     "angular-route": null,
     "angular-mocks": null,
-    "angular-loader": null
+    "angular-loader": null,
+    "angular-bootstrap": "~0.13.3"
   }
 }
